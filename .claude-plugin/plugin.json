@@ -1,7 +1,7 @@
 {
   "name": "neon",
-  "description": "Applies Finnomena's brand theme on top of the Coinbase Design System (CDS) so any employee's vibe-coded UI mockups automatically follow company branding instead of CDS's default theme.",
-  "version": "0.1.0",
+  "description": "Applies Finnomena's brand theme on top of the Coinbase Design System (CDS) so any employee's vibe-coded apps and UI mockups automatically follow company branding instead of CDS's default theme. Ships neon-starter (scaffold a new project) and neon-theme (theme an existing one).",
+  "version": "0.2.0",
   "author": {
     "name": "Finnomena"
   },
