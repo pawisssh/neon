@@ -1,1333 +1,177 @@
 /**
- * Finnomena companyTheme — override of CDS's defaultTheme.
+ * neonTheme — Finnomena's override fields for @coinbase/cds-web's
+ * ThemeConfig, merged onto CDS's own defaultTheme at runtime by
+ * ./createTheme.ts (see that file — ThemeProvider requires a FULL
+ * ThemeConfig, and neonTheme here is deliberately partial).
  *
  * GENERATED FILE — do not hand-edit. Regenerate with:
  *   node scripts/sync-tokens.mjs && node scripts/generate-theme-config.mjs
  *
  * Source of truth: the raw Figma Token Studio export in ./tokens/*.json,
- * resolved by ../scripts/sync-tokens.mjs into ./tokens.resolved.json
- * (alias-resolved tokens) and ./tokens.report.json (what's still missing).
+ * resolved by ../scripts/sync-tokens.mjs into ./tokens.resolved.json.
  *
  * STATUS (regenerated 2026-09-07T14:16:57.294Z):
- *   Resolved 11847 / 12127 tokens.
- *   ✅ space, radius, typography (type scale for the "Large (Default)" web
- *      size class) — fully resolved from the Figma export, used directly
- *      below.
- *   ✅ color — RESOLVED. Every color token in theme.json's light/dark trees
- *      (including the 13/13 primitive families referenced by
- *      light/dark and the intra-theme cross-references like Tag's
- *      border-disabled/color-disabled) now traces back to a real "r,g,b"
- *      value sourced from tokens/colors.json. lightSpectrum/darkSpectrum
- *      hold the primitives; lightColor/darkColor reference them by key
- *      rather than duplicating values.
  *
- *   ⚠ Base-unit conflict (flagged, not auto-fixed): the Figma spacing
- *      export includes values that are not multiples of CDS's 8px base
- *      unit — 1, 2, 4, 6, 12, 28, 36px. These are excluded from
- *      spaceScale below rather than rounded or invented. Precedent: the
- *      previous hand-authored version of this file already excluded the
- *      same class of values from the old export for the same reason. If
- *      these are load-bearing in real designs, confirm with design whether
- *      they're intentional exceptions or export drift to fix at the source.
+ *   ✅ space — all 15 of CDS's required step-keys ("0" through "10", plus
+ *      "0.25"/"0.5"/"0.75") populated from tokens/size.json.
  *
- *   ⚠ fontFamily is deliberately fixed to "'IBM Plex Sans Thai', sans-serif" rather
- *      than the export's actual family name ("Finnomena Trek") —
- *      a confirmed decision, not a missed sync step.
+ *   ✅ borderRadius — 9 of CDS's 11 step-keys ("0" through "800") populated
+ *      from tokens/radius.json by value; "1000" (fully round) mapped by
+ *      INTENT to Finnomena's "round" slug, not by literal number (CDS uses
+ *      100000, Finnomena's export uses 200). "900" (56px) has no Finnomena
+ *      equivalent and is left absent — CDS's defaultTheme value flows
+ *      through for that one step at runtime.
  *
- *   ⚠ typeScale's fontWeight values are font-variant names (e.g. "Regular",
- *      "SemiBold") taken from the "Finnomena Trek" export, not
- *      verified against IBM Plex Sans Thai's actual available weight set,
- *      nor against @coinbase/cds-web's expected typography weight type.
+ *   ✅ fontFamily — fixed to "'IBM Plex Sans Thai', sans-serif" across all 13 CDS font
+ *      roles (a confirmed decision, not the export's actual family name,
+ *      "Finnomena Trek").
  *
- *   ⚠ Color values are "r,g,b" strings for opaque colors, but "r,g,b,a"
- *      (4 components, a as a 0-1 fraction) for any primitive shade that
- *      was an 8-digit hex in tokens/colors.json (every "*A" opacity
- *      variant — used throughout overlays, hover/disabled states, subtle
- *      borders). The project brief's documented convention was 3-component
- *      "r,g,b" only; dropping alpha would have silently turned every
- *      translucent color opaque, so this was a deliberate fix, not
- *      invented data — but the 4-component form is UNVERIFIED against
- *      @coinbase/cds-web's real ThemeVars color type. Confirm CDS actually
- *      accepts "r,g,b,a" before shipping; if not, alpha will need to be
- *      applied a different way (e.g. a separate opacity prop) per color.
+ *   ⚠ fontSize / fontWeight / lineHeight — populated for ONLY the CDS font
+ *      roles with an unambiguous same-name Finnomena counterpart:
+ *      display1←"Display 1", display2←"Display 2", display3←"Display 3", title1←"Title 1", title2←"Title 2", title3←"Title 3", headline←"Headline", body←"Body".
+ *      This is a first-pass, human-reviewable mapping (8 of 13 CDS roles) — title4/label1/label2/
+ *      caption/legal have no confident Finnomena source and are left absent
+ *      (CDS's defaultTheme values apply instead). fontSize/lineHeight are
+ *      emitted as "Npx" strings (Finnomena's exact resolved pixel values —
+ *      valid CSS; CDS's own defaultTheme uses rem, but px avoids inventing
+ *      an unstated root-font-size assumption). fontWeight is converted from
+ *      Finnomena's variant-name strings ("Regular","SemiBold",...) via the
+ *      standard CSS numeric-weight convention, not Finnomena-specific data.
+ *      
  *
- *   ⚠ Every shape below (lightColor/darkColor's nested-by-group structure,
- *      typeScale's per-field names, lightSpectrum/darkSpectrum's
- *      PascalCase family keys) is illustrative — @coinbase/cds-web is not
- *      installed anywhere in this repo, so ThemeConfig/ThemeVars's real
- *      shape from "@coinbase/cds-web/core/theme" could not be verified.
- *      Confirm field names against the real types before shipping.
+ *   ⛔ COLOR — DELIBERATELY NOT POPULATED. lightSpectrum/darkSpectrum/
+ *      lightColor/darkColor/lightIllustrationColor/darkIllustrationColor are
+ *      not emitted at all. Finnomena's theme.json semantic names
+ *      (text-primary, icon-on-brand, ...) share no vocabulary with CDS's
+ *      semantic slugs (fg, bgPrimary, accentBoldBlue, ...) — mapping one
+ *      onto the other is a real design decision, not a data-mapping
+ *      problem, and this generator does not guess it. CDS's own default
+ *      brand colors (Coinbase blue, etc.) render until a human fills in
+ *      ./color-mapping.todo.md (also regenerated by this script) and this
+ *      generator is extended to consume it. Do not tell a user their
+ *      mockup's colors are on-brand until that's done.
+ *
+ *   Left entirely at CDS's default (confirmed: no Finnomena data exists for
+ *   these at all — not a judgment call, nothing to draw from): iconSize,
+ *   avatarSize, borderWidth (as a general scale — only scattered
+ *   per-component stroke-weight overrides exist, not a real scale),
+ *   controlSize, textTransform, shadow, fontFamilyMono.
  *
  * DO NOT hand-edit resolved values below without also updating
  * tokens/*.json and re-running the generator — this file should stay a
  * mechanical projection of the Figma export, not a second source of truth.
  */
-import type { ThemeConfig } from "@coinbase/cds-web/core/theme";
 
 // ---------------------------------------------------------------------------
-// Spacing — resolved from tokens/size.json. Values not divisible by 8
-// (CDS's base unit) are recorded above in the file header, not included here.
+// space — resolved from tokens/size.json, keyed to CDS's ThemeVars.Space.
 // ---------------------------------------------------------------------------
-export const spaceScale = [
-  0, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80, 88, 96, 104, 112, 120, 128, 160, 240, 256, 288,
-] as const;
-
-// ---------------------------------------------------------------------------
-// Radius — resolved from tokens/radius.json.
-// ---------------------------------------------------------------------------
-export const radiusScale = {
-  none: 0,
-  xs: 4,
-  sm: 8,
-  md: 12,
-  lg: 16,
-  xl: 24,
-  "2xl": 32,
-  "3xl": 40,
-  "4xl": 48,
-  round: 200,
+export const space = {
+  "0": 0,
+  "1": 8,
+  "2": 16,
+  "3": 24,
+  "4": 32,
+  "5": 40,
+  "6": 48,
+  "7": 56,
+  "8": 64,
+  "9": 72,
+  "10": 80,
+  "0.25": 2,
+  "0.5": 4,
+  "0.75": 6,
+  "1.5": 12,
 } as const;
 
 // ---------------------------------------------------------------------------
-// Typography — fontFamily is a deliberate fixed override (see file header).
+// borderRadius — resolved from tokens/radius.json, keyed to CDS's
+// ThemeVars.BorderRadius. See file header for the "900" gap and the
+// "round"→"1000" by-intent mapping.
+// ---------------------------------------------------------------------------
+export const borderRadius = {
+  "0": 0,
+  "100": 4,
+  "200": 8,
+  "300": 12,
+  "400": 16,
+  "500": 24,
+  "600": 32,
+  "700": 40,
+  "800": 48,
+  "1000": 100000,
+} as const;
+
+// ---------------------------------------------------------------------------
+// Typography — flat per-role maps matching CDS's ThemeVars.FontFamily/
+// FontSize/FontWeight/LineHeight (all alias the same 13 role keys). See
+// file header for which roles have real Finnomena data vs. are left absent.
 // ---------------------------------------------------------------------------
 export const fontFamily = {
-  primary: "'IBM Plex Sans Thai', sans-serif",
+  display1: "'IBM Plex Sans Thai', sans-serif",
+  display2: "'IBM Plex Sans Thai', sans-serif",
+  display3: "'IBM Plex Sans Thai', sans-serif",
+  title1: "'IBM Plex Sans Thai', sans-serif",
+  title2: "'IBM Plex Sans Thai', sans-serif",
+  title3: "'IBM Plex Sans Thai', sans-serif",
+  title4: "'IBM Plex Sans Thai', sans-serif",
+  headline: "'IBM Plex Sans Thai', sans-serif",
+  body: "'IBM Plex Sans Thai', sans-serif",
+  label1: "'IBM Plex Sans Thai', sans-serif",
+  label2: "'IBM Plex Sans Thai', sans-serif",
+  caption: "'IBM Plex Sans Thai', sans-serif",
+  legal: "'IBM Plex Sans Thai', sans-serif",
 } as const;
 
-// Per-role type scale for the web "Large (Default)" size class, resolved
-// from tokens/type_primitives.json. fontWeight is a variant name string,
-// not a numeric CSS weight — see file header caveat.
-export const typeScale = {
-  "largeTitle": { fontSize: 34, lineHeight: 41, letterSpacing: 0.4, fontWeight: "Regular" },
-  "title1": { fontSize: 28, lineHeight: 34, letterSpacing: 0.38, fontWeight: "Regular" },
-  "title2": { fontSize: 22, lineHeight: 28, letterSpacing: -0.26, fontWeight: "Regular" },
-  "title3": { fontSize: 20, lineHeight: 25, letterSpacing: -0.45, fontWeight: "Regular" },
-  "headline": { fontSize: 17, lineHeight: 22, letterSpacing: -0.43, fontWeight: "Medium" },
-  "body": { fontSize: 17, lineHeight: 22, letterSpacing: -0.43, fontWeight: "Regular" },
-  "callout": { fontSize: 16, lineHeight: 21, letterSpacing: -0.31, fontWeight: "Regular" },
-  "subheadline": { fontSize: 15, lineHeight: 20, letterSpacing: -0.23, fontWeight: "Regular" },
-  "footnote": { fontSize: 13, lineHeight: 18, letterSpacing: -0.08, fontWeight: "Regular" },
-  "caption1": { fontSize: 12, lineHeight: 16, letterSpacing: 0, fontWeight: "Regular" },
-  "caption2": { fontSize: 11, lineHeight: 13, letterSpacing: 0.06, fontWeight: "Regular" },
-  "display1": { fontSize: 92, lineHeight: 102, letterSpacing: -0.64, fontWeight: "Regular" },
-  "display2": { fontSize: 60, lineHeight: 70, letterSpacing: -0.64, fontWeight: "Regular" },
-  "display3": { fontSize: 54, lineHeight: 64, letterSpacing: 0, fontWeight: "Bold" },
-  "paragraph": { fontSize: 28, lineHeight: 36, letterSpacing: 0, fontWeight: "Regular" },
-  "quotation1": { fontSize: 42, lineHeight: 50, letterSpacing: 0, fontWeight: "Regular" },
-  "quotation2": { fontSize: 24, lineHeight: 30, letterSpacing: 0, fontWeight: "Regular" },
+export const fontSize = {
+  display1: "92px",
+  display2: "60px",
+  display3: "54px",
+  title1: "28px",
+  title2: "22px",
+  title3: "20px",
+  headline: "17px",
+  body: "17px",
 } as const;
 
-// ---------------------------------------------------------------------------
-// Color — BLOCKED, see file header. Family/shade sets below are collected
-// live from every "{Family.Shade}" alias actually referenced in
-// tokens/theme.json's light/dark trees — every value is a TODO_RGB
-// placeholder standing in for a primitive that hasn't been exported yet.
-// ---------------------------------------------------------------------------
-const TODO_RGB = "0,0,0"; // placeholder — replace once primitive families are exported (see file header)
-
-export const lightSpectrum = {
-  "Black": {
-    "5A": "0,0,0,0.051",
-    "10A": "0,0,0,0.102",
-    "20A": "0,0,0,0.2",
-    "45A": "0,0,0,0.451",
-    "65A": "0,0,0,0.651",
-    "85A": "0,0,0,0.851",
-  },
-  "Blue": {
-    "0": "255,255,255",
-    "0A": "80,207,255,0",
-    "5": "246,253,255",
-    "10": "238,250,255",
-    "15": "229,248,255",
-    "100": "80,207,255",
-    "115": "30,193,255",
-    "125": "0,182,251",
-    "150": "0,122,168",
-    "160": "0,97,134",
-  },
-  "Green": {
-    "0": "255,255,255",
-    "0A": "0,231,107,0",
-    "5": "242,254,248",
-    "10": "230,253,240",
-    "15": "217,251,233",
-    "100": "0,231,107",
-    "115": "0,196,91",
-    "125": "0,173,80",
-    "135": "0,150,70",
-    "150": "0,116,53",
-    "160": "0,92,43",
-  },
-  "Grey": {
-    "0": "255,255,255",
-    "5": "242,242,242",
-    "10": "230,230,230",
-    "15": "217,217,217",
-    "100": "0,0,0",
-  },
-  "Indigo": {
-    "0": "255,255,255",
-    "0A": "24,23,231,0",
-    "5": "243,243,254",
-    "10": "232,232,253",
-    "10A": "24,23,231,0.102",
-    "15": "220,220,251",
-    "65": "105,104,239",
-    "75": "82,81,237",
-    "100": "24,23,231",
-    "115": "20,20,196",
-    "125": "18,17,173",
-    "150": "12,12,116",
-    "160": "10,9,92",
-  },
-  "Light Grey": {
-    "0": "255,255,255",
-    "5": "251,252,252",
-    "10": "246,249,250",
-    "100": "166,191,204",
-    "115": "131,166,184",
-    "125": "107,149,170",
-    "150": "67,100,118",
-    "160": "54,80,94",
-  },
-  "Navy": {
-    "0": "255,255,255",
-    "0A": "1,23,43,0",
-    "3": "247,248,249",
-    "3A": "1,23,43,0.031",
-    "5": "242,243,244",
-    "5A": "1,23,43,0.051",
-    "8": "235,236,238",
-    "8A": "1,23,43,0.078",
-    "10": "230,232,234",
-    "10A": "1,23,43,0.102",
-    "12A": "1,23,43,0.122",
-    "15": "217,220,223",
-    "15A": "1,23,43,0.149",
-    "25": "192,197,202",
-    "35": "166,174,181",
-    "45": "141,151,160",
-    "45A": "1,23,43,0.451",
-    "80": "52,69,85",
-    "90": "26,46,64",
-    "100": "1,23,43",
-    "115": "1,20,37",
-    "125": "1,17,32",
-    "150": "0,11,22",
-    "160": "0,9,17",
-  },
-  "Orange": {
-    "0": "255,255,255",
-    "0A": "242,100,20,0",
-    "5": "254,247,243",
-    "10": "254,240,232",
-    "15": "253,232,220",
-    "100": "242,100,20",
-    "115": "211,84,12",
-    "125": "186,74,10",
-    "150": "124,49,7",
-    "160": "99,39,5",
-  },
-  "Purple": {
-    "0": "255,255,255",
-    "0A": "170,70,195,0",
-    "5": "251,246,252",
-    "10": "247,237,249",
-    "15": "242,227,246",
-    "100": "170,70,195",
-    "115": "147,55,170",
-    "125": "130,49,150",
-    "150": "87,32,100",
-    "160": "69,26,80",
-  },
-  "Red": {
-    "0": "255,255,255",
-    "0A": "247,50,50,0",
-    "5": "255,245,245",
-    "10": "254,235,235",
-    "15": "254,224,224",
-    "100": "247,50,50",
-    "115": "243,9,9",
-    "125": "214,8,8",
-    "135": "186,7,7",
-    "145": "157,6,6",
-    "150": "143,6,6",
-    "160": "114,4,4",
-  },
-  "Violet": {
-    "100": "107,70,195",
-  },
-  "White": {
-    "0": "255,255,255,0",
-    "45A": "255,255,255,0.451",
-    "100": "255,255,255",
-  },
-  "Yellow": {
-    "0": "255,255,255",
-    "0A": "242,249,60,0",
-    "5": "254,255,245",
-    "10": "254,254,236",
-    "15": "253,254,226",
-    "75": "245,251,109",
-    "85": "244,250,89",
-    "100": "242,249,60",
-    "115": "239,248,15",
-    "125": "217,225,7",
-    "150": "145,150,5",
-    "160": "116,120,4",
-    "185": "43,45,1",
-  },
+export const fontWeight = {
+  display1: "400",
+  display2: "400",
+  display3: "700",
+  title1: "400",
+  title2: "400",
+  title3: "400",
+  headline: "500",
+  body: "400",
 } as const;
 
-export const darkSpectrum = {
-  "Black": {
-    "5A": "0,0,0,0.051",
-    "10A": "0,0,0,0.102",
-    "50A": "0,0,0,0.502",
-    "85A": "0,0,0,0.851",
-    "100": "0,0,0",
-  },
-  "Blue": {
-    "0": "255,255,255",
-    "0A": "80,207,255,0",
-    "5": "246,253,255",
-    "10": "238,250,255",
-    "15": "229,248,255",
-    "100": "80,207,255",
-    "115": "30,193,255",
-    "125": "0,182,251",
-    "150": "0,122,168",
-    "160": "0,97,134",
-  },
-  "Green": {
-    "0": "255,255,255",
-    "0A": "0,231,107,0",
-    "5": "242,254,248",
-    "10": "230,253,240",
-    "15": "217,251,233",
-    "100": "0,231,107",
-    "115": "0,196,91",
-    "125": "0,173,80",
-    "150": "0,116,53",
-    "160": "0,92,43",
-  },
-  "Grey": {
-    "0": "255,255,255",
-    "5": "242,242,242",
-    "10": "230,230,230",
-    "15": "217,217,217",
-    "75": "64,64,64",
-    "80": "51,51,51",
-    "85": "38,38,38",
-    "90": "26,26,26",
-    "100": "0,0,0",
-  },
-  "Indigo": {
-    "0": "255,255,255",
-    "0A": "24,23,231,0",
-    "5": "243,243,254",
-    "10": "232,232,253",
-    "15": "220,220,251",
-    "50": "140,139,243",
-    "65": "105,104,239",
-    "100": "24,23,231",
-    "115": "20,20,196",
-    "125": "18,17,173",
-    "150": "12,12,116",
-    "160": "10,9,92",
-  },
-  "Light Grey": {
-    "0": "255,255,255",
-    "5": "251,252,252",
-    "10": "246,249,250",
-    "100": "166,191,204",
-    "115": "131,166,184",
-    "125": "107,149,170",
-    "150": "67,100,118",
-    "160": "54,80,94",
-  },
-  "Navy": {
-    "0": "255,255,255",
-    "0A": "1,23,43,0",
-    "5": "242,243,244",
-    "10": "230,232,234",
-    "15": "217,220,223",
-    "25": "192,197,202",
-    "45": "141,151,160",
-    "50": "128,139,149",
-    "65": "90,104,117",
-    "75": "65,81,96",
-    "85": "39,58,75",
-    "100": "1,23,43",
-    "115": "1,20,37",
-    "125": "1,17,32",
-    "150": "0,11,22",
-    "160": "0,9,17",
-  },
-  "Orange": {
-    "0": "255,255,255",
-    "0A": "242,100,20,0",
-    "5": "254,247,243",
-    "10": "254,240,232",
-    "15": "253,232,220",
-    "100": "242,100,20",
-    "115": "211,84,12",
-    "125": "186,74,10",
-    "150": "124,49,7",
-    "160": "99,39,5",
-  },
-  "Purple": {
-    "0": "255,255,255",
-    "0A": "170,70,195,0",
-    "5": "251,246,252",
-    "10": "247,237,249",
-    "15": "242,227,246",
-    "100": "170,70,195",
-    "115": "147,55,170",
-    "125": "130,49,150",
-    "150": "87,32,100",
-    "160": "69,26,80",
-  },
-  "Red": {
-    "0": "255,255,255",
-    "0A": "247,50,50,0",
-    "5": "255,245,245",
-    "10": "254,235,235",
-    "15": "254,224,224",
-    "100": "247,50,50",
-    "115": "243,9,9",
-    "125": "214,8,8",
-    "135": "186,7,7",
-    "145": "157,6,6",
-    "150": "143,6,6",
-    "160": "114,4,4",
-  },
-  "Violet": {
-    "100": "107,70,195",
-  },
-  "White": {
-    "0": "255,255,255,0",
-    "3A": "255,255,255,0.031",
-    "5A": "255,255,255,0.051",
-    "8A": "255,255,255,0.078",
-    "10A": "255,255,255,0.102",
-    "12A": "255,255,255,0.122",
-    "15A": "255,255,255,0.149",
-    "45A": "255,255,255,0.451",
-    "65A": "255,255,255,0.651",
-    "100": "255,255,255",
-  },
-  "Yellow": {
-    "0": "255,255,255",
-    "0A": "242,249,60,0",
-    "5": "254,255,245",
-    "10": "254,254,236",
-    "15": "253,254,226",
-    "75": "245,251,109",
-    "85": "244,250,89",
-    "100": "242,249,60",
-    "115": "239,248,15",
-    "125": "217,225,7",
-    "150": "145,150,5",
-    "160": "116,120,4",
-    "185": "43,45,1",
-  },
-} as const;
-
-// Semantic color map — real group/token names from tokens/theme.json,
-// leaves reference the spectrum objects above rather than duplicating
-// TODO_RGB, so filling in real primitive values later flows through every
-// semantic field automatically.
-export const lightColor = {
-  text: {
-    textPrimary: lightSpectrum["Black"]["85A"],
-    textSecondary: lightSpectrum["Black"]["65A"],
-    textPlaceholder: lightSpectrum["Black"]["65A"],
-    textOnColor: lightSpectrum["White"]["100"],
-    textOnColorDisabled: lightSpectrum["White"]["45A"],
-    textOnBrand: lightSpectrum["Black"]["85A"],
-    textHelper: lightSpectrum["Black"]["65A"],
-    textPositive: lightSpectrum["Green"]["135"],
-    textNegative: lightSpectrum["Red"]["125"],
-    textNeutral: lightSpectrum["Black"]["45A"],
-    textInverse: lightSpectrum["White"]["100"],
-    textDisabled: lightSpectrum["Black"]["45A"],
-  },
-  icon: {
-    iconPrimary: lightSpectrum["Black"]["85A"],
-    iconSecondary: lightSpectrum["Black"]["65A"],
-    iconOnColor: lightSpectrum["White"]["100"],
-    iconOnColorDisabled: lightSpectrum["White"]["45A"],
-    iconOnBrand: lightSpectrum["Black"]["85A"],
-    iconPositive: lightSpectrum["Green"]["135"],
-    iconWarning: lightSpectrum["Orange"]["100"],
-    iconNegative: lightSpectrum["Red"]["125"],
-    iconNeutral: lightSpectrum["Black"]["45A"],
-    iconInverse: lightSpectrum["White"]["100"],
-    iconDisabled: lightSpectrum["Black"]["45A"],
-  },
-  field: {
-    field: lightSpectrum["Navy"]["3A"],
-    fieldHover: lightSpectrum["Navy"]["5A"],
-  },
-  border: {
-    borderSubtle: lightSpectrum["Black"]["5A"],
-    borderOnColor: lightSpectrum["Black"]["5A"],
-    borderSubtleSelected: lightSpectrum["Navy"]["100"],
-    borderStrong: lightSpectrum["Navy"]["100"],
-    borderTile: lightSpectrum["Navy"]["5A"],
-    borderInteractive: lightSpectrum["Black"]["10A"],
-    borderInverse: lightSpectrum["White"]["100"],
-    borderDisabled: lightSpectrum["Navy"]["45A"],
-  },
-  support: {
-    supportSuccess: lightSpectrum["Green"]["125"],
-    supportWarning: lightSpectrum["Orange"]["100"],
-    supportError: lightSpectrum["Red"]["100"],
-    supportInfo: lightSpectrum["Navy"]["100"],
-    supportCautionMajor: lightSpectrum["Navy"]["100"],
-    supportCautionMinor: lightSpectrum["Navy"]["100"],
-    supportUndefined: lightSpectrum["Navy"]["100"],
-  },
-  focus: {
-    focus: lightSpectrum["Indigo"]["65"],
-    focusInset: lightSpectrum["White"]["100"],
-    focusInverse: lightSpectrum["White"]["100"],
-  },
-  status: {
-    statusPrimary: lightSpectrum["Green"]["125"],
-    statusSuccess: lightSpectrum["Orange"]["100"],
-    statusWarning: lightSpectrum["Red"]["100"],
-    statusError: lightSpectrum["Navy"]["100"],
-    statusInfo: lightSpectrum["Navy"]["100"],
-    statusCautionMajor: lightSpectrum["Navy"]["100"],
-    statusCautionMinor: lightSpectrum["White"]["100"],
-  },
-  skeleton: {
-    skeletonElement: lightSpectrum["Navy"]["15"],
-    skeletonBackground: lightSpectrum["Navy"]["10"],
-  },
-  miscellaneous: {
-    highlight: lightSpectrum["Indigo"]["10A"],
-    interactive: lightSpectrum["Indigo"]["75"],
-    overlay: lightSpectrum["Black"]["20A"],
-    toggleOff: lightSpectrum["Navy"]["10A"],
-  },
-  notifications: {
-    notificationSuccessBackground: lightSpectrum["Green"]["10"],
-    supportSuccessBorder: lightSpectrum["Green"]["10"],
-    notificationWarningBackground: lightSpectrum["Orange"]["5"],
-    supportWarningBorder: lightSpectrum["Orange"]["5"],
-    notificationErrorBackground: lightSpectrum["Red"]["5"],
-    supportErrorBorder: lightSpectrum["Red"]["5"],
-    notificationInfoBackground: lightSpectrum["Navy"]["5"],
-    supportInfoBorder: lightSpectrum["Navy"]["5"],
-    notificationCautionMajorBackground: lightSpectrum["Navy"]["8"],
-    supportCautionMajorBorder: lightSpectrum["Navy"]["8"],
-    notificationCautionMinorBackground: lightSpectrum["Navy"]["3"],
-    supportCautionMinorBorder: lightSpectrum["Navy"]["3"],
-  },
-  link: {
-    linkPrimary: lightSpectrum["Indigo"]["100"],
-    linkPrimaryHover: lightSpectrum["Indigo"]["115"],
-    linkInverse: lightSpectrum["Indigo"]["100"],
-    linkSecondary: lightSpectrum["Black"]["85A"],
-    linkVisted: lightSpectrum["Violet"]["100"],
-  },
-  button: {
-    buttonPrimary: lightSpectrum["Navy"]["100"],
-    buttonPrimaryHover: lightSpectrum["Navy"]["90"],
-    buttonPrimaryActive: lightSpectrum["Navy"]["80"],
-    buttonSecondary: lightSpectrum["Navy"]["5A"],
-    buttonSecondaryHover: lightSpectrum["Navy"]["8A"],
-    buttonSecondaryActive: lightSpectrum["Navy"]["10A"],
-    buttonTertiary: lightSpectrum["Navy"]["0A"],
-    buttonTertiaryHover: lightSpectrum["Navy"]["8A"],
-    buttonTertiaryActive: lightSpectrum["Navy"]["10A"],
-    buttonHighlight: lightSpectrum["Yellow"]["100"],
-    buttonHighlightHover: lightSpectrum["Yellow"]["85"],
-    buttonHighlightActive: lightSpectrum["Yellow"]["75"],
-    buttonDanger: lightSpectrum["Red"]["125"],
-    buttonDangerHover: lightSpectrum["Red"]["135"],
-    buttonDangerActive: lightSpectrum["Red"]["145"],
-    buttonDisabled: lightSpectrum["Navy"]["10A"],
-  },
-  tag: {
-    white: {
-      primary: {
-        background: lightSpectrum["Navy"]["25"],
-        backgroundHover: lightSpectrum["Navy"]["35"],
-        backgroundDisabled: lightSpectrum["Navy"]["5"],
-        border: lightSpectrum["Navy"]["45"],
-        borderDisabled: lightSpectrum["Navy"]["45A"],
-        color: lightSpectrum["Navy"]["100"],
-        colorDisabled: lightSpectrum["Black"]["45A"],
-      },
-      secondary: {
-        background: lightSpectrum["Navy"]["5"],
-        backgroundHover: lightSpectrum["Navy"]["10"],
-        backgroundDisabled: lightSpectrum["Navy"]["5"],
-        border: lightSpectrum["Navy"]["15"],
-        borderDisabled: lightSpectrum["Navy"]["45A"],
-        color: lightSpectrum["Navy"]["100"],
-        colorDisabled: lightSpectrum["Black"]["45A"],
-      },
-      tertiary: {
-        background: lightSpectrum["Navy"]["0A"],
-        backgroundHover: lightSpectrum["Navy"]["10"],
-        backgroundDisabled: lightSpectrum["White"]["0"],
-        border: lightSpectrum["Navy"]["15"],
-        borderDisabled: lightSpectrum["Navy"]["10"],
-        color: lightSpectrum["Navy"]["45"],
-        colorDisabled: lightSpectrum["Black"]["45A"],
-      },
-    },
-    yellow: {
-      primary: {
-        background: lightSpectrum["Yellow"]["100"],
-        backgroundHover: lightSpectrum["Yellow"]["115"],
-        backgroundDisabled: lightSpectrum["Yellow"]["5"],
-        border: lightSpectrum["Yellow"]["125"],
-        borderDisabled: lightSpectrum["Navy"]["45A"],
-        color: lightSpectrum["Yellow"]["185"],
-        colorDisabled: lightSpectrum["Black"]["45A"],
-      },
-      secondary: {
-        background: lightSpectrum["Yellow"]["5"],
-        backgroundHover: lightSpectrum["Yellow"]["10"],
-        backgroundDisabled: lightSpectrum["Yellow"]["5"],
-        border: lightSpectrum["Yellow"]["15"],
-        borderDisabled: lightSpectrum["Navy"]["45A"],
-        color: lightSpectrum["Yellow"]["160"],
-        colorDisabled: lightSpectrum["Black"]["45A"],
-      },
-      tertiary: {
-        background: lightSpectrum["Yellow"]["0A"],
-        backgroundHover: lightSpectrum["Yellow"]["10"],
-        backgroundDisabled: lightSpectrum["Yellow"]["0"],
-        border: lightSpectrum["Yellow"]["15"],
-        borderDisabled: lightSpectrum["Yellow"]["10"],
-        color: lightSpectrum["Yellow"]["150"],
-        colorDisabled: lightSpectrum["Black"]["45A"],
-      },
-    },
-    navy: {
-      primary: {
-        background: lightSpectrum["Navy"]["100"],
-        backgroundHover: lightSpectrum["Navy"]["115"],
-        backgroundDisabled: lightSpectrum["Navy"]["5"],
-        border: lightSpectrum["Navy"]["125"],
-        borderDisabled: lightSpectrum["Navy"]["45A"],
-        color: lightSpectrum["Navy"]["10"],
-        colorDisabled: lightSpectrum["Black"]["45A"],
-      },
-      secondary: {
-        background: lightSpectrum["Navy"]["5"],
-        backgroundHover: lightSpectrum["Navy"]["10"],
-        backgroundDisabled: lightSpectrum["Navy"]["5"],
-        border: lightSpectrum["Navy"]["15"],
-        borderDisabled: lightSpectrum["Navy"]["45A"],
-        color: lightSpectrum["Navy"]["160"],
-        colorDisabled: lightSpectrum["Black"]["45A"],
-      },
-      tertiary: {
-        background: lightSpectrum["Navy"]["0A"],
-        backgroundHover: lightSpectrum["Navy"]["10"],
-        backgroundDisabled: lightSpectrum["Navy"]["0"],
-        border: lightSpectrum["Navy"]["15"],
-        borderDisabled: lightSpectrum["Navy"]["10"],
-        color: lightSpectrum["Navy"]["150"],
-        colorDisabled: lightSpectrum["Black"]["45A"],
-      },
-    },
-    lightGrey: {
-      primary: {
-        background: lightSpectrum["Light Grey"]["100"],
-        backgroundHover: lightSpectrum["Light Grey"]["115"],
-        backgroundDisabled: lightSpectrum["Light Grey"]["5"],
-        border: lightSpectrum["Light Grey"]["125"],
-        borderDisabled: lightSpectrum["Navy"]["45A"],
-        color: lightSpectrum["Navy"]["100"],
-        colorDisabled: lightSpectrum["Black"]["45A"],
-      },
-      secondary: {
-        background: lightSpectrum["Grey"]["5"],
-        backgroundHover: lightSpectrum["Grey"]["10"],
-        backgroundDisabled: lightSpectrum["Light Grey"]["5"],
-        border: lightSpectrum["Grey"]["15"],
-        borderDisabled: lightSpectrum["Navy"]["45A"],
-        color: lightSpectrum["Light Grey"]["160"],
-        colorDisabled: lightSpectrum["Black"]["45A"],
-      },
-      tertiary: {
-        background: lightSpectrum["White"]["0"],
-        backgroundHover: lightSpectrum["Grey"]["10"],
-        backgroundDisabled: lightSpectrum["Light Grey"]["0"],
-        border: lightSpectrum["Grey"]["15"],
-        borderDisabled: lightSpectrum["Light Grey"]["10"],
-        color: lightSpectrum["Light Grey"]["150"],
-        colorDisabled: lightSpectrum["Black"]["45A"],
-      },
-    },
-    green: {
-      primary: {
-        background: lightSpectrum["Green"]["100"],
-        backgroundHover: lightSpectrum["Green"]["115"],
-        backgroundDisabled: lightSpectrum["Green"]["5"],
-        border: lightSpectrum["Green"]["125"],
-        borderDisabled: lightSpectrum["Navy"]["45A"],
-        color: lightSpectrum["Green"]["10"],
-        colorDisabled: lightSpectrum["Black"]["45A"],
-      },
-      secondary: {
-        background: lightSpectrum["Green"]["5"],
-        backgroundHover: lightSpectrum["Green"]["10"],
-        backgroundDisabled: lightSpectrum["Green"]["5"],
-        border: lightSpectrum["Green"]["15"],
-        borderDisabled: lightSpectrum["Navy"]["45A"],
-        color: lightSpectrum["Green"]["160"],
-        colorDisabled: lightSpectrum["Black"]["45A"],
-      },
-      tertiary: {
-        background: lightSpectrum["Green"]["0A"],
-        backgroundHover: lightSpectrum["Green"]["10"],
-        backgroundDisabled: lightSpectrum["Green"]["0"],
-        border: lightSpectrum["Green"]["15"],
-        borderDisabled: lightSpectrum["Green"]["10"],
-        color: lightSpectrum["Green"]["150"],
-        colorDisabled: lightSpectrum["Black"]["45A"],
-      },
-    },
-    blue: {
-      primary: {
-        background: lightSpectrum["Blue"]["100"],
-        backgroundHover: lightSpectrum["Blue"]["115"],
-        backgroundDisabled: lightSpectrum["Blue"]["5"],
-        border: lightSpectrum["Blue"]["125"],
-        borderDisabled: lightSpectrum["Navy"]["45A"],
-        color: lightSpectrum["Blue"]["10"],
-        colorDisabled: lightSpectrum["Black"]["45A"],
-      },
-      secondary: {
-        background: lightSpectrum["Blue"]["5"],
-        backgroundHover: lightSpectrum["Blue"]["10"],
-        backgroundDisabled: lightSpectrum["Blue"]["5"],
-        border: lightSpectrum["Blue"]["15"],
-        borderDisabled: lightSpectrum["Navy"]["45A"],
-        color: lightSpectrum["Blue"]["160"],
-        colorDisabled: lightSpectrum["Black"]["45A"],
-      },
-      tertiary: {
-        background: lightSpectrum["Blue"]["0A"],
-        backgroundHover: lightSpectrum["Blue"]["10"],
-        backgroundDisabled: lightSpectrum["Blue"]["0"],
-        border: lightSpectrum["Blue"]["15"],
-        borderDisabled: lightSpectrum["Blue"]["10"],
-        color: lightSpectrum["Blue"]["150"],
-        colorDisabled: lightSpectrum["Black"]["45A"],
-      },
-    },
-    purple: {
-      primary: {
-        background: lightSpectrum["Purple"]["100"],
-        backgroundHover: lightSpectrum["Purple"]["115"],
-        backgroundDisabled: lightSpectrum["Purple"]["5"],
-        border: lightSpectrum["Purple"]["125"],
-        borderDisabled: lightSpectrum["Navy"]["45A"],
-        color: lightSpectrum["Purple"]["10"],
-        colorDisabled: lightSpectrum["Black"]["45A"],
-      },
-      secondary: {
-        background: lightSpectrum["Purple"]["5"],
-        backgroundHover: lightSpectrum["Purple"]["10"],
-        backgroundDisabled: lightSpectrum["Purple"]["5"],
-        border: lightSpectrum["Purple"]["15"],
-        borderDisabled: lightSpectrum["Navy"]["45A"],
-        color: lightSpectrum["Purple"]["160"],
-        colorDisabled: lightSpectrum["Black"]["45A"],
-      },
-      tertiary: {
-        background: lightSpectrum["Purple"]["0A"],
-        backgroundHover: lightSpectrum["Purple"]["10"],
-        backgroundDisabled: lightSpectrum["Purple"]["0"],
-        border: lightSpectrum["Purple"]["15"],
-        borderDisabled: lightSpectrum["Purple"]["10"],
-        color: lightSpectrum["Purple"]["150"],
-        colorDisabled: lightSpectrum["Black"]["45A"],
-      },
-    },
-    red: {
-      primary: {
-        background: lightSpectrum["Red"]["100"],
-        backgroundHover: lightSpectrum["Red"]["115"],
-        backgroundDisabled: lightSpectrum["Red"]["5"],
-        border: lightSpectrum["Red"]["125"],
-        borderDisabled: lightSpectrum["Navy"]["45A"],
-        color: lightSpectrum["Red"]["10"],
-        colorDisabled: lightSpectrum["Black"]["45A"],
-      },
-      secondary: {
-        background: lightSpectrum["Red"]["5"],
-        backgroundHover: lightSpectrum["Red"]["10"],
-        backgroundDisabled: lightSpectrum["Red"]["5"],
-        border: lightSpectrum["Red"]["15"],
-        borderDisabled: lightSpectrum["Navy"]["45A"],
-        color: lightSpectrum["Red"]["160"],
-        colorDisabled: lightSpectrum["Black"]["45A"],
-      },
-      tertiary: {
-        background: lightSpectrum["Red"]["0A"],
-        backgroundHover: lightSpectrum["Red"]["10"],
-        backgroundDisabled: lightSpectrum["Red"]["0"],
-        border: lightSpectrum["Red"]["15"],
-        borderDisabled: lightSpectrum["Red"]["10"],
-        color: lightSpectrum["Red"]["150"],
-        colorDisabled: lightSpectrum["Black"]["45A"],
-      },
-    },
-    orange: {
-      primary: {
-        background: lightSpectrum["Orange"]["100"],
-        backgroundHover: lightSpectrum["Orange"]["115"],
-        backgroundDisabled: lightSpectrum["Orange"]["5"],
-        border: lightSpectrum["Orange"]["125"],
-        borderDisabled: lightSpectrum["Navy"]["45A"],
-        color: lightSpectrum["Orange"]["10"],
-        colorDisabled: lightSpectrum["Black"]["45A"],
-      },
-      secondary: {
-        background: lightSpectrum["Orange"]["5"],
-        backgroundHover: lightSpectrum["Orange"]["10"],
-        backgroundDisabled: lightSpectrum["Orange"]["5"],
-        border: lightSpectrum["Orange"]["15"],
-        borderDisabled: lightSpectrum["Navy"]["45A"],
-        color: lightSpectrum["Orange"]["160"],
-        colorDisabled: lightSpectrum["Black"]["45A"],
-      },
-      tertiary: {
-        background: lightSpectrum["Orange"]["0A"],
-        backgroundHover: lightSpectrum["Orange"]["10"],
-        backgroundDisabled: lightSpectrum["Orange"]["0"],
-        border: lightSpectrum["Orange"]["15"],
-        borderDisabled: lightSpectrum["Orange"]["10"],
-        color: lightSpectrum["Orange"]["150"],
-        colorDisabled: lightSpectrum["Black"]["45A"],
-      },
-    },
-    indigo: {
-      primary: {
-        background: lightSpectrum["Indigo"]["100"],
-        backgroundHover: lightSpectrum["Indigo"]["115"],
-        backgroundDisabled: lightSpectrum["Indigo"]["5"],
-        border: lightSpectrum["Indigo"]["125"],
-        borderDisabled: lightSpectrum["Navy"]["45A"],
-        color: lightSpectrum["Indigo"]["10"],
-        colorDisabled: lightSpectrum["Black"]["45A"],
-      },
-      secondary: {
-        background: lightSpectrum["Indigo"]["5"],
-        backgroundHover: lightSpectrum["Indigo"]["10"],
-        backgroundDisabled: lightSpectrum["Indigo"]["5"],
-        border: lightSpectrum["Indigo"]["15"],
-        borderDisabled: lightSpectrum["Navy"]["45A"],
-        color: lightSpectrum["Indigo"]["160"],
-        colorDisabled: lightSpectrum["Black"]["45A"],
-      },
-      tertiary: {
-        background: lightSpectrum["Indigo"]["0A"],
-        backgroundHover: lightSpectrum["Indigo"]["10"],
-        backgroundDisabled: lightSpectrum["Indigo"]["0"],
-        border: lightSpectrum["Indigo"]["15"],
-        borderDisabled: lightSpectrum["Indigo"]["10"],
-        color: lightSpectrum["Indigo"]["150"],
-        colorDisabled: lightSpectrum["Black"]["45A"],
-      },
-    },
-  },
-  layer: {
-    layer01: lightSpectrum["White"]["100"],
-    layer02: lightSpectrum["White"]["100"],
-    layer03: lightSpectrum["Navy"]["5A"],
-    layerHover01: lightSpectrum["Navy"]["8A"],
-    layerHover02: lightSpectrum["Navy"]["8A"],
-    layerHover03: lightSpectrum["Navy"]["8A"],
-    layerActive01: lightSpectrum["Navy"]["12A"],
-    layerActive02: lightSpectrum["Navy"]["12A"],
-    layerActive03: lightSpectrum["Navy"]["12A"],
-    layerSelected01: lightSpectrum["White"]["100"],
-    layerSelected02: lightSpectrum["Navy"]["12A"],
-    layerSelected03: lightSpectrum["Navy"]["12A"],
-    layerSelectedHover01: lightSpectrum["Navy"]["8A"],
-    layerSelectedHover02: lightSpectrum["Navy"]["15A"],
-    layerSelectedHover03: lightSpectrum["Navy"]["15A"],
-    layerSelectedInverse: lightSpectrum["Navy"]["15A"],
-    layerSelectedDisabled: lightSpectrum["Navy"]["15A"],
-  },
-  background: {
-    backgroundPrimary: lightSpectrum["Grey"]["0"],
-    backgroundSecondary: lightSpectrum["Grey"]["5"],
-    backgroundTertiary: lightSpectrum["Grey"]["0"],
-    backgroundInverse: lightSpectrum["Grey"]["100"],
-    backgroundBrand: lightSpectrum["Yellow"]["100"],
-  },
-  transparent: lightSpectrum["White"]["0"],
-} as const;
-
-export const darkColor = {
-  text: {
-    textPrimary: darkSpectrum["White"]["100"],
-    textSecondary: darkSpectrum["White"]["65A"],
-    textPlaceholder: darkSpectrum["White"]["65A"],
-    textOnColor: darkSpectrum["White"]["100"],
-    textOnColorDisabled: darkSpectrum["White"]["45A"],
-    textOnBrand: darkSpectrum["Black"]["85A"],
-    textHelper: darkSpectrum["White"]["65A"],
-    textPositive: darkSpectrum["Green"]["115"],
-    textNegative: darkSpectrum["Red"]["115"],
-    textNeutral: darkSpectrum["White"]["45A"],
-    textInverse: darkSpectrum["Black"]["85A"],
-    textDisabled: darkSpectrum["White"]["45A"],
-  },
-  icon: {
-    iconPrimary: darkSpectrum["White"]["100"],
-    iconSecondary: darkSpectrum["White"]["65A"],
-    iconOnColor: darkSpectrum["White"]["100"],
-    iconOnColorDisabled: darkSpectrum["White"]["45A"],
-    iconOnBrand: darkSpectrum["Black"]["85A"],
-    iconPositive: darkSpectrum["Green"]["115"],
-    iconWarning: darkSpectrum["Green"]["115"],
-    iconNegative: darkSpectrum["Red"]["115"],
-    iconNeutral: darkSpectrum["White"]["45A"],
-    iconInverse: darkSpectrum["Black"]["85A"],
-    iconDisabled: darkSpectrum["White"]["45A"],
-  },
-  field: {
-    field: darkSpectrum["White"]["3A"],
-    fieldHover: darkSpectrum["White"]["5A"],
-  },
-  border: {
-    borderSubtle: darkSpectrum["White"]["15A"],
-    borderOnColor: darkSpectrum["Black"]["5A"],
-    borderSubtleSelected: darkSpectrum["White"]["100"],
-    borderStrong: darkSpectrum["White"]["100"],
-    borderTile: darkSpectrum["White"]["5A"],
-    borderInteractive: darkSpectrum["Black"]["10A"],
-    borderInverse: darkSpectrum["Black"]["100"],
-    borderDisabled: darkSpectrum["White"]["45A"],
-  },
-  support: {
-    supportSuccess: darkSpectrum["Green"]["125"],
-    supportWarning: darkSpectrum["Orange"]["100"],
-    supportError: darkSpectrum["Red"]["100"],
-    supportInfo: darkSpectrum["Navy"]["100"],
-    supportCautionMajor: darkSpectrum["Navy"]["100"],
-    supportCautionMinor: darkSpectrum["Navy"]["100"],
-    supportUndefined: darkSpectrum["Navy"]["100"],
-  },
-  focus: {
-    focus: darkSpectrum["Indigo"]["65"],
-    focusInset: darkSpectrum["Black"]["100"],
-    focusInverse: darkSpectrum["Black"]["100"],
-  },
-  status: {
-    statusPrimary: darkSpectrum["White"]["100"],
-    statusSuccess: darkSpectrum["White"]["100"],
-    statusWarning: darkSpectrum["White"]["100"],
-    statusError: darkSpectrum["White"]["100"],
-    statusInfo: darkSpectrum["White"]["100"],
-    statusCautionMajor: darkSpectrum["White"]["100"],
-    statusCautionMinor: darkSpectrum["White"]["100"],
-  },
-  skeleton: {
-    skeletonElement: darkSpectrum["Navy"]["15"],
-    skeletonBackground: darkSpectrum["Navy"]["10"],
-  },
-  miscellaneous: {
-    highlight: darkSpectrum["White"]["100"],
-    interactive: darkSpectrum["Indigo"]["50"],
-    overlay: darkSpectrum["Black"]["50A"],
-    toggleOff: darkSpectrum["White"]["10A"],
-  },
-  notifications: {
-    notificationSuccessBackground: darkSpectrum["White"]["100"],
-    supportSuccessBorder: darkSpectrum["White"]["100"],
-    notificationWarningBackground: darkSpectrum["White"]["100"],
-    supportWarningBorder: darkSpectrum["White"]["100"],
-    notificationErrorBackground: darkSpectrum["White"]["100"],
-    supportErrorBorder: darkSpectrum["White"]["100"],
-    notificationInfoBackground: darkSpectrum["White"]["100"],
-    supportInfoBorder: darkSpectrum["White"]["100"],
-    notificationCautionMajorBackground: darkSpectrum["White"]["100"],
-    supportCautionMajorBorder: darkSpectrum["White"]["100"],
-    notificationCautionMinorBackground: darkSpectrum["White"]["100"],
-    supportCautionMinorBorder: darkSpectrum["White"]["100"],
-  },
-  link: {
-    linkPrimary: darkSpectrum["Indigo"]["100"],
-    linkPrimaryHover: darkSpectrum["Indigo"]["115"],
-    linkInverse: darkSpectrum["Indigo"]["100"],
-    linkSecondary: darkSpectrum["White"]["100"],
-    linkVisted: darkSpectrum["Violet"]["100"],
-  },
-  button: {
-    buttonPrimary: darkSpectrum["Navy"]["75"],
-    buttonPrimaryHover: darkSpectrum["Navy"]["65"],
-    buttonPrimaryActive: darkSpectrum["Navy"]["50"],
-    buttonSecondary: darkSpectrum["White"]["5A"],
-    buttonSecondaryHover: darkSpectrum["White"]["8A"],
-    buttonSecondaryActive: darkSpectrum["White"]["10A"],
-    buttonTertiary: darkSpectrum["White"]["0"],
-    buttonTertiaryHover: darkSpectrum["White"]["8A"],
-    buttonTertiaryActive: darkSpectrum["White"]["10A"],
-    buttonHighlight: darkSpectrum["Yellow"]["125"],
-    buttonHighlightHover: darkSpectrum["Yellow"]["85"],
-    buttonHighlightActive: darkSpectrum["Yellow"]["75"],
-    buttonDanger: darkSpectrum["Red"]["125"],
-    buttonDangerHover: darkSpectrum["Red"]["135"],
-    buttonDangerActive: darkSpectrum["Red"]["145"],
-    buttonDisabled: darkSpectrum["White"]["10A"],
-  },
-  tag: {
-    white: {
-      primary: {
-        background: darkSpectrum["Navy"]["25"],
-        backgroundHover: darkSpectrum["Navy"]["85"],
-        backgroundDisabled: darkSpectrum["Navy"]["5"],
-        border: darkSpectrum["Navy"]["45"],
-        borderDisabled: darkSpectrum["White"]["45A"],
-        color: darkSpectrum["Navy"]["100"],
-        colorDisabled: darkSpectrum["White"]["45A"],
-      },
-      secondary: {
-        background: darkSpectrum["Navy"]["5"],
-        backgroundHover: darkSpectrum["Navy"]["10"],
-        backgroundDisabled: darkSpectrum["Navy"]["5"],
-        border: darkSpectrum["Navy"]["15"],
-        borderDisabled: darkSpectrum["White"]["45A"],
-        color: darkSpectrum["Navy"]["100"],
-        colorDisabled: darkSpectrum["White"]["45A"],
-      },
-      tertiary: {
-        background: darkSpectrum["Navy"]["0A"],
-        backgroundHover: darkSpectrum["Navy"]["10"],
-        backgroundDisabled: darkSpectrum["White"]["0"],
-        border: darkSpectrum["Navy"]["15"],
-        borderDisabled: darkSpectrum["Navy"]["10"],
-        color: darkSpectrum["Navy"]["45"],
-        colorDisabled: darkSpectrum["White"]["45A"],
-      },
-    },
-    yellow: {
-      primary: {
-        background: darkSpectrum["Yellow"]["100"],
-        backgroundHover: darkSpectrum["Yellow"]["115"],
-        backgroundDisabled: darkSpectrum["Yellow"]["5"],
-        border: darkSpectrum["Yellow"]["125"],
-        borderDisabled: darkSpectrum["White"]["45A"],
-        color: darkSpectrum["Yellow"]["185"],
-        colorDisabled: darkSpectrum["White"]["45A"],
-      },
-      secondary: {
-        background: darkSpectrum["Yellow"]["5"],
-        backgroundHover: darkSpectrum["Yellow"]["10"],
-        backgroundDisabled: darkSpectrum["Yellow"]["5"],
-        border: darkSpectrum["Yellow"]["15"],
-        borderDisabled: darkSpectrum["White"]["45A"],
-        color: darkSpectrum["Yellow"]["160"],
-        colorDisabled: darkSpectrum["White"]["45A"],
-      },
-      tertiary: {
-        background: darkSpectrum["Yellow"]["0A"],
-        backgroundHover: darkSpectrum["Yellow"]["10"],
-        backgroundDisabled: darkSpectrum["Yellow"]["0"],
-        border: darkSpectrum["Yellow"]["15"],
-        borderDisabled: darkSpectrum["Yellow"]["10"],
-        color: darkSpectrum["Yellow"]["150"],
-        colorDisabled: darkSpectrum["White"]["45A"],
-      },
-    },
-    navy: {
-      primary: {
-        background: darkSpectrum["Navy"]["100"],
-        backgroundHover: darkSpectrum["Navy"]["115"],
-        backgroundDisabled: darkSpectrum["Navy"]["5"],
-        border: darkSpectrum["Navy"]["125"],
-        borderDisabled: darkSpectrum["White"]["45A"],
-        color: darkSpectrum["Navy"]["10"],
-        colorDisabled: darkSpectrum["White"]["45A"],
-      },
-      secondary: {
-        background: darkSpectrum["Navy"]["5"],
-        backgroundHover: darkSpectrum["Navy"]["10"],
-        backgroundDisabled: darkSpectrum["Navy"]["5"],
-        border: darkSpectrum["Navy"]["15"],
-        borderDisabled: darkSpectrum["White"]["45A"],
-        color: darkSpectrum["Navy"]["160"],
-        colorDisabled: darkSpectrum["White"]["45A"],
-      },
-      tertiary: {
-        background: darkSpectrum["Navy"]["0A"],
-        backgroundHover: darkSpectrum["Navy"]["10"],
-        backgroundDisabled: darkSpectrum["Navy"]["0"],
-        border: darkSpectrum["Navy"]["15"],
-        borderDisabled: darkSpectrum["Navy"]["10"],
-        color: darkSpectrum["Navy"]["150"],
-        colorDisabled: darkSpectrum["White"]["45A"],
-      },
-    },
-    lightGrey: {
-      primary: {
-        background: darkSpectrum["Light Grey"]["100"],
-        backgroundHover: darkSpectrum["Light Grey"]["115"],
-        backgroundDisabled: darkSpectrum["Light Grey"]["5"],
-        border: darkSpectrum["Light Grey"]["125"],
-        borderDisabled: darkSpectrum["White"]["45A"],
-        color: darkSpectrum["Navy"]["100"],
-        colorDisabled: darkSpectrum["White"]["45A"],
-      },
-      secondary: {
-        background: darkSpectrum["Grey"]["5"],
-        backgroundHover: darkSpectrum["Grey"]["10"],
-        backgroundDisabled: darkSpectrum["Light Grey"]["5"],
-        border: darkSpectrum["Grey"]["15"],
-        borderDisabled: darkSpectrum["White"]["45A"],
-        color: darkSpectrum["Light Grey"]["160"],
-        colorDisabled: darkSpectrum["White"]["45A"],
-      },
-      tertiary: {
-        background: darkSpectrum["White"]["0"],
-        backgroundHover: darkSpectrum["Grey"]["10"],
-        backgroundDisabled: darkSpectrum["Light Grey"]["0"],
-        border: darkSpectrum["Grey"]["15"],
-        borderDisabled: darkSpectrum["Light Grey"]["10"],
-        color: darkSpectrum["Light Grey"]["150"],
-        colorDisabled: darkSpectrum["White"]["45A"],
-      },
-    },
-    green: {
-      primary: {
-        background: darkSpectrum["Green"]["100"],
-        backgroundHover: darkSpectrum["Green"]["115"],
-        backgroundDisabled: darkSpectrum["Green"]["5"],
-        border: darkSpectrum["Green"]["125"],
-        borderDisabled: darkSpectrum["White"]["45A"],
-        color: darkSpectrum["Green"]["10"],
-        colorDisabled: darkSpectrum["White"]["45A"],
-      },
-      secondary: {
-        background: darkSpectrum["Green"]["5"],
-        backgroundHover: darkSpectrum["Green"]["10"],
-        backgroundDisabled: darkSpectrum["Green"]["5"],
-        border: darkSpectrum["Green"]["15"],
-        borderDisabled: darkSpectrum["White"]["45A"],
-        color: darkSpectrum["Green"]["160"],
-        colorDisabled: darkSpectrum["White"]["45A"],
-      },
-      tertiary: {
-        background: darkSpectrum["Green"]["0A"],
-        backgroundHover: darkSpectrum["Green"]["10"],
-        backgroundDisabled: darkSpectrum["Green"]["0"],
-        border: darkSpectrum["Green"]["15"],
-        borderDisabled: darkSpectrum["Green"]["10"],
-        color: darkSpectrum["Green"]["150"],
-        colorDisabled: darkSpectrum["White"]["45A"],
-      },
-    },
-    blue: {
-      primary: {
-        background: darkSpectrum["Blue"]["100"],
-        backgroundHover: darkSpectrum["Blue"]["115"],
-        backgroundDisabled: darkSpectrum["Blue"]["5"],
-        border: darkSpectrum["Blue"]["125"],
-        borderDisabled: darkSpectrum["White"]["45A"],
-        color: darkSpectrum["Blue"]["10"],
-        colorDisabled: darkSpectrum["White"]["45A"],
-      },
-      secondary: {
-        background: darkSpectrum["Blue"]["5"],
-        backgroundHover: darkSpectrum["Blue"]["10"],
-        backgroundDisabled: darkSpectrum["Blue"]["5"],
-        border: darkSpectrum["Blue"]["15"],
-        borderDisabled: darkSpectrum["White"]["45A"],
-        color: darkSpectrum["Blue"]["160"],
-        colorDisabled: darkSpectrum["White"]["45A"],
-      },
-      tertiary: {
-        background: darkSpectrum["Blue"]["0A"],
-        backgroundHover: darkSpectrum["Blue"]["10"],
-        backgroundDisabled: darkSpectrum["Blue"]["0"],
-        border: darkSpectrum["Blue"]["15"],
-        borderDisabled: darkSpectrum["Blue"]["10"],
-        color: darkSpectrum["Blue"]["150"],
-        colorDisabled: darkSpectrum["White"]["45A"],
-      },
-    },
-    purple: {
-      primary: {
-        background: darkSpectrum["Purple"]["100"],
-        backgroundHover: darkSpectrum["Purple"]["115"],
-        backgroundDisabled: darkSpectrum["Purple"]["5"],
-        border: darkSpectrum["Purple"]["125"],
-        borderDisabled: darkSpectrum["White"]["45A"],
-        color: darkSpectrum["Purple"]["10"],
-        colorDisabled: darkSpectrum["White"]["45A"],
-      },
-      secondary: {
-        background: darkSpectrum["Purple"]["5"],
-        backgroundHover: darkSpectrum["Purple"]["10"],
-        backgroundDisabled: darkSpectrum["Purple"]["5"],
-        border: darkSpectrum["Purple"]["15"],
-        borderDisabled: darkSpectrum["White"]["45A"],
-        color: darkSpectrum["Purple"]["160"],
-        colorDisabled: darkSpectrum["White"]["45A"],
-      },
-      tertiary: {
-        background: darkSpectrum["Purple"]["0A"],
-        backgroundHover: darkSpectrum["Purple"]["10"],
-        backgroundDisabled: darkSpectrum["Purple"]["0"],
-        border: darkSpectrum["Purple"]["15"],
-        borderDisabled: darkSpectrum["Purple"]["10"],
-        color: darkSpectrum["Purple"]["150"],
-        colorDisabled: darkSpectrum["White"]["45A"],
-      },
-    },
-    red: {
-      primary: {
-        background: darkSpectrum["Red"]["100"],
-        backgroundHover: darkSpectrum["Red"]["115"],
-        backgroundDisabled: darkSpectrum["Red"]["5"],
-        border: darkSpectrum["Red"]["125"],
-        borderDisabled: darkSpectrum["White"]["45A"],
-        color: darkSpectrum["Red"]["10"],
-        colorDisabled: darkSpectrum["White"]["45A"],
-      },
-      secondary: {
-        background: darkSpectrum["Red"]["5"],
-        backgroundHover: darkSpectrum["Red"]["10"],
-        backgroundDisabled: darkSpectrum["Red"]["5"],
-        border: darkSpectrum["Red"]["15"],
-        borderDisabled: darkSpectrum["White"]["45A"],
-        color: darkSpectrum["Red"]["160"],
-        colorDisabled: darkSpectrum["White"]["45A"],
-      },
-      tertiary: {
-        background: darkSpectrum["Red"]["0A"],
-        backgroundHover: darkSpectrum["Red"]["10"],
-        backgroundDisabled: darkSpectrum["Red"]["0"],
-        border: darkSpectrum["Red"]["15"],
-        borderDisabled: darkSpectrum["Red"]["10"],
-        color: darkSpectrum["Red"]["150"],
-        colorDisabled: darkSpectrum["White"]["45A"],
-      },
-    },
-    orange: {
-      primary: {
-        background: darkSpectrum["Orange"]["100"],
-        backgroundHover: darkSpectrum["Orange"]["115"],
-        backgroundDisabled: darkSpectrum["Orange"]["5"],
-        border: darkSpectrum["Orange"]["125"],
-        borderDisabled: darkSpectrum["White"]["45A"],
-        color: darkSpectrum["Orange"]["10"],
-        colorDisabled: darkSpectrum["White"]["45A"],
-      },
-      secondary: {
-        background: darkSpectrum["Orange"]["5"],
-        backgroundHover: darkSpectrum["Orange"]["10"],
-        backgroundDisabled: darkSpectrum["Orange"]["5"],
-        border: darkSpectrum["Orange"]["15"],
-        borderDisabled: darkSpectrum["White"]["45A"],
-        color: darkSpectrum["Orange"]["160"],
-        colorDisabled: darkSpectrum["White"]["45A"],
-      },
-      tertiary: {
-        background: darkSpectrum["Orange"]["0A"],
-        backgroundHover: darkSpectrum["Orange"]["10"],
-        backgroundDisabled: darkSpectrum["Orange"]["0"],
-        border: darkSpectrum["Orange"]["15"],
-        borderDisabled: darkSpectrum["Orange"]["10"],
-        color: darkSpectrum["Orange"]["150"],
-        colorDisabled: darkSpectrum["White"]["45A"],
-      },
-    },
-    indigo: {
-      primary: {
-        background: darkSpectrum["Indigo"]["100"],
-        backgroundHover: darkSpectrum["Indigo"]["115"],
-        backgroundDisabled: darkSpectrum["Indigo"]["5"],
-        border: darkSpectrum["Indigo"]["125"],
-        borderDisabled: darkSpectrum["White"]["45A"],
-        color: darkSpectrum["Indigo"]["10"],
-        colorDisabled: darkSpectrum["White"]["45A"],
-      },
-      secondary: {
-        background: darkSpectrum["Indigo"]["5"],
-        backgroundHover: darkSpectrum["Indigo"]["10"],
-        backgroundDisabled: darkSpectrum["Indigo"]["5"],
-        border: darkSpectrum["Indigo"]["15"],
-        borderDisabled: darkSpectrum["White"]["45A"],
-        color: darkSpectrum["Indigo"]["160"],
-        colorDisabled: darkSpectrum["White"]["45A"],
-      },
-      tertiary: {
-        background: darkSpectrum["Indigo"]["0A"],
-        backgroundHover: darkSpectrum["Indigo"]["10"],
-        backgroundDisabled: darkSpectrum["Indigo"]["0"],
-        border: darkSpectrum["Indigo"]["15"],
-        borderDisabled: darkSpectrum["Indigo"]["10"],
-        color: darkSpectrum["Indigo"]["150"],
-        colorDisabled: darkSpectrum["White"]["45A"],
-      },
-    },
-  },
-  layer: {
-    layer01: darkSpectrum["Grey"]["90"],
-    layer02: darkSpectrum["Grey"]["80"],
-    layer03: darkSpectrum["Grey"]["75"],
-    layerHover01: darkSpectrum["White"]["8A"],
-    layerHover02: darkSpectrum["White"]["8A"],
-    layerHover03: darkSpectrum["White"]["8A"],
-    layerActive01: darkSpectrum["White"]["12A"],
-    layerActive02: darkSpectrum["White"]["12A"],
-    layerActive03: darkSpectrum["White"]["12A"],
-    layerSelected01: darkSpectrum["Black"]["100"],
-    layerSelected02: darkSpectrum["White"]["12A"],
-    layerSelected03: darkSpectrum["White"]["12A"],
-    layerSelectedHover01: darkSpectrum["White"]["8A"],
-    layerSelectedHover02: darkSpectrum["White"]["15A"],
-    layerSelectedHover03: darkSpectrum["White"]["15A"],
-    layerSelectedInverse: darkSpectrum["White"]["15A"],
-    layerSelectedDisabled: darkSpectrum["White"]["15A"],
-  },
-  background: {
-    backgroundPrimary: darkSpectrum["Grey"]["100"],
-    backgroundSecondary: darkSpectrum["Grey"]["90"],
-    backgroundTertiary: darkSpectrum["Grey"]["85"],
-    backgroundInverse: darkSpectrum["Grey"]["0"],
-    backgroundBrand: darkSpectrum["Yellow"]["100"],
-  },
-  transparent: darkSpectrum["White"]["0"],
+export const lineHeight = {
+  display1: "102px",
+  display2: "70px",
+  display3: "64px",
+  title1: "34px",
+  title2: "28px",
+  title3: "25px",
+  headline: "22px",
+  body: "22px",
 } as const;
 
 /**
- * companyTheme — the object every project's ThemeProvider imports.
+ * neonTheme — the partial ThemeConfig overrides every project merges onto
+ * CDS's defaultTheme via ./createTheme.ts's createNeonTheme(). Deliberately
+ * NOT typed as Partial<ThemeConfig> here — see that file for why, and for
+ * where the real, complete ThemeConfig gets assembled.
  *
- * Custom tokens not already in CDS's ThemeVars (e.g. 'typeScale' above)
- * must be declared via the ThemeVarsExtended namespace before use — see
- * the SKILL.md instructions this file ships alongside.
+ * Custom tokens not already in CDS's ThemeVars must be declared via the
+ * ThemeVarsExtended namespace before use — see the SKILL.md instructions
+ * this file ships alongside.
  */
-export const companyTheme: Partial<ThemeConfig> = {
-  space: spaceScale,
-  radius: radiusScale,
-  lightSpectrum,
-  darkSpectrum,
-  lightColor,
-  darkColor,
-  typography: {
-    fontFamily: fontFamily.primary,
-    typeScale,
-  },
+export const neonTheme = {
+  space,
+  borderRadius,
+  fontFamily,
+  fontSize,
+  fontWeight,
+  lineHeight,
 };
 
-export default companyTheme;
+export default neonTheme;

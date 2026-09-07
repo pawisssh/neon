@@ -6,6 +6,7 @@
     "name": "Finnomena"
   },
   "skills": [
-    "./skills/neon-theme"
+    "./skills/neon-theme",
+    "./skills/neon-starter"
   ]
 }

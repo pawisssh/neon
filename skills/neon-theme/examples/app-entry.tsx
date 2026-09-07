@@ -1,9 +1,19 @@
 /**
  * Reference pattern: correct provider setup for any Finnomena app using
- * @coinbase/cds-web with the companyTheme override.
+ * @coinbase/cds-web with the neonTheme override.
  *
  * Provider order matters and must not be changed:
  *   MediaQueryProvider → ThemeProvider → PortalProvider
+ *
+ * Import paths verified against the real published @coinbase/cds-web@9.26.1
+ * package: MediaQueryProvider/ThemeProvider live under "./system",
+ * PortalProvider under "./overlays".
+ *
+ * `createNeonTheme()` merges neonTheme's overrides onto CDS's own
+ * `defaultTheme` and returns a real, complete ThemeConfig — no unsafe cast
+ * needed (see ../theme/createTheme.ts for why that merge is necessary:
+ * ThemeProvider requires a full ThemeConfig, not a partial one, and
+ * @coinbase/cds-web has no first-party merge helper).
  *
  * Font: Finnomena uses IBM Plex Sans Thai company-wide. It is NOT part of
  * the Figma token export, so it's loaded here directly rather than through
@@ -12,11 +22,10 @@
  * option below.
  */
 import type { ReactNode } from "react";
-import { MediaQueryProvider } from "@coinbase/cds-web/system/MediaQueryProvider";
-import { ThemeProvider } from "@coinbase/cds-web/system/ThemeProvider";
-import { PortalProvider } from "@coinbase/cds-web/system/PortalProvider";
+import { MediaQueryProvider, ThemeProvider } from "@coinbase/cds-web/system";
+import { PortalProvider } from "@coinbase/cds-web/overlays";
 
-import { companyTheme } from "../theme/theme.config";
+import { createNeonTheme } from "../theme/createTheme";
 
 // Quick-start font loading (swap for a self-hosted @fontsource import before
 // shipping to production):
@@ -38,7 +47,7 @@ import { companyTheme } from "../theme/theme.config";
 export function AppRoot({ children }: { children: ReactNode }) {
   return (
     <MediaQueryProvider>
-      <ThemeProvider theme={companyTheme}>
+      <ThemeProvider theme={createNeonTheme()} activeColorScheme="light">
         <PortalProvider>{children}</PortalProvider>
       </ThemeProvider>
     </MediaQueryProvider>
@@ -51,7 +60,7 @@ export function AppRoot({ children }: { children: ReactNode }) {
  *   // ❌ forbidden
  *   <div style={{ color: "#1F3344", padding: 16, borderRadius: 8 }} />
  *
- *   // ✅ correct — semantic tokens from companyTheme via CDS's style props
+ *   // ✅ correct — semantic tokens from neonTheme via CDS's style props
  *   <Box color="textPrimary" padding="medium" borderRadius="sm" />
  *
  * See SKILL.md for the full rule and how it's enforced.

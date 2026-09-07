@@ -16,11 +16,15 @@ This skill is a thin layer on top of Coinbase's own official tooling. It does
   component discovery, token access
 
 This skill's only job is to make sure whatever CDS produces uses
-**Finnomena's** brand, not Coinbase's default theme.
+**Finnomena's** brand, not Coinbase's default theme. It themes UI inside a
+project that already exists — if the user wants a brand-new project
+scaffolded from scratch (Vite + React + CDS + a responsive app-shell
+layout), use `../neon-starter` instead.
 
-See `DESIGN.md` for the full color/typography/spacing reference tables,
-per-component styling notes, and do's/don'ts — read it before making styling
-decisions rather than guessing from `theme.config.ts` alone.
+See `../../DESIGN.md` (repo root) for the full color/typography/spacing
+reference tables, per-component styling notes, and do's/don'ts — read it
+before making styling decisions rather than guessing from `theme.config.ts`
+alone.
 
 ## What this skill does, every time
 
@@ -31,10 +35,15 @@ decisions rather than guessing from `theme.config.ts` alone.
    npm install @coinbase/cds-web
    ```
 
-2. **Use `companyTheme`, never CDS's `defaultTheme`.** Import it from
-   `./theme/theme.config.ts` (copy this folder's `theme/` directory into the
-   target project if it isn't already there) and pass it to `ThemeProvider`.
-   See `examples/app-entry.tsx` for the exact pattern.
+2. **Use `createNeonTheme()`, never CDS's `defaultTheme` passed through
+   unmodified.** Import it from `./theme/createTheme.ts` (copy this folder's
+   `theme/` directory into the target project if it isn't already there),
+   call it, and pass the result to `ThemeProvider`'s `theme` prop alongside
+   an `activeColorScheme` prop (`"light"` or `"dark"`). `createNeonTheme()`
+   merges Finnomena's overrides (`theme.config.ts`'s `neonTheme`) onto CDS's
+   own `defaultTheme`, since `ThemeProvider` requires a complete
+   `ThemeConfig`, not a partial one. See `examples/app-entry.tsx` for the
+   exact pattern.
 
 3. **Enforce provider order.** It must always be:
 
@@ -47,11 +56,15 @@ decisions rather than guessing from `theme.config.ts` alone.
 
 4. **Forbid hardcoded colors and spacing.** Never write a hex/rgb color,
    raw pixel padding/margin, or a raw border-radius number directly in JSX or
-   CSS-in-JS. Always go through `companyTheme`'s semantic tokens via CDS's
+   CSS-in-JS. Always go through `neonTheme`'s semantic tokens via CDS's
    style props (e.g. `color="textPrimary"`, `padding="medium"`,
    `borderRadius="sm"`). If a mockup needs a value that has no matching
    token, that's a signal to flag it to the user rather than invent a
-   one-off hex value.
+   one-off hex value. **Color tokens specifically aren't Finnomena-mapped
+   yet** (see "Current known limitations") — CDS's default Coinbase colors
+   render until that's resolved. Flag this to the user if a mockup's color
+   accuracy matters right now; don't silently present default Coinbase
+   colors as on-brand.
 
 5. **Component-level default overrides** (e.g. "all buttons should have a
    pill radius") go through CDS's `ComponentConfigProvider`, not by editing
@@ -65,10 +78,11 @@ decisions rather than guessing from `theme.config.ts` alone.
 
 ## Regenerating theme.config.ts
 
-`theme.config.ts` is a **generated file** — mechanically projected from the
-raw Figma Token Studio export in `theme/tokens/*.json`. Never hand-edit it.
-To update it (after adding/changing files in `theme/tokens/`), run both
-scripts in order from `skills/neon-theme/`:
+`theme.config.ts` (the `neonTheme` overrides object) and
+`color-mapping.todo.md` are both **generated files** — mechanically
+projected from the raw Figma Token Studio export in `theme/tokens/*.json`.
+Never hand-edit either. To update them (after adding/changing files in
+`theme/tokens/`), run both scripts in order from `skills/neon-theme/`:
 
 ```
 node scripts/sync-tokens.mjs && node scripts/generate-theme-config.mjs
@@ -77,54 +91,62 @@ node scripts/sync-tokens.mjs && node scripts/generate-theme-config.mjs
 The first resolves every token alias in `theme/tokens/` into
 `theme/tokens.resolved.json` (values) and `theme/tokens.report.json`
 (resolution stats + exactly which root collections are still missing). The
-second reads those two files and rewrites `theme/theme.config.ts` from
-scratch. This is the only supported way to update the file.
+second reads those and rewrites both `theme/theme.config.ts` and
+`theme/color-mapping.todo.md` from scratch. This is the only supported way
+to update either file. `theme/createTheme.ts` (the runtime merge helper) is
+hand-written, not generated — it doesn't depend on Finnomena's specific
+token values, only on `neonTheme`'s shape.
+
+`theme/breakpoints.config.ts` is a separate generated file (see "Current
+known limitations" below) — regenerate it in the same run by appending a
+third script: `node scripts/sync-tokens.mjs && node
+scripts/generate-theme-config.mjs && node scripts/generate-breakpoints-config.mjs`.
 
 ## Current known limitations
 
 As of this skill's last sync (see `theme.config.ts`'s own header comment for
 the live numbers — it's regenerated every run, so trust it over this prose):
 
-- **Spacing, radius, breakpoints/layout, typography, and color are all
-  resolved.** `tokens/colors.json` (Finnomena's primitive palette — Black,
-  White, Grey, Light Grey, Yellow, Navy, Green, Blue, Purple, Red, Orange,
-  Indigo, Violet) landed and every semantic color token in `theme.config.ts`
-  — including `lightColor`/`darkColor` cross-references like Tag's
-  `border-disabled`/`color-disabled` that route through other semantic
-  groups before bottoming out in a primitive — now traces to a real value.
-  Safe to present generated mockups as accurate to Finnomena's brand colors.
-  - A handful of spacing values (currently 1, 2, 4, 6, 12, 28, 36px) aren't
-    multiples of CDS's required 8px base unit. These are intentionally
-    excluded from `spaceScale` rather than rounded — see `theme.config.ts`'s
-    header for the full list. If a mockup seems to need one of these exact
-    values, flag it to the user rather than inventing a workaround.
-  - `typeScale`'s `fontWeight` values are variant-name strings (e.g.
-    "Regular", "SemiBold") sourced from the Figma export's own font
-    ("Finnomena Trek"), **not verified** against IBM Plex Sans Thai's actual
-    available weights, nor against CDS's expected typography weight type.
-  - **Color values are "r,g,b" for opaque colors but "r,g,b,a" (4
-    components, alpha 0-1) for any of the many translucent "*A" shade
-    variants** (used throughout overlays, hover/disabled states, subtle
-    borders). This deviates from the project brief's originally-documented
-    3-component convention — dropping alpha would have silently turned
-    every translucent token opaque, so this was a deliberate fix, not
-    invented data. **Not yet verified** that `@coinbase/cds-web`'s real
-    `ThemeVars` color type accepts 4-component strings — check this before
-    shipping; if it doesn't, alpha will need a different mechanism per
-    color.
-  - Every field/shape (nested group structure, key names) is still
-    illustrative — `@coinbase/cds-web` is not installed anywhere in this
-    repo, so `ThemeConfig`/`ThemeVars`'s real shape could not be verified
-    against `@coinbase/cds-web/core/theme`. Confirm before shipping.
-- If asked to build UI now: use the real tokens via semantic *names* as
-  usual. If the palette is ever re-synced and a family goes missing again,
-  `theme.config.ts`'s header and `theme/tokens.report.json`'s
-  `missingRootCollections` will say so live — check those rather than
-  trusting this prose, and don't hand-copy a missing-family list here since
-  it can drift.
-- **To update tokens:** never hand-fill color/spacing/etc. values in
-  `theme.config.ts` — edit the source files in `theme/tokens/` and run the
-  two-script pipeline above. The file is regenerated wholesale every run.
+- **Spacing, radius, and 8 of 13 CDS typography roles are resolved into
+  `neonTheme`** (`display1/2/3`, `title1/2/3`, `headline`, `body` — see
+  `theme.config.ts`'s header for the exact Finnomena role each one came
+  from). Fields CDS requires but Finnomena's export has no data for at all
+  (`iconSize`, `avatarSize`, `borderWidth` as a general scale,
+  `controlSize`, `textTransform`, `shadow`, `fontFamilyMono`, and the 5
+  unmapped typography roles) fall back to CDS's own `defaultTheme` values at
+  runtime via `createTheme.ts` — that's expected platform fallback, not a
+  bug, and not something to flag to the user.
+  - A handful of spacing values (currently 1, 4, 28, 36px, among others —
+    see `theme.config.ts`'s own header) exist in the raw export but aren't
+    part of CDS's required 15-value `space` scale, so they're not included.
+    If a mockup seems to need one of these exact values, flag it to the
+    user rather than inventing a workaround.
+  - `fontWeight` values are converted from Finnomena's variant-name strings
+    (e.g. "Regular", "SemiBold") to numeric CSS weights via the standard
+    naming convention (Regular=400, SemiBold=600, etc.) — this conversion
+    table is generic CSS knowledge, not Finnomena-specific data.
+- **⛔ Color is NOT resolved and is not safe to present as on-brand yet.**
+  `neonTheme` deliberately does not populate `lightSpectrum`/`darkSpectrum`/
+  `lightColor`/`darkColor` at all — Finnomena's semantic token names
+  (`text-primary`, `icon-on-brand`, ...) share no vocabulary with CDS's
+  semantic slugs (`fg`, `bgPrimary`, `accentBoldBlue`, ...), so mapping one
+  onto the other is a real design decision this generator will not guess.
+  **CDS's own default brand colors (Coinbase blue, etc.) render until a
+  human fills in `theme/color-mapping.todo.md`** (regenerated every run
+  with the current unmapped-slug list and a reference table of what
+  Finnomena's own tokens resolve to) and this generator is extended to
+  consume that decision. If a user asks whether a mockup's colors are
+  accurate to the brand, tell them this is still open — don't imply it's
+  handled.
+- If asked to build UI now: use the real (non-color) tokens via semantic
+  *names* as usual, and flag color explicitly as pending. If the palette is
+  ever re-synced and a required space/radius value goes missing,
+  `generate-theme-config.mjs` throws loudly rather than silently dropping
+  it — check the regeneration output rather than trusting this prose, and
+  don't hand-copy specifics here since they can drift.
+- **To update tokens:** never hand-fill values in `theme.config.ts` or
+  `color-mapping.todo.md` — edit the source files in `theme/tokens/` and
+  run the pipeline above. Both files are regenerated wholesale every run.
 
 ### Known heuristic limitation in `sync-tokens.mjs`
 

@@ -92,7 +92,26 @@ Source: `theme/tokens/type_primitives.json`, "Large (Default)" web size class.
 Per-component radius (which CDS component uses which named step) comes from CDS's own component defaults unless explicitly overridden — that mapping isn't part of this token export, so don't invent one.
 
 ### Layout
-- **Page max-width / grid / breakpoints:** not yet exported — `theme/tokens.report.json`'s `missingRootCollections` lists these as still missing. Use CDS's own default responsive layout system until Finnomena-specific grid tokens land; don't invent a max-width or grid rhythm here.
+- **Breakpoints (7 tiers, exported and resolved):**
+
+  | Tier | Viewport | Sidebar width | Gutter | End margins | Columns |
+  |---|---|---|---|---|---|
+  | sm | 320–499 | 0 (hidden) | 16 | 16 | 4 |
+  | md | 500–987 | 64 (icon-rail) | 16 | 16 | 8 |
+  | lg | 988–1079 | 64 (icon-rail) | 16 | 16 | 12 |
+  | xl | 1080–1271 | 240 | 16 | 16 | 12 |
+  | xxl | 1272–1439 | 320 | 16 | 16 | 12 |
+  | xxxl | 1440–1919 | 360 | 24 | 24 | 12 |
+  | max | 1920+ | 360 | 24 | 24 | 12 |
+
+  Source: `skills/neon-theme/theme/tokens/breakpoint.json`. These are
+  resolved in the token pipeline (`tokens.resolved.json`) and projected into
+  a generated `theme/breakpoints.config.ts` via
+  `scripts/generate-breakpoints-config.mjs` — see `skills/neon-starter` for
+  the responsive Sidebar/Content/Inspector app shell built on top of it.
+  Use the Gutter/End-margins/Columns values above for grid rhythm at each
+  breakpoint rather than inventing a fixed max-width; fall back to CDS's own
+  default responsive layout system for anything not covered here.
 
 ## Components
 
@@ -193,15 +212,14 @@ A stylistic comparison, not a claim about Finnomena's actual relationships or so
 This is a CDS-themed app, not a raw-CSS site — there's no CSS custom properties or Tailwind config to copy. Wire the theme through CDS's provider stack:
 
 ```tsx
-import { MediaQueryProvider } from '@coinbase/cds-web/system';
-import { ThemeProvider } from '@coinbase/cds-web/system';
-import { PortalProvider } from '@coinbase/cds-web/portal';
-import { companyTheme } from './theme/theme.config';
+import { MediaQueryProvider, ThemeProvider } from '@coinbase/cds-web/system';
+import { PortalProvider } from '@coinbase/cds-web/overlays';
+import { createNeonTheme } from './theme/createTheme';
 
 export function AppRoot({ children }: { children: React.ReactNode }) {
   return (
     <MediaQueryProvider>
-      <ThemeProvider theme={companyTheme}>
+      <ThemeProvider theme={createNeonTheme()} activeColorScheme="light">
         <PortalProvider>{children}</PortalProvider>
       </ThemeProvider>
     </MediaQueryProvider>
@@ -209,4 +227,4 @@ export function AppRoot({ children }: { children: React.ReactNode }) {
 }
 ```
 
-See `examples/app-entry.tsx` for the full working pattern, including font loading. `companyTheme` in `theme/theme.config.ts` resolves every raw token in this document into CDS's `ThemeVars` shape — regenerate it with `node scripts/sync-tokens.mjs && node scripts/generate-theme-config.mjs` after changing anything in `theme/tokens/`.
+See `examples/app-entry.tsx` for the full working pattern, including font loading. `neonTheme` in `theme/theme.config.ts` resolves the raw tokens in this document that have an unambiguous, non-color mapping onto CDS's `ThemeVars` shape (spacing, radius, typography) — regenerate it with `node scripts/sync-tokens.mjs && node scripts/generate-theme-config.mjs` after changing anything in `theme/tokens/`. `createTheme.ts`'s `createNeonTheme()` merges those overrides onto CDS's own `defaultTheme` at runtime. Color is deliberately not resolved yet — see `theme/color-mapping.todo.md`.

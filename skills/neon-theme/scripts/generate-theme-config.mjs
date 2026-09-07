@@ -2,13 +2,26 @@
 /**
  * generate-theme-config.mjs
  *
- * Mechanically emits ../theme/theme.config.ts from ../theme/tokens.resolved.json,
- * ../theme/tokens.report.json, and the raw ../theme/tokens/theme.json semantic
- * color graph. Run `node sync-tokens.mjs` first to (re)produce the two JSON
- * inputs from whatever is currently in ../theme/tokens/.
+ * Mechanically emits ../theme/theme.config.ts (the `neonTheme` overrides
+ * object) and ../theme/color-mapping.todo.md (a human handoff doc) from
+ * ../theme/tokens.resolved.json and the raw ../theme/tokens/*.json export.
+ * Run `node sync-tokens.mjs` first to (re)produce tokens.resolved.json from
+ * whatever is currently in ../theme/tokens/.
  *
- * theme.config.ts is a generated file — do not hand-edit it. Change the
+ * Both outputs are generated files — do not hand-edit them. Change the
  * source token exports in ../theme/tokens/ and re-run this pipeline instead.
+ *
+ * `neonTheme`'s shape and key names are verified against the real
+ * `@coinbase/cds-web@9.26.1` `ThemeConfig`/`ThemeVars` types (checked in a
+ * scratch install — the package isn't installed in this repo). Only fields
+ * Finnomena's export has real, unambiguous data for are populated; anything
+ * else is left absent so `@coinbase/cds-web`'s own `defaultTheme` values
+ * flow through at runtime (see ../theme/createTheme.ts). Color specifically
+ * is NEVER guessed here — Finnomena's semantic token names (`text-primary`,
+ * `icon-on-brand`, ...) share no vocabulary with CDS's semantic slugs (`fg`,
+ * `bgPrimary`, `accentBoldBlue`, ...), so mapping one onto the other is a
+ * real design decision. color-mapping.todo.md exists so a human can make
+ * that call instead.
  *
  * Usage:
  *   node scripts/sync-tokens.mjs && node scripts/generate-theme-config.mjs
@@ -20,19 +33,85 @@ import { fileURLToPath } from "node:url";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const THEME_DIR = join(__dirname, "..", "theme");
 const TOKENS_DIR = join(THEME_DIR, "tokens");
-const OUT_FILE = join(THEME_DIR, "theme.config.ts");
+const OUT_THEME_FILE = join(THEME_DIR, "theme.config.ts");
+const OUT_COLOR_TODO_FILE = join(THEME_DIR, "color-mapping.todo.md");
 
 const resolved = JSON.parse(readFileSync(join(THEME_DIR, "tokens.resolved.json"), "utf8"));
 const report = JSON.parse(readFileSync(join(THEME_DIR, "tokens.report.json"), "utf8"));
 const rawTheme = JSON.parse(readFileSync(join(TOKENS_DIR, "theme.json"), "utf8"));
+const rawColors = JSON.parse(readFileSync(join(TOKENS_DIR, "colors.json"), "utf8"));
 const rawTypePrimitives = JSON.parse(readFileSync(join(TOKENS_DIR, "type_primitives.json"), "utf8"));
 
-const TODO_RGB = "TODO_RGB";
+// ---------------------------------------------------------------------------
+// Fixed, verified facts about the real @coinbase/cds-web@9.26.1 ThemeConfig/
+// ThemeVars shape (see theme.config.ts's own header for the full citation).
+// Hardcoded because they're platform data, not something Finnomena's export
+// can tell us — same category as SPACE/BORDER_RADIUS/FONT_ROLES below.
+// ---------------------------------------------------------------------------
+const CDS_FONT_ROLES = [
+  "display1", "display2", "display3",
+  "title1", "title2", "title3", "title4",
+  "headline", "body", "label1", "label2", "caption", "legal",
+];
+const CDS_SPECTRUM_HUES = ["blue", "green", "orange", "yellow", "gray", "indigo", "pink", "purple", "red", "teal", "chartreuse"];
+const CDS_SPECTRUM_STEPS = [0, 5, 10, 15, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+const CDS_SEMANTIC_COLOR_SLUGS = [
+  "currentColor",
+  "fg", "fgMuted", "fgInverse", "fgPrimary", "fgWarning", "fgPositive", "fgNegative",
+  "bg", "bgAlternate", "bgInverse", "bgOverlay", "bgElevation1", "bgElevation2",
+  "bgPrimary", "bgPrimaryWash", "bgSecondary", "bgTertiary", "bgSecondaryWash",
+  "bgNegative", "bgNegativeWash", "bgPositive", "bgPositiveWash", "bgWarning", "bgWarningWash",
+  "bgLine", "bgLineHeavy", "bgLineInverse", "bgLinePrimary", "bgLinePrimarySubtle",
+  "accentSubtleRed", "accentBoldRed", "accentSubtleGreen", "accentBoldGreen",
+  "accentSubtleBlue", "accentBoldBlue", "accentSubtlePurple", "accentBoldPurple",
+  "accentSubtleYellow", "accentBoldYellow", "accentSubtleGray", "accentBoldGray",
+  "transparent",
+];
 
-// ---------------------------------------------------------------------------
-// Fixed by explicit decision (see SKILL.md) — do not source from
-// font_family.json, whose export names the family "Finnomena Trek".
-// ---------------------------------------------------------------------------
+// CDS's `space` step-keys, keyed by the exact px value Finnomena's export
+// needs to supply. All 15 are required — buildSpace() throws if any go
+// missing from a future re-export rather than silently emitting a gap.
+const SPACE_KEY_BY_VALUE = {
+  0: "0", 2: "0.25", 4: "0.5", 6: "0.75", 8: "1", 12: "1.5", 16: "2",
+  24: "3", 32: "4", 40: "5", 48: "6", 56: "7", 64: "8", 72: "9", 80: "10",
+};
+
+// CDS's `borderRadius` step-keys. Only the first 9 have a Finnomena
+// equivalent (see buildBorderRadius) — "900" (value 56) is intentionally
+// left absent.
+const BORDER_RADIUS_KEY_BY_VALUE = {
+  0: "0", 4: "100", 8: "200", 12: "300", 16: "400",
+  24: "500", 32: "600", 40: "700", 48: "800",
+};
+
+// Finnomena role name -> CDS font role. Only same-name (or unambiguous)
+// correspondences — this is a first-pass, human-reviewable mapping, same
+// spirit as color-mapping.todo.md. title4/label1/label2/caption/legal have
+// no confident Finnomena source and are deliberately left out (CDS's
+// defaultTheme values apply instead).
+const FONT_ROLE_MAP = {
+  "Display 1": "display1",
+  "Display 2": "display2",
+  "Display 3": "display3",
+  "Title 1": "title1",
+  "Title 2": "title2",
+  "Title 3": "title3",
+  "Headline": "headline",
+  "Body": "body",
+};
+
+// Standard CSS font-weight naming convention (not Finnomena-specific) —
+// Finnomena's export only has variant *names* ("Regular", "SemiBold"), never
+// numeric weights.
+const WEIGHT_NAME_TO_NUMBER = {
+  Thin: 100, ExtraLight: 200, Light: 300, Regular: 400, Medium: 500,
+  SemiBold: 600, Bold: 700, ExtraBold: 800, Black: 900,
+};
+function weightNameToNumber(name) {
+  const base = String(name).replace(/\s*Italic$/, "");
+  return WEIGHT_NAME_TO_NUMBER[base];
+}
+
 const FONT_FAMILY_PRIMARY = "'IBM Plex Sans Thai', sans-serif";
 const FONT_FAMILY_EXPORT_NAME = resolveFontFamilyExportName();
 
@@ -74,425 +153,384 @@ function parseFamilyShadeAlias(raw) {
 }
 
 // ---------------------------------------------------------------------------
-// 1. spaceScale — resolved numeric entries from size.json (kept as the
-//    space-scale source: a strict superset of the new export's sizing.json).
-//    CDS requires the `space` scale to be multiples of its 8px base unit;
-//    non-conforming values are recorded, not silently dropped.
+// 1. space — resolved numeric entries from size.json, reassigned onto CDS's
+//    step-key scale by value. All 15 CDS values are a confirmed subset of
+//    size.json's resolved values (see color-mapping.todo.md's sibling
+//    research, captured in SKILL.md) — this throws instead of silently
+//    dropping a step if a future re-export ever loses one.
 // ---------------------------------------------------------------------------
-function buildSpaceScale() {
+function buildSpace() {
   const values = new Set();
   for (const entry of Object.values(resolved)) {
     if (entry.sourceFile === "size.json" && entry.type === "number") values.add(entry.value);
   }
-  const sorted = [...values].sort((a, b) => a - b);
-  const base8 = sorted.filter((v) => v % 8 === 0);
-  const nonConforming = sorted.filter((v) => v % 8 !== 0);
-  return { base8, nonConforming };
+  const space = {};
+  for (const [valueStr, key] of Object.entries(SPACE_KEY_BY_VALUE)) {
+    const value = Number(valueStr);
+    if (!values.has(value)) {
+      throw new Error(`buildSpace: required space value ${value}px not found in tokens/size.json — re-check the export`);
+    }
+    space[key] = value;
+  }
+  return space;
 }
 
 // ---------------------------------------------------------------------------
-// 2. radiusScale — resolved entries from radius.json, keyed by the
-//    "<label> (radius-<slug>)" naming convention the export uses.
+// 2. borderRadius — resolved entries from radius.json, reassigned onto CDS's
+//    "0".."1000" step-keys by value. CDS's "900" step (56px) has no
+//    Finnomena equivalent and is left absent. "round" maps to CDS's "1000"
+//    key by INTENT (both mean "fully pill/circular"), not by literal value —
+//    CDS uses 100000, Finnomena's export uses 200.
 // ---------------------------------------------------------------------------
-function buildRadiusScale() {
+function buildBorderRadius() {
   const RADIUS_KEY = /\(radius-([\w]+)\)/;
-  const RENAME = { 0: "none" };
-  const entries = [];
-  const seenSlugs = new Set();
+  const bySlug = {};
   for (const [path, entry] of Object.entries(resolved)) {
     if (entry.sourceFile !== "radius.json") continue;
     const m = path.match(RADIUS_KEY);
     if (!m) continue;
-    let slug = m[1];
-    if (RENAME[slug]) slug = RENAME[slug];
-    if (seenSlugs.has(slug)) continue;
-    seenSlugs.add(slug);
-    entries.push([slug, entry.value]);
+    bySlug[m[1] === "0" ? "none" : m[1]] = entry.value;
   }
-  entries.sort((a, b) => (a[0] === "round" ? 1 : b[0] === "round" ? -1 : a[1] - b[1]));
-  return entries;
+  const borderRadius = {};
+  for (const [valueStr, key] of Object.entries(BORDER_RADIUS_KEY_BY_VALUE)) {
+    const match = Object.values(bySlug).find((v) => v === Number(valueStr));
+    if (match !== undefined) borderRadius[key] = match;
+  }
+  if ("round" in bySlug) borderRadius["1000"] = 100000; // by intent, not by Finnomena's literal 200
+  return borderRadius;
 }
 
 // ---------------------------------------------------------------------------
-// 3. typeScale — read explicitly from type_primitives.json's
-//    Dynamic["Large (Default)"][role] tree, NOT typography.json's own
-//    per-role fields, which are self-referential placeholders in this
-//    export (e.g. "Large Title".Size -> "{Large Title.Size}") and only
-//    ever resolved before by accident of the old suffix-matching fallback.
+// 3. typography — read from type_primitives.json's Dynamic["Large
+//    (Default)"][role] tree (NOT typography.json's own per-role fields,
+//    which are self-referential placeholders in this export — see
+//    tokens.report.json's missingRootCollections). Only roles in
+//    FONT_ROLE_MAP get real data; every other CDS font role is left absent.
 // ---------------------------------------------------------------------------
-function buildTypeScale() {
-  const roles = Object.keys(rawTypePrimitives.Dynamic["Large (Default)"]);
-  const rows = [];
-  for (const role of roles) {
-    const base = `Dynamic.Large (Default).${role}.`;
+function buildTypography() {
+  const fontSize = {};
+  const fontWeight = {};
+  const lineHeight = {};
+  const skippedRoles = [];
+
+  for (const [finnomenaRole, cdsRole] of Object.entries(FONT_ROLE_MAP)) {
+    const base = `Dynamic.Large (Default).${finnomenaRole}.`;
     const size = resolved[base + "Size"]?.value;
-    const lineHeight = resolved[base + "Line height"]?.value;
-    const letterSpacing = resolved[base + "Letter spacing"]?.value;
-    const fontWeight = resolved[base + "Weight"]?.value;
-    if (size === undefined || lineHeight === undefined) continue; // skip incomplete roles rather than emit gaps
-    rows.push({ role, size, lineHeight, letterSpacing: letterSpacing ?? 0, fontWeight: fontWeight ?? "Regular" });
+    const lh = resolved[base + "Line height"]?.value;
+    const weightName = resolved[base + "Weight"]?.value;
+    if (size === undefined || lh === undefined) {
+      skippedRoles.push(`${finnomenaRole} (missing size/line-height data)`);
+      continue;
+    }
+    fontSize[cdsRole] = `${size}px`;
+    lineHeight[cdsRole] = `${lh}px`;
+    const weightNumber = weightName !== undefined ? weightNameToNumber(weightName) : undefined;
+    if (weightNumber !== undefined) fontWeight[cdsRole] = String(weightNumber);
+    else skippedRoles.push(`${finnomenaRole} (unrecognized weight name "${weightName}")`);
   }
-  return rows;
+
+  const fontFamily = {};
+  for (const role of CDS_FONT_ROLES) fontFamily[role] = FONT_FAMILY_PRIMARY;
+
+  return { fontFamily, fontSize, fontWeight, lineHeight, skippedRoles };
 }
 
 // ---------------------------------------------------------------------------
-// 4. Color — walk the raw theme.json light/dark trees directly (excluding
-//    the "Figma" group, which is Figma-tool-only swatch data, "Mode", which
-//    is a "Light"/"Dark" string marker, and "Colors", which is a redundant
-//    re-exposure of the same ramp lightSpectrum/darkSpectrum already
-//    covers). Family/shade sets for the spectrum are collected live from
-//    whatever aliases are actually referenced — not a hand-typed list — so
-//    a future re-export with more/fewer families "just works".
+// 4. Color reference table (for color-mapping.todo.md, NOT theme.config.ts).
+//    Reuses the alias-resolution walk to show a human exactly what each
+//    Finnomena semantic leaf currently resolves to, as a reference data
+//    point for making the real mapping decision — never emitted into
+//    neonTheme itself.
 // ---------------------------------------------------------------------------
 const EXCLUDED_GROUPS = new Set(["Figma", "Mode", "Colors"]);
-
-// theme.json's top-level group names (Text, Icon, Field, Border, Support, ...).
-// Some leaves alias a DIFFERENT semantic group instead of a primitive family
-// directly — e.g. Tag.White.Primary.border-disabled -> "{Border.border-disabled}"
-// and Tag.*.color-disabled -> "{Text.text-disabled}". Naively parsed as
-// "Family.Shade" those would fabricate fake primitive families "Border" and
-// "Text". resolveFamilyShade() below follows these intra-theme references
-// (bounded depth, cycle-safe) until it lands on a real primitive.
 const GROUP_NAMES = new Set([...Object.keys(rawTheme.light), ...Object.keys(rawTheme.dark)]);
 
-/**
- * Resolve a "{Family.Shade}" (or intra-theme "{Group.leaf}") alias down to a
- * real [family, shade] primitive pair, or null if it bottoms out unresolved.
- */
+/** Resolve a "{Family.Shade}" (or intra-theme "{Group.leaf}") alias down to a real [family, shade] pair, or null. */
 function resolveFamilyShade(mode, raw, depth = 0) {
-  if (depth > 10) return null; // guard against unexpected cycles
+  if (depth > 10) return null;
   const fs = parseFamilyShadeAlias(raw);
   if (!fs) return null;
   const [head, tail] = fs;
-  if (!GROUP_NAMES.has(head)) return fs; // head is a primitive family — done
+  if (!GROUP_NAMES.has(head)) return fs;
   const target = rawTheme[mode]?.[head]?.[tail];
   if (!isLeaf(target) || target.type !== "color") return null;
   return resolveFamilyShade(mode, target.value, depth + 1);
 }
 
-function collectFamilyShades(mode) {
-  const families = new Map(); // family -> Set(shade)
-  function walk(node) {
-    if (isLeaf(node)) {
-      if (node.type !== "color") return;
-      const fs = resolveFamilyShade(mode, node.value);
-      if (!fs) return;
-      const [family, shade] = fs;
-      if (!families.has(family)) families.set(family, new Set());
-      families.get(family).add(shade);
-      return;
-    }
-    if (node && typeof node === "object") {
-      for (const child of Object.values(node)) walk(child);
-    }
-  }
-  for (const [group, node] of Object.entries(rawTheme[mode])) {
-    if (EXCLUDED_GROUPS.has(group)) continue;
-    walk(node);
-  }
-  return families;
-}
-
-/** Build the nested semantic color tree as {groupKey: {leafKey: [family, shade] | null}}. */
-function buildColorTree(mode) {
-  const tree = {};
-  for (const [group, node] of Object.entries(rawTheme[mode])) {
-    if (EXCLUDED_GROUPS.has(group)) continue;
-    tree[group] = walkGroup(node);
-  }
-  return tree;
-
-  function walkGroup(node) {
-    if (isLeaf(node)) {
-      if (node.type !== "color") return null;
-      const fs = resolveFamilyShade(mode, node.value);
-      return fs ?? { unresolvedAlias: node.value };
-    }
-    const out = {};
-    for (const [key, child] of Object.entries(node)) {
-      out[key] = walkGroup(child);
-    }
-    return out;
-  }
-}
-
-// ---------------------------------------------------------------------------
-// Emission
-// ---------------------------------------------------------------------------
-
-/** Real "r,g,b" value for a primitive family+shade, if the palette resolved it. */
 function primitiveValue(family, shade) {
   const entry = resolved[`${family}.${shade}`];
   return entry && entry.type === "color" ? entry.value : undefined;
 }
 
-function emitSpectrum(varName, families) {
-  const familyNames = [...families.keys()].sort();
-  const lines = familyNames.map((family) => {
-    const shades = [...families.get(family)].sort((a, b) => {
-      const na = parseFloat(a);
-      const nb = parseFloat(b);
-      if (na !== nb) return na - nb;
-      return a.localeCompare(b);
-    });
-    const shadeLines = shades
-      .map((shade) => {
-        const real = primitiveValue(family, shade);
-        const value = real !== undefined ? JSON.stringify(real) : TODO_RGB;
-        return `    ${JSON.stringify(shade)}: ${value},`;
-      })
-      .join("\n");
-    return `  ${JSON.stringify(family)}: {\n${shadeLines}\n  },`;
-  });
-  return `export const ${varName} = {\n${lines.join("\n")}\n} as const;`;
-}
-
-function emitColorTree(varName, tree, spectrumVarName, indent = "") {
-  const inner = Object.entries(tree)
-    .map(([key, value]) => emitColorNode(key, value, spectrumVarName, indent + "  "))
-    .join("\n");
-  return `export const ${varName} = {\n${inner}\n} as const;`;
-}
-
-function emitColorNode(key, value, spectrumVarName, indent) {
-  const outKey = jsKey(toCamel(key));
-  if (Array.isArray(value)) {
-    const [family, shade] = value;
-    return `${indent}${outKey}: ${spectrumVarName}[${JSON.stringify(family)}][${JSON.stringify(shade)}],`;
+/** Flat list of {path, family, shade, value} for every resolvable color leaf in theme.json[mode]. */
+function buildColorReference(mode) {
+  const rows = [];
+  function walk(pathParts, node) {
+    if (isLeaf(node)) {
+      if (node.type !== "color") return;
+      const fs = resolveFamilyShade(mode, node.value);
+      if (!fs) {
+        rows.push({ path: pathParts.join("."), family: null, shade: null, value: null, raw: node.value });
+        return;
+      }
+      const [family, shade] = fs;
+      rows.push({ path: pathParts.join("."), family, shade, value: primitiveValue(family, shade) });
+      return;
+    }
+    if (node && typeof node === "object") {
+      for (const [key, child] of Object.entries(node)) walk([...pathParts, key], child);
+    }
   }
-  if (value === null) {
-    return `${indent}${outKey}: ${TODO_RGB}, // unresolved: "${key}" was not a color-typed leaf`;
+  for (const [group, node] of Object.entries(rawTheme[mode])) {
+    if (EXCLUDED_GROUPS.has(group)) continue;
+    walk([group], node);
   }
-  if (typeof value === "object" && "unresolvedAlias" in value) {
-    return `${indent}${outKey}: ${TODO_RGB}, // unresolved: "${key}" aliases ${value.unresolvedAlias} (an intra-theme reference into another still-unresolved group, not a direct primitive)`;
-  }
-  const inner = Object.entries(value)
-    .map(([k, v]) => emitColorNode(k, v, spectrumVarName, indent + "  "))
-    .join("\n");
-  return `${indent}${outKey}: {\n${inner}\n${indent}},`;
+  return rows;
 }
 
 // ---------------------------------------------------------------------------
 // Build everything
 // ---------------------------------------------------------------------------
-const { base8: spaceScale, nonConforming: spaceNonConforming } = buildSpaceScale();
-const radiusEntries = buildRadiusScale();
-const typeScaleRows = buildTypeScale();
-const lightFamilies = collectFamilyShades("light");
-const darkFamilies = collectFamilyShades("dark");
-const lightColorTree = buildColorTree("light");
-const darkColorTree = buildColorTree("dark");
-
-/** Count of family/shade pairs referenced by the spectrum that still lack a real value. */
-function countUnresolvedSpectrum(families) {
-  let n = 0;
-  for (const [family, shades] of families) {
-    for (const shade of shades) {
-      if (primitiveValue(family, shade) === undefined) n++;
-    }
-  }
-  return n;
-}
-
-/** Count of {unresolvedAlias} leaves remaining in a built color tree. */
-function countUnresolvedTreeLeaves(node) {
-  if (node && typeof node === "object" && "unresolvedAlias" in node) return 1;
-  if (Array.isArray(node) || node === null || typeof node !== "object") return 0;
-  return Object.values(node).reduce((sum, v) => sum + countUnresolvedTreeLeaves(v), 0);
-}
-
-const unresolvedColorCount =
-  countUnresolvedSpectrum(lightFamilies) +
-  countUnresolvedSpectrum(darkFamilies) +
-  countUnresolvedTreeLeaves(lightColorTree) +
-  countUnresolvedTreeLeaves(darkColorTree);
-
-const missingColorFamilies = Object.keys(report.missingRootCollections)
-  .filter((root) => lightFamilies.has(root) || darkFamilies.has(root))
-  .sort();
-
-const colorStatusBlock =
-  unresolvedColorCount === 0
-    ? ` *   ✅ color — RESOLVED. Every color token in theme.json's light/dark trees
- *      (including the ${lightFamilies.size}/${darkFamilies.size} primitive families referenced by
- *      light/dark and the intra-theme cross-references like Tag's
- *      border-disabled/color-disabled) now traces back to a real "r,g,b"
- *      value sourced from tokens/colors.json. lightSpectrum/darkSpectrum
- *      hold the primitives; lightColor/darkColor reference them by key
- *      rather than duplicating values.`
-    : ` *   ⚠ color — PARTIALLY RESOLVED. ${unresolvedColorCount} color value(s) still could not be
- *      traced to a primitive (see TODO_RGB occurrences below and their
- *      inline comments). Missing/blocked root collections, live from
- *      tokens.report.json's missingRootCollections (do not hand-copy this
- *      list elsewhere — it can drift; re-run the pipeline instead):
- *        ${missingColorFamilies.length ? missingColorFamilies.join(", ") : "(none — remaining gaps are intra-theme references, not missing primitive families)"}
- *
- *      To unblock further: export any still-missing primitive family
- *      collections (with real hex/rgb per shade) from Figma into ./tokens/,
- *      then re-run
- *      \`node scripts/sync-tokens.mjs && node scripts/generate-theme-config.mjs\`.
- *      Never hand-edit the TODO_RGB values below — this file is
- *      regenerated wholesale.`;
+const space = buildSpace();
+const borderRadius = buildBorderRadius();
+const { fontFamily, fontSize, fontWeight, lineHeight, skippedRoles } = buildTypography();
+const finnomenaFamilies = Object.keys(rawColors);
 
 // ---------------------------------------------------------------------------
 // Render theme.config.ts
 // ---------------------------------------------------------------------------
 const header = `/**
- * Finnomena companyTheme — override of CDS's defaultTheme.
+ * neonTheme — Finnomena's override fields for @coinbase/cds-web's
+ * ThemeConfig, merged onto CDS's own defaultTheme at runtime by
+ * ./createTheme.ts (see that file — ThemeProvider requires a FULL
+ * ThemeConfig, and neonTheme here is deliberately partial).
  *
  * GENERATED FILE — do not hand-edit. Regenerate with:
  *   node scripts/sync-tokens.mjs && node scripts/generate-theme-config.mjs
  *
  * Source of truth: the raw Figma Token Studio export in ./tokens/*.json,
- * resolved by ../scripts/sync-tokens.mjs into ./tokens.resolved.json
- * (alias-resolved tokens) and ./tokens.report.json (what's still missing).
+ * resolved by ../scripts/sync-tokens.mjs into ./tokens.resolved.json.
  *
  * STATUS (regenerated ${report.generatedAt}):
- *   Resolved ${report.totals.resolved} / ${report.totals.tokensSeen} tokens.
- *   ✅ space, radius, typography (type scale for the "Large (Default)" web
- *      size class) — fully resolved from the Figma export, used directly
- *      below.
-${colorStatusBlock}
  *
- *   ⚠ Base-unit conflict (flagged, not auto-fixed): the Figma spacing
- *      export includes values that are not multiples of CDS's 8px base
- *      unit — ${spaceNonConforming.length ? spaceNonConforming.join(", ") : "(none currently)"}px. These are excluded from
- *      spaceScale below rather than rounded or invented. Precedent: the
- *      previous hand-authored version of this file already excluded the
- *      same class of values from the old export for the same reason. If
- *      these are load-bearing in real designs, confirm with design whether
- *      they're intentional exceptions or export drift to fix at the source.
+ *   ✅ space — all 15 of CDS's required step-keys ("0" through "10", plus
+ *      "0.25"/"0.5"/"0.75") populated from tokens/size.json.
  *
- *   ⚠ fontFamily is deliberately fixed to ${JSON.stringify(FONT_FAMILY_PRIMARY)} rather
- *      than the export's actual family name ("${FONT_FAMILY_EXPORT_NAME}") —
- *      a confirmed decision, not a missed sync step.
+ *   ✅ borderRadius — 9 of CDS's 11 step-keys ("0" through "800") populated
+ *      from tokens/radius.json by value; "1000" (fully round) mapped by
+ *      INTENT to Finnomena's "round" slug, not by literal number (CDS uses
+ *      100000, Finnomena's export uses 200). "900" (56px) has no Finnomena
+ *      equivalent and is left absent — CDS's defaultTheme value flows
+ *      through for that one step at runtime.
  *
- *   ⚠ typeScale's fontWeight values are font-variant names (e.g. "Regular",
- *      "SemiBold") taken from the "${FONT_FAMILY_EXPORT_NAME}" export, not
- *      verified against IBM Plex Sans Thai's actual available weight set,
- *      nor against @coinbase/cds-web's expected typography weight type.
+ *   ✅ fontFamily — fixed to ${JSON.stringify(FONT_FAMILY_PRIMARY)} across all 13 CDS font
+ *      roles (a confirmed decision, not the export's actual family name,
+ *      "${FONT_FAMILY_EXPORT_NAME}").
  *
- *   ⚠ Color values are "r,g,b" strings for opaque colors, but "r,g,b,a"
- *      (4 components, a as a 0-1 fraction) for any primitive shade that
- *      was an 8-digit hex in tokens/colors.json (every "*A" opacity
- *      variant — used throughout overlays, hover/disabled states, subtle
- *      borders). The project brief's documented convention was 3-component
- *      "r,g,b" only; dropping alpha would have silently turned every
- *      translucent color opaque, so this was a deliberate fix, not
- *      invented data — but the 4-component form is UNVERIFIED against
- *      @coinbase/cds-web's real ThemeVars color type. Confirm CDS actually
- *      accepts "r,g,b,a" before shipping; if not, alpha will need to be
- *      applied a different way (e.g. a separate opacity prop) per color.
+ *   ⚠ fontSize / fontWeight / lineHeight — populated for ONLY the CDS font
+ *      roles with an unambiguous same-name Finnomena counterpart:
+ *      ${Object.entries(FONT_ROLE_MAP).map(([f, c]) => `${c}←"${f}"`).join(", ")}.
+ *      This is a first-pass, human-reviewable mapping (${Object.keys(FONT_ROLE_MAP).length} of 13 CDS roles) — title4/label1/label2/
+ *      caption/legal have no confident Finnomena source and are left absent
+ *      (CDS's defaultTheme values apply instead). fontSize/lineHeight are
+ *      emitted as "Npx" strings (Finnomena's exact resolved pixel values —
+ *      valid CSS; CDS's own defaultTheme uses rem, but px avoids inventing
+ *      an unstated root-font-size assumption). fontWeight is converted from
+ *      Finnomena's variant-name strings ("Regular","SemiBold",...) via the
+ *      standard CSS numeric-weight convention, not Finnomena-specific data.
+ *      ${skippedRoles.length ? `Skipped this run: ${skippedRoles.join("; ")}.` : ""}
  *
- *   ⚠ Every shape below (lightColor/darkColor's nested-by-group structure,
- *      typeScale's per-field names, lightSpectrum/darkSpectrum's
- *      PascalCase family keys) is illustrative — @coinbase/cds-web is not
- *      installed anywhere in this repo, so ThemeConfig/ThemeVars's real
- *      shape from "@coinbase/cds-web/core/theme" could not be verified.
- *      Confirm field names against the real types before shipping.
+ *   ⛔ COLOR — DELIBERATELY NOT POPULATED. lightSpectrum/darkSpectrum/
+ *      lightColor/darkColor/lightIllustrationColor/darkIllustrationColor are
+ *      not emitted at all. Finnomena's theme.json semantic names
+ *      (text-primary, icon-on-brand, ...) share no vocabulary with CDS's
+ *      semantic slugs (fg, bgPrimary, accentBoldBlue, ...) — mapping one
+ *      onto the other is a real design decision, not a data-mapping
+ *      problem, and this generator does not guess it. CDS's own default
+ *      brand colors (Coinbase blue, etc.) render until a human fills in
+ *      ./color-mapping.todo.md (also regenerated by this script) and this
+ *      generator is extended to consume it. Do not tell a user their
+ *      mockup's colors are on-brand until that's done.
+ *
+ *   Left entirely at CDS's default (confirmed: no Finnomena data exists for
+ *   these at all — not a judgment call, nothing to draw from): iconSize,
+ *   avatarSize, borderWidth (as a general scale — only scattered
+ *   per-component stroke-weight overrides exist, not a real scale),
+ *   controlSize, textTransform, shadow, fontFamilyMono.
  *
  * DO NOT hand-edit resolved values below without also updating
  * tokens/*.json and re-running the generator — this file should stay a
  * mechanical projection of the Figma export, not a second source of truth.
  */
-import type { ThemeConfig } from "@coinbase/cds-web/core/theme";
 `;
 
 const spaceSection = `
 // ---------------------------------------------------------------------------
-// Spacing — resolved from tokens/size.json. Values not divisible by 8
-// (CDS's base unit) are recorded above in the file header, not included here.
+// space — resolved from tokens/size.json, keyed to CDS's ThemeVars.Space.
 // ---------------------------------------------------------------------------
-export const spaceScale = [
-  ${spaceScale.join(", ")},
-] as const;
-`;
-
-const radiusSection = `
-// ---------------------------------------------------------------------------
-// Radius — resolved from tokens/radius.json.
-// ---------------------------------------------------------------------------
-export const radiusScale = {
-${radiusEntries.map(([slug, value]) => `  ${jsKey(slug)}: ${value},`).join("\n")}
+export const space = {
+${Object.entries(space).map(([key, value]) => `  ${jsKey(key)}: ${value},`).join("\n")}
 } as const;
 `;
 
-const fontSection = `
+const borderRadiusSection = `
 // ---------------------------------------------------------------------------
-// Typography — fontFamily is a deliberate fixed override (see file header).
+// borderRadius — resolved from tokens/radius.json, keyed to CDS's
+// ThemeVars.BorderRadius. See file header for the "900" gap and the
+// "round"→"1000" by-intent mapping.
+// ---------------------------------------------------------------------------
+export const borderRadius = {
+${Object.entries(borderRadius).map(([key, value]) => `  ${jsKey(key)}: ${value},`).join("\n")}
+} as const;
+`;
+
+const typographySection = `
+// ---------------------------------------------------------------------------
+// Typography — flat per-role maps matching CDS's ThemeVars.FontFamily/
+// FontSize/FontWeight/LineHeight (all alias the same 13 role keys). See
+// file header for which roles have real Finnomena data vs. are left absent.
 // ---------------------------------------------------------------------------
 export const fontFamily = {
-  primary: "${FONT_FAMILY_PRIMARY}",
+${Object.entries(fontFamily).map(([key, value]) => `  ${jsKey(key)}: ${JSON.stringify(value)},`).join("\n")}
 } as const;
 
-// Per-role type scale for the web "Large (Default)" size class, resolved
-// from tokens/type_primitives.json. fontWeight is a variant name string,
-// not a numeric CSS weight — see file header caveat.
-export const typeScale = {
-${typeScaleRows
-  .map(
-    (r) =>
-      `  ${JSON.stringify(toCamel(r.role))}: { fontSize: ${r.size}, lineHeight: ${r.lineHeight}, letterSpacing: ${r.letterSpacing}, fontWeight: ${JSON.stringify(r.fontWeight)} },`
-  )
-  .join("\n")}
+export const fontSize = {
+${Object.entries(fontSize).map(([key, value]) => `  ${jsKey(key)}: ${JSON.stringify(value)},`).join("\n")}
 } as const;
-`;
 
-const colorSection = `
-// ---------------------------------------------------------------------------
-// Color — BLOCKED, see file header. Family/shade sets below are collected
-// live from every "{Family.Shade}" alias actually referenced in
-// tokens/theme.json's light/dark trees — every value is a TODO_RGB
-// placeholder standing in for a primitive that hasn't been exported yet.
-// ---------------------------------------------------------------------------
-const ${TODO_RGB} = "0,0,0"; // placeholder — replace once primitive families are exported (see file header)
+export const fontWeight = {
+${Object.entries(fontWeight).map(([key, value]) => `  ${jsKey(key)}: ${JSON.stringify(value)},`).join("\n")}
+} as const;
 
-${emitSpectrum("lightSpectrum", lightFamilies)}
-
-${emitSpectrum("darkSpectrum", darkFamilies)}
-
-// Semantic color map — real group/token names from tokens/theme.json,
-// leaves reference the spectrum objects above rather than duplicating
-// TODO_RGB, so filling in real primitive values later flows through every
-// semantic field automatically.
-${emitColorTree("lightColor", lightColorTree, "lightSpectrum")}
-
-${emitColorTree("darkColor", darkColorTree, "darkSpectrum")}
+export const lineHeight = {
+${Object.entries(lineHeight).map(([key, value]) => `  ${jsKey(key)}: ${JSON.stringify(value)},`).join("\n")}
+} as const;
 `;
 
 const footer = `
 /**
- * companyTheme — the object every project's ThemeProvider imports.
+ * neonTheme — the partial ThemeConfig overrides every project merges onto
+ * CDS's defaultTheme via ./createTheme.ts's createNeonTheme(). Deliberately
+ * NOT typed as Partial<ThemeConfig> here — see that file for why, and for
+ * where the real, complete ThemeConfig gets assembled.
  *
- * Custom tokens not already in CDS's ThemeVars (e.g. 'typeScale' above)
- * must be declared via the ThemeVarsExtended namespace before use — see
- * the SKILL.md instructions this file ships alongside.
+ * Custom tokens not already in CDS's ThemeVars must be declared via the
+ * ThemeVarsExtended namespace before use — see the SKILL.md instructions
+ * this file ships alongside.
  */
-export const companyTheme: Partial<ThemeConfig> = {
-  space: spaceScale,
-  radius: radiusScale,
-  lightSpectrum,
-  darkSpectrum,
-  lightColor,
-  darkColor,
-  typography: {
-    fontFamily: fontFamily.primary,
-    typeScale,
-  },
+export const neonTheme = {
+  space,
+  borderRadius,
+  fontFamily,
+  fontSize,
+  fontWeight,
+  lineHeight,
 };
 
-export default companyTheme;
+export default neonTheme;
 `;
 
-const output = [header, spaceSection, radiusSection, fontSection, colorSection, footer]
+const themeOutput = [header, spaceSection, borderRadiusSection, typographySection, footer]
   .join("\n")
   .replace(/\n{3,}/g, "\n\n");
-writeFileSync(OUT_FILE, output);
+writeFileSync(OUT_THEME_FILE, themeOutput);
 
-console.log(`Wrote ${OUT_FILE}`);
-console.log(`  spaceScale: ${spaceScale.length} values (${spaceNonConforming.length} non-8-multiples excluded)`);
-console.log(`  radiusScale: ${radiusEntries.length} entries`);
-console.log(`  typeScale: ${typeScaleRows.length} roles`);
-console.log(`  color families (light/dark): ${lightFamilies.size}/${darkFamilies.size}`);
-console.log(`  unresolved color values: ${unresolvedColorCount}`);
-if (missingColorFamilies.length) console.log(`  missing color families: ${missingColorFamilies.join(", ")}`);
+// ---------------------------------------------------------------------------
+// Render color-mapping.todo.md
+// ---------------------------------------------------------------------------
+const cdsFamilyNameMatches = CDS_SPECTRUM_HUES.filter((hue) =>
+  finnomenaFamilies.some((f) => f.toLowerCase() === hue.toLowerCase())
+);
+const cdsHuesWithNoMatch = CDS_SPECTRUM_HUES.filter((h) => !cdsFamilyNameMatches.includes(h));
+const finnomenaFamiliesWithNoCdsHue = finnomenaFamilies.filter(
+  (f) => !CDS_SPECTRUM_HUES.some((h) => h.toLowerCase() === f.toLowerCase())
+);
+
+function renderColorReferenceSection(mode) {
+  const rows = buildColorReference(mode);
+  const lines = rows.map((r) =>
+    r.family
+      ? `- \`${r.path}\` → \`${r.family}.${r.shade}\` = \`${r.value ?? "(no primitive value found)"}\``
+      : `- \`${r.path}\` → unresolved alias \`${r.raw}\``
+  );
+  return lines.join("\n");
+}
+
+const colorTodo = `# Color mapping — TODO (human decision required)
+
+**Generated ${report.generatedAt} by \`generate-theme-config.mjs\`. Do not hand-edit
+the lists below without re-running the generator — but DO fill in your
+mapping decisions in a separate file once made (see "Next step" at the
+bottom); this file itself gets overwritten every run.**
+
+Finnomena's design tokens use role/usage-based semantic names
+(\`text-primary\`, \`icon-on-brand\`, \`border-disabled\`). CDS's \`ThemeConfig\`
+uses a completely different naming system: abstract UI-role slugs mixed with
+explicit color-family+intensity slugs (\`fg\`, \`bgPrimary\`, \`accentBoldBlue\`).
+There is no shared vocabulary to bridge these automatically — assigning,
+for example, which Finnomena shade becomes \`bgPrimary\` vs. \`accentBoldBlue\`
+is a brand/design decision. This generator will not guess it. Until someone
+does, CDS's own default brand colors (Coinbase blue, etc.) render instead of
+Finnomena's.
+
+## 1. CDS spectrum hues (11) needing a Finnomena family assignment
+
+Each hue needs 13 steps assigned (\`${CDS_SPECTRUM_STEPS.join(", ")}\`).
+
+**Same-name Finnomena family exists** (still needs per-step shade
+confirmation — same name does not guarantee the intended lightness/hue
+position matches CDS's intent at each step):
+${cdsFamilyNameMatches.map((h) => `- \`${h}\` ← candidate: Finnomena's \`${finnomenaFamilies.find((f) => f.toLowerCase() === h.toLowerCase())}\` family`).join("\n") || "- (none)"}
+
+**No Finnomena family with a matching name — needs an explicit decision:**
+${cdsHuesWithNoMatch.map((h) => `- \`${h}\` — no obvious source`).join("\n") || "- (none)"}
+
+## 2. Finnomena families with no CDS hue slot
+
+These don't fit any of CDS's 11 fixed hues at all — decide whether they
+should be dropped, or folded into the closest existing hue:
+${finnomenaFamiliesWithNoCdsHue.map((f) => `- \`${f}\``).join("\n") || "- (none)"}
+
+## 3. CDS semantic color slugs (${CDS_SEMANTIC_COLOR_SLUGS.length}) — all UNASSIGNED
+
+Each needs a light-mode and dark-mode value (a spectrum reference once §1 is
+resolved, or a direct value):
+
+${CDS_SEMANTIC_COLOR_SLUGS.map((s) => `- \`${s}\``).join("\n")}
+
+## 4. Reference — what Finnomena's own semantic tokens currently resolve to
+
+Not a mapping — just data to inform the decisions above. Read from
+\`tokens/theme.json\`, resolved down to a primitive family/shade via the same
+alias-walking logic \`generate-theme-config.mjs\` uses internally.
+
+### Light mode
+
+${renderColorReferenceSection("light")}
+
+### Dark mode
+
+${renderColorReferenceSection("dark")}
+
+## Next step
+
+Once a human has decided the mapping, it needs a real place to live and a
+generator update to consume it — neither exists yet (deliberately, to avoid
+building a mechanism for a decision nobody's made). Options to consider at
+that point: a small hand-written \`theme/color-overrides.ts\` merged in by
+\`createTheme.ts\` alongside \`theme.config.ts\`'s \`neonTheme\`, or a new
+\`tokens/color-mapping.json\` input this script learns to read. Don't build
+either speculatively before the mapping itself exists.
+`;
+
+writeFileSync(OUT_COLOR_TODO_FILE, colorTodo);
+
+console.log(`Wrote ${OUT_THEME_FILE}`);
+console.log(`  space: ${Object.keys(space).length}/15 keys`);
+console.log(`  borderRadius: ${Object.keys(borderRadius).length}/11 keys`);
+console.log(`  fontFamily: ${Object.keys(fontFamily).length}/13 roles`);
+console.log(`  fontSize/fontWeight/lineHeight: ${Object.keys(fontSize).length}/13 roles populated`);
+if (skippedRoles.length) console.log(`  skipped roles: ${skippedRoles.join("; ")}`);
+console.log(`Wrote ${OUT_COLOR_TODO_FILE}`);
+console.log(`  spectrum hues with a name match: ${cdsFamilyNameMatches.length}/${CDS_SPECTRUM_HUES.length}`);
+console.log(`  semantic slugs needing assignment: ${CDS_SEMANTIC_COLOR_SLUGS.length}`);
