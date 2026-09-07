@@ -1,0 +1,14 @@
+{
+  "name": "finnomena-plugins",
+  "description": "Finnomena's internal Claude Code plugins.",
+  "owner": {
+    "name": "Finnomena"
+  },
+  "plugins": [
+    {
+      "name": "neon",
+      "source": ".",
+      "description": "Company brand theme for Coinbase Design System (CDS) — makes vibe-coded UI mockups automatically follow Finnomena's branding."
+    }
+  ]
+}
