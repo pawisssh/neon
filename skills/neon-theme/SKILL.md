@@ -18,6 +18,10 @@ This skill is a thin layer on top of Coinbase's own official tooling. It does
 This skill's only job is to make sure whatever CDS produces uses
 **Finnomena's** brand, not Coinbase's default theme.
 
+See `DESIGN.md` for the full color/typography/spacing reference tables,
+per-component styling notes, and do's/don'ts — read it before making styling
+decisions rather than guessing from `theme.config.ts` alone.
+
 ## What this skill does, every time
 
 1. **Ensure `@coinbase/cds-web` is installed** in the current project. If it

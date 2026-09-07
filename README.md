@@ -27,6 +27,7 @@ neon/
 ├── .claude-plugin/plugin.json        # plugin manifest (this repo IS the plugin)
 └── skills/neon-theme/
     ├── SKILL.md                      # instructions Claude follows when theming UI
+    ├── DESIGN.md                     # Finnomena style reference — colors, type, components
     ├── theme/
     │   ├── theme.config.ts           # companyTheme override of CDS defaultTheme
     │   ├── tokens/                   # raw Figma Variables export (source of truth)
