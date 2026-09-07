@@ -1,0 +1,3936 @@
+{
+  "sm_320px": {
+    "Simple Layout": {
+      "Gutter": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "End margins": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Columns": {
+        "value": 4,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport size": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport max-width": {
+        "value": 3840,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "SidebarView min-width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar min-width": {
+        "value": "{Sidebar View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View max-width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar max-width": {
+        "value": "{Sidebar View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content min-width": {
+        "value": "{Content View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View max-width": {
+        "value": 3840,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content max-width": {
+        "value": 3840,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector min-width": {
+        "value": "{Inspector View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View max-width": {
+        "value": 3840,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector max-width": {
+        "value": "{Inspector View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Breakpoint": {
+        "value": "SM (320px)",
+        "type": "fontFamily",
+        "prefix": "breakpoint"
+      }
+    },
+    "Detailed Layout": {
+      "Gutter": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "End margins": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Columns": {
+        "value": 4,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport size": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport max-width": {
+        "value": 499,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar min-width": {
+        "value": "{Sidebar View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "SidebarView min-width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View max-width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar max-width": {
+        "value": "{Sidebar View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content min-width": {
+        "value": "{Content View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View max-width": {
+        "value": 499,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content max-width": {
+        "value": "{Content View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector min-width": {
+        "value": "{Inspector View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View max-width": {
+        "value": 499,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector max-width": {
+        "value": 499,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Breakpoint": {
+        "value": "SM (320px)",
+        "type": "fontFamily",
+        "prefix": "breakpoint"
+      }
+    },
+    "Content Layout": {
+      "Gutter": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "End margins": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Columns": {
+        "value": 4,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport size": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport max-width": {
+        "value": 499,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "SidebarView min-width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar min-width": {
+        "value": "{Sidebar View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View max-width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar max-width": {
+        "value": "{Sidebar View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content min-width": {
+        "value": "{Content View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View max-width": {
+        "value": 499,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content max-width": {
+        "value": 499,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector min-width": {
+        "value": "{Inspector View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View max-width": {
+        "value": 499,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector max-width": {
+        "value": "{Inspector View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Breakpoint": {
+        "value": "SM (320px)",
+        "type": "fontFamily",
+        "prefix": "breakpoint"
+      }
+    },
+    "Immersive Layout": {
+      "Gutter": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "End margins": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Columns": {
+        "value": 4,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport size": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport max-width": {
+        "value": 499,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar min-width": {
+        "value": "{Sidebar View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "SidebarView min-width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View max-width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar max-width": {
+        "value": "{Sidebar View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content min-width": {
+        "value": "{Content View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View max-width": {
+        "value": 499,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content max-width": {
+        "value": "{Content View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector min-width": {
+        "value": "{Inspector View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View max-width": {
+        "value": 499,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector max-width": {
+        "value": 499,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Breakpoint": {
+        "value": "SM (320px)",
+        "type": "fontFamily",
+        "prefix": "breakpoint"
+      }
+    },
+    "Multi-column Layout": {
+      "Gutter": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "End margins": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Columns": {
+        "value": 4,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport size": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport max-width": {
+        "value": 499,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar min-width": {
+        "value": "{Sidebar View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View min-width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View max-width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar max-width": {
+        "value": "{Sidebar View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content min-width": {
+        "value": "{Content View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View max-width": {
+        "value": 499,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content max-width": {
+        "value": "{Content View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector min-width": {
+        "value": "{Inspector View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View max-width": {
+        "value": 499,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector max-width": {
+        "value": 499,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Breakpoint": {
+        "value": "SM (320px)",
+        "type": "fontFamily",
+        "prefix": "breakpoint"
+      }
+    }
+  },
+  "md_500px": {
+    "Simple Layout": {
+      "Gutter": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "End margins": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Columns": {
+        "value": 8,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport size": {
+        "value": 500,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport min-width": {
+        "value": 500,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport max-width": {
+        "value": 987,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View width": {
+        "value": 64,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "SidebarView min-width": {
+        "value": 64,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar min-width": {
+        "value": "{Sidebar View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View max-width": {
+        "value": 64,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar max-width": {
+        "value": "{Sidebar View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View min-width": {
+        "value": 436,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content min-width": {
+        "value": "{Content View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View max-width": {
+        "value": 987,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content max-width": {
+        "value": 980,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector min-width": {
+        "value": "{Inspector View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View max-width": {
+        "value": 640,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector max-width": {
+        "value": "{Inspector View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Breakpoint": {
+        "value": "MD (500px)",
+        "type": "fontFamily",
+        "prefix": "breakpoint"
+      }
+    },
+    "Detailed Layout": {
+      "Gutter": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "End margins": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Columns": {
+        "value": 8,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport size": {
+        "value": 500,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport min-width": {
+        "value": 500,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport max-width": {
+        "value": 987,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View width": {
+        "value": 64,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar min-width": {
+        "value": "{Sidebar View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "SidebarView min-width": {
+        "value": 64,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View max-width": {
+        "value": 64,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar max-width": {
+        "value": "{Sidebar View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content min-width": {
+        "value": "{Content View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View max-width": {
+        "value": 640,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content max-width": {
+        "value": "{Content View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View min-width": {
+        "value": 436,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector min-width": {
+        "value": "{Inspector View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View max-width": {
+        "value": 987,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector max-width": {
+        "value": 980,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Breakpoint": {
+        "value": "MD (500px)",
+        "type": "fontFamily",
+        "prefix": "breakpoint"
+      }
+    },
+    "Content Layout": {
+      "Gutter": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "End margins": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Columns": {
+        "value": 8,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport size": {
+        "value": 500,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport min-width": {
+        "value": 500,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport max-width": {
+        "value": 987,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View width": {
+        "value": 64,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "SidebarView min-width": {
+        "value": 64,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar min-width": {
+        "value": "{Sidebar View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View max-width": {
+        "value": 64,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar max-width": {
+        "value": "{Sidebar View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View min-width": {
+        "value": 436,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content min-width": {
+        "value": "{Content View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View max-width": {
+        "value": 987,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content max-width": {
+        "value": 980,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector min-width": {
+        "value": "{Inspector View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View max-width": {
+        "value": 987,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector max-width": {
+        "value": 980,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Breakpoint": {
+        "value": "MD (500px)",
+        "type": "fontFamily",
+        "prefix": "breakpoint"
+      }
+    },
+    "Immersive Layout": {
+      "Gutter": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "End margins": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Columns": {
+        "value": 8,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport size": {
+        "value": 500,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport min-width": {
+        "value": 500,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport max-width": {
+        "value": 987,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View width": {
+        "value": 64,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar min-width": {
+        "value": "{Sidebar View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "SidebarView min-width": {
+        "value": 64,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View max-width": {
+        "value": 64,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar max-width": {
+        "value": "{Sidebar View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content min-width": {
+        "value": "{Content View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View max-width": {
+        "value": 987,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content max-width": {
+        "value": "{Content View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View min-width": {
+        "value": 436,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector min-width": {
+        "value": "{Inspector View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View max-width": {
+        "value": 987,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector max-width": {
+        "value": 980,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Breakpoint": {
+        "value": "MD (500px)",
+        "type": "fontFamily",
+        "prefix": "breakpoint"
+      }
+    },
+    "Multi-column Layout": {
+      "Gutter": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "End margins": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Columns": {
+        "value": 8,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport size": {
+        "value": 500,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport min-width": {
+        "value": 500,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport max-width": {
+        "value": 987,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View width": {
+        "value": 64,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar min-width": {
+        "value": "{Sidebar View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View min-width": {
+        "value": 64,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View max-width": {
+        "value": 64,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar max-width": {
+        "value": "{Sidebar View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content min-width": {
+        "value": "{Content View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View max-width": {
+        "value": 640,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content max-width": {
+        "value": "{Content View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View min-width": {
+        "value": 436,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector min-width": {
+        "value": "{Inspector View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View max-width": {
+        "value": 987,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector max-width": {
+        "value": 980,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Breakpoint": {
+        "value": "MD (500px)",
+        "type": "fontFamily",
+        "prefix": "breakpoint"
+      }
+    }
+  },
+  "lg_988px": {
+    "Simple Layout": {
+      "Gutter": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "End margins": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Columns": {
+        "value": 12,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport size": {
+        "value": 988,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport min-width": {
+        "value": 988,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport max-width": {
+        "value": 1079,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View width": {
+        "value": 64,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "SidebarView min-width": {
+        "value": 64,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar min-width": {
+        "value": "{Sidebar View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View max-width": {
+        "value": 360,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar max-width": {
+        "value": "{Sidebar View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content min-width": {
+        "value": "{Content View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View max-width": {
+        "value": 1079,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content max-width": {
+        "value": 980,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector min-width": {
+        "value": "{Inspector View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View max-width": {
+        "value": 640,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector max-width": {
+        "value": "{Inspector View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Breakpoint": {
+        "value": "LG (988px)",
+        "type": "fontFamily",
+        "prefix": "breakpoint"
+      }
+    },
+    "Detailed Layout": {
+      "Gutter": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "End margins": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Columns": {
+        "value": 12,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport size": {
+        "value": 988,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport min-width": {
+        "value": 988,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport max-width": {
+        "value": 1079,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View width": {
+        "value": 64,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar min-width": {
+        "value": "{Sidebar View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "SidebarView min-width": {
+        "value": 64,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View max-width": {
+        "value": 360,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar max-width": {
+        "value": "{Sidebar View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View width": {
+        "value": 360,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content min-width": {
+        "value": "{Content View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View max-width": {
+        "value": 640,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content max-width": {
+        "value": "{Content View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector min-width": {
+        "value": "{Inspector View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View max-width": {
+        "value": 1079,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector max-width": {
+        "value": 980,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Breakpoint": {
+        "value": "LG (988px)",
+        "type": "fontFamily",
+        "prefix": "breakpoint"
+      }
+    },
+    "Content Layout": {
+      "Gutter": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "End margins": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Columns": {
+        "value": 12,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport size": {
+        "value": 988,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport min-width": {
+        "value": 988,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport max-width": {
+        "value": 1079,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View width": {
+        "value": 64,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "SidebarView min-width": {
+        "value": 64,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar min-width": {
+        "value": "{Sidebar View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View max-width": {
+        "value": 360,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar max-width": {
+        "value": "{Sidebar View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content min-width": {
+        "value": "{Content View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View max-width": {
+        "value": 1079,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content max-width": {
+        "value": 980,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View width": {
+        "value": 360,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector min-width": {
+        "value": "{Inspector View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View max-width": {
+        "value": 640,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector max-width": {
+        "value": "{Inspector View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Breakpoint": {
+        "value": "LG (988px)",
+        "type": "fontFamily",
+        "prefix": "breakpoint"
+      }
+    },
+    "Immersive Layout": {
+      "Gutter": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "End margins": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Columns": {
+        "value": 12,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport size": {
+        "value": 988,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport min-width": {
+        "value": 988,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport max-width": {
+        "value": 1079,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View width": {
+        "value": 64,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar min-width": {
+        "value": "{Sidebar View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "SidebarView min-width": {
+        "value": 64,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View max-width": {
+        "value": 360,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar max-width": {
+        "value": "{Sidebar View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content min-width": {
+        "value": "{Content View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View max-width": {
+        "value": 1079,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content max-width": {
+        "value": "{Content View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector min-width": {
+        "value": "{Inspector View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View max-width": {
+        "value": 1079,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector max-width": {
+        "value": 980,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Breakpoint": {
+        "value": "LG (988px)",
+        "type": "fontFamily",
+        "prefix": "breakpoint"
+      }
+    },
+    "Multi-column Layout": {
+      "Gutter": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "End margins": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Columns": {
+        "value": 12,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport size": {
+        "value": 988,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport min-width": {
+        "value": 988,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport max-width": {
+        "value": 1079,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View width": {
+        "value": 64,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar min-width": {
+        "value": "{Sidebar View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View min-width": {
+        "value": 64,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View max-width": {
+        "value": 360,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar max-width": {
+        "value": "{Sidebar View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content min-width": {
+        "value": "{Content View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View max-width": {
+        "value": 640,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content max-width": {
+        "value": "{Content View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector min-width": {
+        "value": "{Inspector View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View max-width": {
+        "value": 1079,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector max-width": {
+        "value": 980,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Breakpoint": {
+        "value": "LG (988px)",
+        "type": "fontFamily",
+        "prefix": "breakpoint"
+      }
+    }
+  },
+  "xl_1080px": {
+    "Simple Layout": {
+      "Gutter": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "End margins": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Columns": {
+        "value": 12,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport size": {
+        "value": 1080,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport min-width": {
+        "value": 1080,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport max-width": {
+        "value": 1271,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View width": {
+        "value": 240,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "SidebarView min-width": {
+        "value": 64,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar min-width": {
+        "value": "{Sidebar View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View max-width": {
+        "value": 360,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar max-width": {
+        "value": "{Sidebar View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content min-width": {
+        "value": "{Content View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View max-width": {
+        "value": 1271,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content max-width": {
+        "value": 980,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View width": {
+        "value": 360,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector min-width": {
+        "value": "{Inspector View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View max-width": {
+        "value": 640,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector max-width": {
+        "value": "{Inspector View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Breakpoint": {
+        "value": "XL (1080px)",
+        "type": "fontFamily",
+        "prefix": "breakpoint"
+      }
+    },
+    "Detailed Layout": {
+      "Gutter": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "End margins": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Columns": {
+        "value": 12,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport size": {
+        "value": 1080,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport min-width": {
+        "value": 1080,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport max-width": {
+        "value": 1271,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View width": {
+        "value": 240,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar min-width": {
+        "value": "{Sidebar View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "SidebarView min-width": {
+        "value": 64,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View max-width": {
+        "value": 360,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar max-width": {
+        "value": "{Sidebar View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View width": {
+        "value": 360,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content min-width": {
+        "value": "{Content View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View max-width": {
+        "value": 640,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content max-width": {
+        "value": "{Content View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector min-width": {
+        "value": "{Inspector View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View max-width": {
+        "value": 1271,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector max-width": {
+        "value": 980,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Breakpoint": {
+        "value": "XL (1080px)",
+        "type": "fontFamily",
+        "prefix": "breakpoint"
+      }
+    },
+    "Content Layout": {
+      "Gutter": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "End margins": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Columns": {
+        "value": 12,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport size": {
+        "value": 1080,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport min-width": {
+        "value": 1080,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport max-width": {
+        "value": 1271,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View width": {
+        "value": 240,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "SidebarView min-width": {
+        "value": 64,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar min-width": {
+        "value": "{Sidebar View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View max-width": {
+        "value": 360,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar max-width": {
+        "value": "{Sidebar View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content min-width": {
+        "value": "{Content View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View max-width": {
+        "value": 1271,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content max-width": {
+        "value": 980,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View width": {
+        "value": 360,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector min-width": {
+        "value": "{Inspector View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View max-width": {
+        "value": 640,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector max-width": {
+        "value": "{Inspector View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Breakpoint": {
+        "value": "XL (1080px)",
+        "type": "fontFamily",
+        "prefix": "breakpoint"
+      }
+    },
+    "Immersive Layout": {
+      "Gutter": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "End margins": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Columns": {
+        "value": 12,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport size": {
+        "value": 1080,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport min-width": {
+        "value": 1080,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport max-width": {
+        "value": 1271,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View width": {
+        "value": 240,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar min-width": {
+        "value": "{Sidebar View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "SidebarView min-width": {
+        "value": 64,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View max-width": {
+        "value": 360,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar max-width": {
+        "value": "{Sidebar View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View width": {
+        "value": 360,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content min-width": {
+        "value": "{Content View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View max-width": {
+        "value": 1271,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content max-width": {
+        "value": "{Content View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector min-width": {
+        "value": "{Inspector View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View max-width": {
+        "value": 1271,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector max-width": {
+        "value": 980,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Breakpoint": {
+        "value": "XL (1080px)",
+        "type": "fontFamily",
+        "prefix": "breakpoint"
+      }
+    },
+    "Multi-column Layout": {
+      "Gutter": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "End margins": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Columns": {
+        "value": 12,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport size": {
+        "value": 1080,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport min-width": {
+        "value": 1080,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport max-width": {
+        "value": 1271,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View width": {
+        "value": 240,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar min-width": {
+        "value": "{Sidebar View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View min-width": {
+        "value": 64,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View max-width": {
+        "value": 360,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar max-width": {
+        "value": "{Sidebar View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View width": {
+        "value": 360,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content min-width": {
+        "value": "{Content View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View max-width": {
+        "value": 640,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content max-width": {
+        "value": "{Content View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector min-width": {
+        "value": "{Inspector View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View max-width": {
+        "value": 1271,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector max-width": {
+        "value": 980,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Breakpoint": {
+        "value": "XL (1080px)",
+        "type": "fontFamily",
+        "prefix": "breakpoint"
+      }
+    }
+  },
+  "xxl_1272px": {
+    "Simple Layout": {
+      "Gutter": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "End margins": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Columns": {
+        "value": 12,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport size": {
+        "value": 1272,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport min-width": {
+        "value": 1272,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport max-width": {
+        "value": 1439,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "SidebarView min-width": {
+        "value": 64,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar min-width": {
+        "value": "{Sidebar View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View max-width": {
+        "value": 360,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar max-width": {
+        "value": "{Sidebar View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content min-width": {
+        "value": "{Content View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View max-width": {
+        "value": 1439,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content max-width": {
+        "value": 1439,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View width": {
+        "value": 360,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector min-width": {
+        "value": "{Inspector View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View max-width": {
+        "value": 640,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector max-width": {
+        "value": "{Inspector View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Breakpoint": {
+        "value": "XXL (1272px)",
+        "type": "fontFamily",
+        "prefix": "breakpoint"
+      }
+    },
+    "Detailed Layout": {
+      "Gutter": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "End margins": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Columns": {
+        "value": 12,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport size": {
+        "value": 1272,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport min-width": {
+        "value": 1272,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport max-width": {
+        "value": 1439,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar min-width": {
+        "value": "{Sidebar View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "SidebarView min-width": {
+        "value": 64,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View max-width": {
+        "value": 360,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar max-width": {
+        "value": "{Sidebar View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View width": {
+        "value": 360,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content min-width": {
+        "value": "{Content View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View max-width": {
+        "value": 640,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content max-width": {
+        "value": "{Content View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector min-width": {
+        "value": "{Inspector View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View max-width": {
+        "value": 1439,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector max-width": {
+        "value": 980,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Breakpoint": {
+        "value": "XXL (1272px)",
+        "type": "fontFamily",
+        "prefix": "breakpoint"
+      }
+    },
+    "Content Layout": {
+      "Gutter": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "End margins": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Columns": {
+        "value": 12,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport size": {
+        "value": 1272,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport min-width": {
+        "value": 1272,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport max-width": {
+        "value": 1439,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "SidebarView min-width": {
+        "value": 64,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar min-width": {
+        "value": "{Sidebar View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View max-width": {
+        "value": 360,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar max-width": {
+        "value": "{Sidebar View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content min-width": {
+        "value": "{Content View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View max-width": {
+        "value": 1439,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content max-width": {
+        "value": 980,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View width": {
+        "value": 360,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector min-width": {
+        "value": "{Inspector View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View max-width": {
+        "value": 640,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector max-width": {
+        "value": "{Inspector View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Breakpoint": {
+        "value": "XXL (1272px)",
+        "type": "fontFamily",
+        "prefix": "breakpoint"
+      }
+    },
+    "Immersive Layout": {
+      "Gutter": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "End margins": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Columns": {
+        "value": 12,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport size": {
+        "value": 1272,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport min-width": {
+        "value": 1272,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport max-width": {
+        "value": 1439,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar min-width": {
+        "value": "{Sidebar View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "SidebarView min-width": {
+        "value": 64,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View max-width": {
+        "value": 360,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar max-width": {
+        "value": "{Sidebar View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View width": {
+        "value": 360,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content min-width": {
+        "value": "{Content View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View max-width": {
+        "value": 1439,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content max-width": {
+        "value": "{Content View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector min-width": {
+        "value": "{Inspector View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View max-width": {
+        "value": 1439,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector max-width": {
+        "value": 980,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Breakpoint": {
+        "value": "XXL (1272px)",
+        "type": "fontFamily",
+        "prefix": "breakpoint"
+      }
+    },
+    "Multi-column Layout": {
+      "Gutter": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "End margins": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Columns": {
+        "value": 12,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport size": {
+        "value": 1272,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport min-width": {
+        "value": 1272,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport max-width": {
+        "value": 1439,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar min-width": {
+        "value": "{Sidebar View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View min-width": {
+        "value": 64,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View max-width": {
+        "value": 360,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar max-width": {
+        "value": "{Sidebar View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View width": {
+        "value": 360,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content min-width": {
+        "value": "{Content View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View max-width": {
+        "value": 640,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content max-width": {
+        "value": "{Content View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector min-width": {
+        "value": "{Inspector View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View max-width": {
+        "value": 1439,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector max-width": {
+        "value": 980,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Breakpoint": {
+        "value": "XXL (1272px)",
+        "type": "fontFamily",
+        "prefix": "breakpoint"
+      }
+    }
+  },
+  "xxxl_1440px": {
+    "Simple Layout": {
+      "Gutter": {
+        "value": 24,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "End margins": {
+        "value": 24,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Columns": {
+        "value": 12,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport size": {
+        "value": 1440,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport min-width": {
+        "value": 1440,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport max-width": {
+        "value": 1919,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "SidebarView min-width": {
+        "value": 64,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar min-width": {
+        "value": "{Sidebar View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View max-width": {
+        "value": 360,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar max-width": {
+        "value": "{Sidebar View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content min-width": {
+        "value": "{Content View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View max-width": {
+        "value": 1919,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content max-width": {
+        "value": 1440,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View width": {
+        "value": 400,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector min-width": {
+        "value": "{Inspector View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View max-width": {
+        "value": 640,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector max-width": {
+        "value": "{Inspector View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Breakpoint": {
+        "value": "XXXL (1440px)",
+        "type": "fontFamily",
+        "prefix": "breakpoint"
+      }
+    },
+    "Detailed Layout": {
+      "Gutter": {
+        "value": 24,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "End margins": {
+        "value": 24,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Columns": {
+        "value": 12,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport size": {
+        "value": 1440,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport min-width": {
+        "value": 1440,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport max-width": {
+        "value": 1919,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View width": {
+        "value": 360,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar min-width": {
+        "value": "{Sidebar View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "SidebarView min-width": {
+        "value": 64,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View max-width": {
+        "value": 360,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar max-width": {
+        "value": "{Sidebar View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View width": {
+        "value": 400,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content min-width": {
+        "value": "{Content View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View max-width": {
+        "value": 640,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content max-width": {
+        "value": "{Content View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector min-width": {
+        "value": "{Inspector View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View max-width": {
+        "value": 3840,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector max-width": {
+        "value": 980,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Breakpoint": {
+        "value": "Max (1440px)",
+        "type": "fontFamily",
+        "prefix": "breakpoint"
+      }
+    },
+    "Content Layout": {
+      "Gutter": {
+        "value": 24,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "End margins": {
+        "value": 24,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Columns": {
+        "value": 12,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport size": {
+        "value": 1440,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport min-width": {
+        "value": 1440,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport max-width": {
+        "value": 1919,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "SidebarView min-width": {
+        "value": 64,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar min-width": {
+        "value": "{Sidebar View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View max-width": {
+        "value": 360,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar max-width": {
+        "value": "{Sidebar View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content min-width": {
+        "value": "{Content View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View max-width": {
+        "value": 3840,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content max-width": {
+        "value": 980,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View width": {
+        "value": 400,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector min-width": {
+        "value": "{Inspector View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View max-width": {
+        "value": 640,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector max-width": {
+        "value": "{Inspector View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Breakpoint": {
+        "value": "XXXL (1440px)",
+        "type": "fontFamily",
+        "prefix": "breakpoint"
+      }
+    },
+    "Immersive Layout": {
+      "Gutter": {
+        "value": 24,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "End margins": {
+        "value": 24,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Columns": {
+        "value": 12,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport size": {
+        "value": 1440,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport min-width": {
+        "value": 1440,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport max-width": {
+        "value": 1919,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar min-width": {
+        "value": "{Sidebar View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "SidebarView min-width": {
+        "value": 64,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View max-width": {
+        "value": 360,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar max-width": {
+        "value": "{Sidebar View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View width": {
+        "value": 400,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content min-width": {
+        "value": "{Content View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View max-width": {
+        "value": 1440,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content max-width": {
+        "value": "{Content View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector min-width": {
+        "value": "{Inspector View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View max-width": {
+        "value": 3840,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector max-width": {
+        "value": 980,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Breakpoint": {
+        "value": "Max (1440px)",
+        "type": "fontFamily",
+        "prefix": "breakpoint"
+      }
+    },
+    "Multi-column Layout": {
+      "Gutter": {
+        "value": 24,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "End margins": {
+        "value": 24,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Columns": {
+        "value": 12,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport size": {
+        "value": 1440,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport min-width": {
+        "value": 1440,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport max-width": {
+        "value": 1919,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar min-width": {
+        "value": "{Sidebar View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View min-width": {
+        "value": 64,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View max-width": {
+        "value": 360,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar max-width": {
+        "value": "{Sidebar View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View width": {
+        "value": 400,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content min-width": {
+        "value": "{Content View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View max-width": {
+        "value": 640,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content max-width": {
+        "value": "{Content View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector min-width": {
+        "value": "{Inspector View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View max-width": {
+        "value": 3840,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector max-width": {
+        "value": 980,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Breakpoint": {
+        "value": "Max (1440px)",
+        "type": "fontFamily",
+        "prefix": "breakpoint"
+      }
+    }
+  },
+  "max_1920px": {
+    "Simple Layout": {
+      "Gutter": {
+        "value": 24,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "End margins": {
+        "value": 24,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Columns": {
+        "value": 12,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport size": {
+        "value": 1920,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport min-width": {
+        "value": 1920,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport max-width": {
+        "value": 3840,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "SidebarView min-width": {
+        "value": 64,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar min-width": {
+        "value": "{Sidebar View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View max-width": {
+        "value": 360,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar max-width": {
+        "value": "{Sidebar View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content min-width": {
+        "value": "{Content View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View max-width": {
+        "value": 3840,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content max-width": {
+        "value": 1440,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View width": {
+        "value": 560,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector min-width": {
+        "value": "{Inspector View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View max-width": {
+        "value": 640,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector max-width": {
+        "value": "{Inspector View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Breakpoint": {
+        "value": "Max (1920px)",
+        "type": "fontFamily",
+        "prefix": "breakpoint"
+      }
+    },
+    "Detailed Layout": {
+      "Gutter": {
+        "value": 24,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "End margins": {
+        "value": 24,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Columns": {
+        "value": 12,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport size": {
+        "value": 1920,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport min-width": {
+        "value": 1920,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport max-width": {
+        "value": 3840,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View width": {
+        "value": 360,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar min-width": {
+        "value": "{Sidebar View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "SidebarView min-width": {
+        "value": 64,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View max-width": {
+        "value": 360,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar max-width": {
+        "value": "{Sidebar View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View width": {
+        "value": 560,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content min-width": {
+        "value": "{Content View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View max-width": {
+        "value": 640,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content max-width": {
+        "value": "{Content View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector min-width": {
+        "value": "{Inspector View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View max-width": {
+        "value": 3840,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector max-width": {
+        "value": 980,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Breakpoint": {
+        "value": "Max (1440px)",
+        "type": "fontFamily",
+        "prefix": "breakpoint"
+      }
+    },
+    "Content Layout": {
+      "Gutter": {
+        "value": 24,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "End margins": {
+        "value": 24,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Columns": {
+        "value": 12,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport size": {
+        "value": 1920,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport min-width": {
+        "value": 1920,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport max-width": {
+        "value": 3840,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "SidebarView min-width": {
+        "value": 64,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar min-width": {
+        "value": "{Sidebar View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View max-width": {
+        "value": 360,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar max-width": {
+        "value": "{Sidebar View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content min-width": {
+        "value": "{Content View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View max-width": {
+        "value": 3840,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content max-width": {
+        "value": 980,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View width": {
+        "value": 560,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector min-width": {
+        "value": "{Inspector View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View max-width": {
+        "value": 640,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector max-width": {
+        "value": "{Inspector View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Breakpoint": {
+        "value": "Max (1920px)",
+        "type": "fontFamily",
+        "prefix": "breakpoint"
+      }
+    },
+    "Immersive Layout": {
+      "Gutter": {
+        "value": 24,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "End margins": {
+        "value": 24,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Columns": {
+        "value": 12,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport size": {
+        "value": 1920,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport min-width": {
+        "value": 1920,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport max-width": {
+        "value": 3840,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar min-width": {
+        "value": "{Sidebar View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "SidebarView min-width": {
+        "value": 64,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View max-width": {
+        "value": 360,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar max-width": {
+        "value": "{Sidebar View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View width": {
+        "value": 560,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content min-width": {
+        "value": "{Content View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View max-width": {
+        "value": 1440,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content max-width": {
+        "value": "{Content View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector min-width": {
+        "value": "{Inspector View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View max-width": {
+        "value": 3840,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector max-width": {
+        "value": 980,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Breakpoint": {
+        "value": "Max (1440px)",
+        "type": "fontFamily",
+        "prefix": "breakpoint"
+      }
+    },
+    "Multi-column Layout": {
+      "Gutter": {
+        "value": 24,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "End margins": {
+        "value": 24,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Columns": {
+        "value": 12,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport size": {
+        "value": 1920,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport min-width": {
+        "value": 1920,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Viewport max-width": {
+        "value": 3840,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar min-width": {
+        "value": "{Sidebar View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View min-width": {
+        "value": 64,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar View max-width": {
+        "value": 360,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Sidebar max-width": {
+        "value": "{Sidebar View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View width": {
+        "value": 560,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content min-width": {
+        "value": "{Content View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content View max-width": {
+        "value": 640,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Content max-width": {
+        "value": "{Content View max-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector min-width": {
+        "value": "{Inspector View min-width}",
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector View max-width": {
+        "value": 3840,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Inspector max-width": {
+        "value": 980,
+        "type": "number",
+        "prefix": "breakpoint"
+      },
+      "Breakpoint": {
+        "value": "Max (1440px)",
+        "type": "fontFamily",
+        "prefix": "breakpoint"
+      }
+    }
+  }
+}

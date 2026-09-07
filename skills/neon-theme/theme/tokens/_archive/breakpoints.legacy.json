@@ -1,0 +1,558 @@
+{
+  "small_320px": {
+    "viewport size": {
+      "value": 320,
+      "type": "number",
+      "prefix": "breakpoints"
+    },
+    "aside left min-width": {
+      "value": 256,
+      "type": "number",
+      "prefix": "breakpoints"
+    },
+    "aside right min-width": {
+      "value": 256,
+      "type": "number",
+      "prefix": "breakpoints"
+    },
+    "modal min-width": {
+      "value": "{modal.small.min-width}",
+      "type": "number",
+      "prefix": "breakpoints"
+    },
+    "modal max-width": {
+      "value": "{modal.small.max-width}",
+      "type": "number",
+      "prefix": "breakpoints"
+    },
+    "modal text margin right": {
+      "value": "{modal.small.text-margin-right}",
+      "type": "number",
+      "prefix": "breakpoints"
+    },
+    "class": {
+      "value": "{modal.small.class}",
+      "type": "fontFamily",
+      "prefix": "breakpoints"
+    },
+    "end margins": {
+      "value": 16,
+      "type": "number",
+      "prefix": "breakpoints"
+    },
+    "columns": {
+      "value": 4,
+      "type": "number",
+      "prefix": "breakpoints"
+    },
+    "Wide grid": {
+      "gutter": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "left end-margin": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "right end-margin": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "left end-margin with button": {
+        "value": 4,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "right end-margin with button": {
+        "value": 4,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "left end-margin with aside": {
+        "value": "{Wide grid.left end-margin}",
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "right end-margin with aside": {
+        "value": "{Wide grid.right end-margin}",
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "columns": {
+        "value": 4,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "asid left spacer": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "aside left spacer min-width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "aside left spacer max-width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "4 column width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "4 column min-width": {
+        "value": 288,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "4 column max-width": {
+        "value": 500,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "8 column width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "8 column min-width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "8 column max-width": {
+        "value": 500,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "12 column width": {
+        "value": 320,
+        "type": "number",
+        "prefix": "breakpoints"
+      }
+    }
+  },
+  "medium_large_500px_1079px": {
+    "viewport size": {
+      "value": 500,
+      "type": "number",
+      "prefix": "breakpoints"
+    },
+    "aside left min-width": {
+      "value": 72,
+      "type": "number",
+      "prefix": "breakpoints"
+    },
+    "aside right min-width": {
+      "value": 256,
+      "type": "number",
+      "prefix": "breakpoints"
+    },
+    "modal min-width": {
+      "value": "{modal.medium.min-width}",
+      "type": "number",
+      "prefix": "breakpoints"
+    },
+    "modal max-width": {
+      "value": "{modal.medium.max-width}",
+      "type": "number",
+      "prefix": "breakpoints"
+    },
+    "modal text margin right": {
+      "value": "{modal.medium.text-margin-right}",
+      "type": "number",
+      "prefix": "breakpoints"
+    },
+    "class": {
+      "value": "{modal.medium.class}",
+      "type": "fontFamily",
+      "prefix": "breakpoints"
+    },
+    "end margins": {
+      "value": 16,
+      "type": "number",
+      "prefix": "breakpoints"
+    },
+    "columns": {
+      "value": 8,
+      "type": "number",
+      "prefix": "breakpoints"
+    },
+    "Wide grid": {
+      "gutter": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "left end-margin": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "right end-margin": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "left end-margin with button": {
+        "value": 4,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "right end-margin with button": {
+        "value": 4,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "left end-margin with aside": {
+        "value": "{Wide grid.left end-margin}",
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "right end-margin with aside": {
+        "value": "{Wide grid.right end-margin}",
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "columns": {
+        "value": 8,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "asid left spacer": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "aside left spacer min-width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "aside left spacer max-width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "4 column width": {
+        "value": 288,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "4 column min-width": {
+        "value": 288,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "4 column max-width": {
+        "value": 288,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "8 column width": {
+        "value": 500,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "8 column min-width": {
+        "value": 500,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "8 column max-width": {
+        "value": 800,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "12 column width": {
+        "value": 500,
+        "type": "number",
+        "prefix": "breakpoints"
+      }
+    }
+  },
+  "extra_large_1080px": {
+    "viewport size": {
+      "value": 1080,
+      "type": "number",
+      "prefix": "breakpoints"
+    },
+    "aside left min-width": {
+      "value": 72,
+      "type": "number",
+      "prefix": "breakpoints"
+    },
+    "aside right min-width": {
+      "value": 320,
+      "type": "number",
+      "prefix": "breakpoints"
+    },
+    "modal min-width": {
+      "value": "{modal.extra-large.min-width}",
+      "type": "number",
+      "prefix": "breakpoints"
+    },
+    "modal max-width": {
+      "value": "{modal.extra-large.max-width}",
+      "type": "number",
+      "prefix": "breakpoints"
+    },
+    "modal text margin right": {
+      "value": "{modal.extra-large.text-margin-right}",
+      "type": "number",
+      "prefix": "breakpoints"
+    },
+    "class": {
+      "value": "{modal.extra-large.class}",
+      "type": "fontFamily",
+      "prefix": "breakpoints"
+    },
+    "end margins": {
+      "value": 16,
+      "type": "number",
+      "prefix": "breakpoints"
+    },
+    "columns": {
+      "value": 12,
+      "type": "number",
+      "prefix": "breakpoints"
+    },
+    "Wide grid": {
+      "gutter": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "left end-margin": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "right end-margin": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "left end-margin with button": {
+        "value": 8,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "right end-margin with button": {
+        "value": 8,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "left end-margin with aside": {
+        "value": 24,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "right end-margin with aside": {
+        "value": 24,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "columns": {
+        "value": 12,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "asid left spacer": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "aside left spacer min-width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "aside left spacer max-width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "4 column width": {
+        "value": 288,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "4 column min-width": {
+        "value": 288,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "4 column max-width": {
+        "value": 336,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "8 column width": {
+        "value": 648,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "8 column min-width": {
+        "value": 648,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "8 column max-width": {
+        "value": 648,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "12 column width": {
+        "value": 1056,
+        "type": "number",
+        "prefix": "breakpoints"
+      }
+    }
+  },
+  "max_1272px": {
+    "viewport size": {
+      "value": 1280,
+      "type": "number",
+      "prefix": "breakpoints"
+    },
+    "aside left min-width": {
+      "value": 288,
+      "type": "number",
+      "prefix": "breakpoints"
+    },
+    "aside right min-width": {
+      "value": 336,
+      "type": "number",
+      "prefix": "breakpoints"
+    },
+    "modal min-width": {
+      "value": "{modal.max.min-width}",
+      "type": "number",
+      "prefix": "breakpoints"
+    },
+    "modal max-width": {
+      "value": "{modal.max.max-width}",
+      "type": "number",
+      "prefix": "breakpoints"
+    },
+    "modal text margin right": {
+      "value": "{modal.max.text-margin-right}",
+      "type": "number",
+      "prefix": "breakpoints"
+    },
+    "class": {
+      "value": "{modal.max.class}",
+      "type": "fontFamily",
+      "prefix": "breakpoints"
+    },
+    "end margins": {
+      "value": 16,
+      "type": "number",
+      "prefix": "breakpoints"
+    },
+    "columns": {
+      "value": 12,
+      "type": "number",
+      "prefix": "breakpoints"
+    },
+    "Wide grid": {
+      "gutter": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "left end-margin": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "right end-margin": {
+        "value": 16,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "left end-margin with button": {
+        "value": 8,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "right end-margin with button": {
+        "value": 8,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "left end-margin with aside": {
+        "value": 24,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "right end-margin with aside": {
+        "value": 24,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "columns": {
+        "value": 12,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "asid left spacer": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "aside left spacer min-width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "aside left spacer max-width": {
+        "value": 0,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "4 column width": {
+        "value": 288,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "4 column min-width": {
+        "value": 288,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "4 column max-width": {
+        "value": 336,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "8 column width": {
+        "value": 648,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "8 column min-width": {
+        "value": 648,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "8 column max-width": {
+        "value": 648,
+        "type": "number",
+        "prefix": "breakpoints"
+      },
+      "12 column width": {
+        "value": 1272,
+        "type": "number",
+        "prefix": "breakpoints"
+      }
+    }
+  }
+}
