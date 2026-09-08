@@ -50,13 +50,30 @@ used by all three neon skills. The steps below assume it.
    See `${CLAUDE_PLUGIN_ROOT}/design-md/finnomena/DESIGN.md` for the full
    reference, or `theme.css`'s own header for the raw variable list.
 
-3. **Forbid hardcoded colors and pixel values.** Always `var(--color-fg)`,
-   `var(--space-2)`, `var(--borderRadius-200)`, etc. — never raw hex or
-   pixels. If a mockup needs a value with no matching variable, flag it
-   rather than inventing one. Two values are single-purpose:
+3. **Don't hardcode a value when a matching token is in scope — but don't
+   forcibly retheme the app's own layout geometry either.** Don't write a
+   raw hex/color literal where a `--color-*` token maps to it (any tier).
+   At `tier: 'visual-system'`, the same applies to `--space-*`,
+   `--borderRadius-*`, and `--font*-*` values that are actually part of
+   Finnomena's brand system. But a structural/layout pixel value that
+   isn't part of the brand system — a specific component's internal grid
+   gap, an unrelated one-off dimension with no Finnomena equivalent — is
+   the app's own design decision to preserve, not something to forcibly
+   convert to a token just because it's a pixel value. If a mockup needs
+   a branded value with no matching variable, flag it rather than
+   inventing one. Two values are single-purpose:
    `--color-accentBoldYellow` (reserved for one brand-highlight per screen)
    and `--color-bgLinePrimary` (reserved for links/focus rings/interactive
    highlight only).
+
+   For the full inventory → map → update-shared → update-remaining →
+   verify migration procedure — including how to detect and update plain
+   CSS/CSS Modules, Tailwind v3, Tailwind v4, and shadcn-style projects
+   without breaking their existing variable-value format, and how to
+   handle chart/status colors separately from brand colors — see
+   `${CLAUDE_PLUGIN_ROOT}/skills/neon-redesign/references/style-migration.md`.
+   Before claiming a restyle is done, verify per
+   `${CLAUDE_PLUGIN_ROOT}/skills/neon-redesign/references/verification.md`.
 
 4. **Dark mode** is wired via `prefers-color-scheme: dark` with a
    `[data-theme="dark"]`/`[data-theme="light"]` override — see
