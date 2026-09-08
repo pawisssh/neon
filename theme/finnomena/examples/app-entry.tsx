@@ -64,10 +64,16 @@ const appTheme = createNeonTheme();
 //   import "@fontsource/ibm-plex-sans-thai/600.css";
 //   import "@fontsource/ibm-plex-sans-thai/700.css";
 
-export function AppRoot({ children }: { children: ReactNode }) {
+export function AppRoot({
+  children,
+  colorScheme = "light",
+}: {
+  children: ReactNode;
+  colorScheme?: "light" | "dark";
+}) {
   return (
     <MediaQueryProvider>
-      <ThemeProvider theme={appTheme} activeColorScheme="light">
+      <ThemeProvider theme={appTheme} activeColorScheme={colorScheme}>
         <PortalProvider>{children}</PortalProvider>
       </ThemeProvider>
     </MediaQueryProvider>

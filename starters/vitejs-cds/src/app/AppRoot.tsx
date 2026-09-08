@@ -29,10 +29,16 @@ import { createNeonTheme } from "../theme/createTheme";
 // object every render and defeat that.
 const appTheme = createNeonTheme();
 
-export function AppRoot({ children }: { children: ReactNode }) {
+export function AppRoot({
+  children,
+  colorScheme = "light",
+}: {
+  children: ReactNode;
+  colorScheme?: "light" | "dark";
+}) {
   return (
     <MediaQueryProvider>
-      <ThemeProvider theme={appTheme} activeColorScheme="light">
+      <ThemeProvider theme={appTheme} activeColorScheme={colorScheme}>
         <PortalProvider>{children}</PortalProvider>
       </ThemeProvider>
     </MediaQueryProvider>

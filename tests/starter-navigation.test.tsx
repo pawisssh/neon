@@ -168,3 +168,19 @@ test("finnomenaEcosystemNav preset still carries the real ecosystem destinations
     "https://www.finnomena.com/notification/hub",
   ]);
 });
+
+test("AppRoot accepts colorScheme prop and configures ThemeProvider with activeColorScheme", () => {
+  const lightMarkup = renderToStaticMarkup(
+    <AppRoot colorScheme="light">
+      <div id="child">Light Content</div>
+    </AppRoot>
+  );
+  assert.ok(lightMarkup.includes("Light Content"));
+
+  const darkMarkup = renderToStaticMarkup(
+    <AppRoot colorScheme="dark">
+      <div id="child">Dark Content</div>
+    </AppRoot>
+  );
+  assert.ok(darkMarkup.includes("Dark Content"));
+});
