@@ -40,12 +40,28 @@ used by all three neon skills. The steps below assume it.
    (e.g. `styles/neon` for a plain-HTML project) — validated to stay inside
    `<target-dir>` before anything is written. Then **import it once** in the
    project's root CSS or entry file (e.g. `import "./theme/theme.css";`).
+   **If the target already has a customized `theme.css`, the installer
+   refuses to overwrite it and exits nonzero before touching anything** —
+   diff, merge, and retain the customization rather than deleting the
+   file or bypassing the check; see
+   `${CLAUDE_PLUGIN_ROOT}/skills/neon-audit/references/theme-integration.md`
+   §4 (§5 for what a partial multi-file-copy failure does and doesn't
+   guarantee).
 
 2. **Scope which variables you use to the tier the user chose**:
    - **Colors only**: reference only `--color-*` variables (`var(--color-fg)`,
-     `var(--color-bgPrimary)`, etc.).
+     `var(--color-bgPrimary)`, etc.). Never touch font loading at this tier.
    - **Colors + typography**: also use `--fontFamily-*`, `--fontSize-*`,
      `--fontWeight-*`, `--lineHeight-*`, `--space-*`, and `--borderRadius-*`.
+     Defining `--fontFamily-body: 'IBM Plex Sans Thai', sans-serif` doesn't
+     make the font render — it still needs to actually be loaded (a
+     `<link>`, a self-hosted `@font-face`/`@fontsource` import, or a
+     framework font loader), or text silently falls back to `sans-serif`.
+     Inspect the app's existing font-loading mechanism, prefer it, load
+     only the weights in use, and verify with real Thai *and* Latin sample
+     text — full procedure in
+     `${CLAUDE_PLUGIN_ROOT}/skills/neon-audit/references/theme-integration.md`
+     §1.
 
    See `${CLAUDE_PLUGIN_ROOT}/design-md/finnomena/DESIGN.md` for the full
    reference, or `theme.css`'s own header for the raw variable list.
@@ -75,10 +91,19 @@ used by all three neon skills. The steps below assume it.
    Before claiming a restyle is done, verify per
    `${CLAUDE_PLUGIN_ROOT}/skills/neon-redesign/references/verification.md`.
 
-4. **Dark mode** is wired via `prefers-color-scheme: dark` with a
-   `[data-theme="dark"]`/`[data-theme="light"]` override — see
-   `theme.css`'s header. If the project already has its own dark-mode
-   mechanism, adapt the selectors in the copied `theme.css` to match.
+4. **Dark mode: keep the app's existing source of truth.** `theme.css`
+   ships wired via `prefers-color-scheme: dark` with a
+   `[data-theme="dark"]`/`[data-theme="light"]` override (see `theme.css`'s
+   header), but that's a default assumption, not the target project's
+   actual mechanism. Before wiring anything, find out how the app already
+   controls dark/light — an explicit toggle (a switch, a stored
+   preference, a class/attribute a hook or context controls) or OS-only
+   `prefers-color-scheme` — and match `theme.css`'s selectors to it. If
+   the app has its own explicit toggle, that toggle stays authoritative;
+   don't let `theme.css`'s shipped default silently override a user's
+   explicit "light" choice with the OS's dark preference. See
+   `${CLAUDE_PLUGIN_ROOT}/skills/neon-audit/references/theme-integration.md`
+   §2 for the full procedure and worked example.
 
 5. **Color is a provisional, first-pass mapping** — every value traces to
    a real Finnomena token, but the mapping involves judgment calls (see
@@ -91,17 +116,29 @@ used by all three neon skills. The steps below assume it.
 **Colors → Colors+Typography** is free — `theme.css` contains every
 section regardless of tier. Moving up just means using more variables.
 
-**Colors+Typography → Full CDS** doesn't require a CSS rewrite —
-`theme.css`'s variable names are byte-identical to what CDS's
-`ThemeProvider` emits (verified — see `theme.css`'s header). Existing
-`var(--color-fg)` markup keeps working after adopting
-`${CLAUDE_PLUGIN_ROOT}/skills/neon-create`. Migrate to real CDS components
-incrementally.
+**Colors+Typography → Full CDS** doesn't require a CSS rewrite, but isn't
+a free pass either — `theme.css`'s variable names are byte-identical to
+what CDS's `ThemeProvider` emits (verified — see `theme.css`'s header),
+**but identical names don't guarantee `var(--color-fg)` markup keeps
+working unchanged.** Before adopting
+`${CLAUDE_PLUGIN_ROOT}/skills/neon-create` and removing `theme.css`, run
+the integration check in
+`${CLAUDE_PLUGIN_ROOT}/skills/neon-audit/references/theme-integration.md`
+§3: inspect variable *scope* (CDS may inject its custom properties at a
+different DOM node than `theme.css`'s `:root`), *cascade* (both can be
+present simultaneously during migration — load order decides which
+wins), *portal behavior* (does themed content still reach overlays
+rendered by CDS's `PortalProvider`?), and *theme-state ownership* (§2
+above). Verify both light and dark render correctly before removing the
+old declarations. Migrate to real CDS components incrementally.
 
 ## Known limitations
 
-- Dark-mode selectors are a default assumption, not verified against any
-  specific project's mechanism.
+- Dark-mode selectors are a default assumption — match them to the
+  target project's actual mechanism per step 4 above (see
+  `${CLAUDE_PLUGIN_ROOT}/skills/neon-audit/references/theme-integration.md`
+  §2) rather than assuming the shipped `prefers-color-scheme` default is
+  already correct.
 - Spectrum primitives (`--blue60` etc.), illustration colors, and
   `iconSize`/`avatarSize`/`shadow`/`fontFamilyMono` are deliberately
   omitted — see `theme.css`'s header.
@@ -113,3 +150,8 @@ incrementally.
   `theme.config.ts` or `color-overrides.ts` change, regenerate by calling
   `createNeonTheme()` → `createThemeCssVars()` in a scratch CDS project.
   See `theme.css`'s own header for the full method.
+- Installer writes are only preflighted against a *known* conflict (a
+  customized destination file) — an arbitrary disk/I/O failure mid-copy
+  isn't automatically rolled back. If `install.mjs` errors after it
+  starts reporting progress, check which theme file(s) actually landed
+  before retrying; don't assume a clean state.

@@ -6,10 +6,9 @@ description: ONLY use this skill if the user's message literally contains the wo
 # Finnomena Brand Theme + Scaffold (CDS)
 
 This skill is a thin layer on top of Coinbase's own official tooling — for
-"which component do I use" and "what props does Button take," prefer
-`cds-code`/`cds-docs`/the CDS MCP server if they're available in the user's
-environment. If they aren't, read real prop types from the installed
-`@coinbase/cds-web` package's `dts/` folder rather than guessing (see step 5).
+"which component"/"what props," prefer `cds-code`/`cds-docs`/the CDS MCP
+server if available; otherwise read real prop types from the installed
+`@coinbase/cds-web` package's `dts/` folder rather than guessing (step 5).
 
 Its only job is to make sure whatever CDS produces uses **Finnomena's**
 brand, not Coinbase's default — whether that means scaffolding a brand-new
@@ -37,9 +36,8 @@ used by all three neon skills. The steps below assume it.
    in this conversation, including via `neon-audit`'s handoff — treat
    `brandConfirmed` as true and move on without asking again. Ask a direct
    brand question only when it's genuinely missing: "Do you want to use
-   Finnomena's neon brand theme for this?" If the answer is no, stop —
-   don't install anything, wire `ThemeProvider`, scaffold, or hand off to
-   another neon skill.
+   Finnomena's neon brand theme for this?" If no, stop — don't install
+   anything, wire `ThemeProvider`, scaffold, or hand off to another skill.
 
 1. **Determine the target: brand-new project, or one that already exists?**
    If it's obvious from the request or the target directory (empty/
@@ -57,46 +55,52 @@ used by all three neon skills. The steps below assume it.
    node ${CLAUDE_PLUGIN_ROOT}/theme/finnomena/scripts/install.mjs <target-dir>         # existing project
    ```
 
-   The installer also accepts `--theme-dir <project-relative-dir>` (default
-   `src/theme`; existing-project/`--css-only` only, not `--new`),
-   `--package-manager <npm|pnpm|yarn|bun>` (auto-detected otherwise from
-   `package.json`'s `packageManager` field or a lockfile), and
-   `--skip-install` (scaffold/copy files without running any install —
-   the output explicitly reports dependencies as not installed, never an
-   unqualified "Done").
+   Also accepts `--theme-dir <project-relative-dir>` (default `src/theme`;
+   existing-project/`--css-only` only), `--package-manager
+   <npm|pnpm|yarn|bun>` (auto-detected otherwise), and `--skip-install`
+   (copy files without installing — output reports deps as not installed,
+   never an unqualified "Done"); see `install.mjs`'s header for full semantics.
 
-   For a new project, this copies `starters/vitejs-cds/` into `<target-dir>`
-   verbatim — its `src/theme/` already ships with the 4 Finnomena theme
-   files pre-wired — and runs `npm install` (or the detected/`--package-manager`
-   manager's install command). Report its output to the user,
-   then tell them to run `npm run dev` and confirm the app boots before
-   claiming it "works." For an existing project, it copies the same 4
-   theme files into
-   `<target-dir>/src/theme/` (or `--theme-dir`) and installs
-   `@coinbase/cds-web`, pinned to the version range declared in
-   `starters/vitejs-cds/package.json`, only if it isn't already a
-   dependency. It never touches provider wiring or component code — that's
-   your job, from here on.
+   For a new project, this copies `starters/vitejs-cds/` (theme
+   pre-wired) into `<target-dir>` and runs the install command. Report its
+   output, then tell the user to run `npm run dev` and confirm the app
+   boots before claiming it "works." For an existing project, it copies
+   the same 4 theme files into `<target-dir>/src/theme/` (or
+   `--theme-dir`) and installs `@coinbase/cds-web` if not already a
+   dependency. It never touches provider wiring or component code —
+   that's your job, from here on. **If a destination theme file is
+   already customized, the installer refuses to overwrite it and exits
+   nonzero rather than touching anything** — don't force a clean rerun by
+   deleting the customized file or bypassing the check; diff, merge, and
+   retain the customization per
+   `${CLAUDE_PLUGIN_ROOT}/skills/neon-audit/references/theme-integration.md`
+   §4 (§5 covers a partial multi-file-copy failure).
 
    If the project already has a `theme.css` (from a prior
-   `${CLAUDE_PLUGIN_ROOT}/skills/neon-redesign` run), this is an *upgrade*:
-   leave `theme.css` in place — its `var(--color-fg)` etc. references keep
-   working unchanged once CDS is installed, since the variable names are
-   byte-identical to what real CDS's `ThemeProvider` emits. Migrate markup to
-   real CDS components incrementally, screen by screen, not a big-bang
-   rewrite.
+   `${CLAUDE_PLUGIN_ROOT}/skills/neon-redesign` run), this is an
+   *upgrade*. Its variable names are byte-identical to what CDS's
+   `ThemeProvider` emits, but matching names alone don't guarantee
+   `var(--color-fg)` markup keeps working unchanged — verify variable
+   scope, cascade order, portal behavior, and theme-state ownership
+   before removing `theme.css`; see
+   `${CLAUDE_PLUGIN_ROOT}/skills/neon-audit/references/theme-integration.md`
+   §3. Migrate markup to real CDS components incrementally, screen by
+   screen, not a big-bang rewrite.
 
 4. **Use `createNeonTheme()` (from the copied `src/theme/createTheme.ts`),
    never CDS's `defaultTheme` passed through unmodified.** Call it **once,
    at module scope** (not inline in JSX) and pass the result to
    `ThemeProvider`'s `theme` prop alongside `activeColorScheme` (`"light"`
    or `"dark"`) — `ThemeProvider` is memoized on theme identity, so a new
-   object every render defeats that. It merges Finnomena's overrides
-   (`theme.config.ts`'s `neonTheme`, `color-overrides.ts`'s
-   `colorOverrides`) onto CDS's own `defaultTheme`. See
-   `${CLAUDE_PLUGIN_ROOT}/theme/finnomena/examples/app-entry.tsx` (existing
-   project) or the copied `src/app/AppRoot.tsx` (new project, already wired)
-   for the exact pattern.
+   object every render defeats that. **Derive `activeColorScheme` from the
+   app's existing dark-mode source of truth**, not a hardcoded `"light"`
+   or a second mechanism — see
+   `${CLAUDE_PLUGIN_ROOT}/skills/neon-audit/references/theme-integration.md`
+   §2. It merges Finnomena's overrides (`theme.config.ts`'s `neonTheme`,
+   `color-overrides.ts`'s `colorOverrides`) onto CDS's own `defaultTheme`.
+   See `${CLAUDE_PLUGIN_ROOT}/theme/finnomena/examples/app-entry.tsx`
+   (existing project) or the copied `src/app/AppRoot.tsx` (new project,
+   already wired) for the exact pattern.
 
 5. **Enforce provider order.** Always:
 
@@ -171,9 +175,17 @@ used by all three neon skills. The steps below assume it.
    numbers are corroborated vs. extrapolated before treating any as
    pixel-final.
 
-10. **New-project branch only — reuse the existing font-loading pattern**
-    (IBM Plex Sans Thai) rather than inventing a new one — see
-    `starters/vitejs-cds/src/main.tsx`.
+10. **Font loading — new-project branch reuses the shipped pattern**
+    (`starters/vitejs-cds/src/main.tsx` loads IBM Plex Sans Thai);
+    **existing-project branch inspects and integrates, never invents a
+    new mechanism.** Never touch font loading at `tier: 'colors'`. At
+    `'visual-system'`/`'cds'`, inspect how the app loads fonts, prefer
+    that mechanism, load only the weights the affected UI uses, support a
+    self-hosted alternative to a CDN link, and verify with real Thai
+    *and* Latin sample text (a font can load by name while still falling
+    back for Thai glyphs specifically) — full procedure in
+    `${CLAUDE_PLUGIN_ROOT}/skills/neon-audit/references/theme-integration.md`
+    §1.
 
 For the token-regeneration pipeline and known limitations, read
 `${CLAUDE_PLUGIN_ROOT}/theme/finnomena/theme.config.ts`,
@@ -182,6 +194,6 @@ comments directly — that's the source of truth, not a second copy here.
 
 ## Roadmap context
 
-This skill is an early step of a longer plan (real brand values → Figma Code
-Connect → token sync automation + governance). Ask the maintainer for the
-full roadmap if asked about future phases — it isn't shipped in this repo.
+This skill is an early step of a longer plan (real brand values → Figma
+Code Connect → token sync automation + governance) — ask the maintainer
+for the full roadmap if asked; it isn't shipped in this repo.
