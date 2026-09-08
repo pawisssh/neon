@@ -14,3 +14,4 @@ theme/finnomena/tokens.report.json
 # not part of the distributed plugin.
 notes/
 docs/
+tests/
