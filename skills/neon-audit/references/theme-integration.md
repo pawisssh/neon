@@ -41,17 +41,25 @@ At `tier: 'visual-system'` or `'cds'`, before adding anything:
    ibm-plex-sans-thai` (or manually vendored `.woff2` files behind
    `@font-face`) covers this — don't insist on the CDN link as the only
    option.
-4. **Load only the weights the affected UI actually uses.** This repo's
-   own type scale (`${CLAUDE_PLUGIN_ROOT}/theme/finnomena/theme.config.ts`'s
-   `fontWeight` export, corroborated by `theme.css`'s `--fontWeight-*`
-   variables) uses four distinct weights across all roles: `400` (most
-   text roles — body, title1–3, display1/2, legal, label2), `500`
-   (headline), `600` (label1, caption), `700` (display3 only). Don't
-   blindly request all four for every change — a screen that only ever
-   renders `body`/`headline` text needs `400` and `500`, not all four. If
-   you can't tell which roles are in play, `400;500;600;700` (the set the
-   starter's own `main.tsx` and `app-entry.tsx` request) is the safe
-   default, not an invented value.
+4. **Load only the weights the affected UI actually uses.** `theme.css`'s
+   `--fontWeight-*` variables show four distinct weights across the type
+   scale: `400` (most text roles — body, title1–4, display1/2, legal,
+   label2), `500` (headline), `600` (label1, caption), `700` (display3
+   only). Only `400`/`500`/`700` are confirmed Finnomena data —
+   `${CLAUDE_PLUGIN_ROOT}/theme/finnomena/theme.config.ts`'s own header
+   populates `fontWeight` for only 8 of CDS's 13 font roles (display1–3,
+   title1–3, headline, body) and explicitly lists title4/label1/label2/
+   caption/legal as having "no confident Finnomena source," falling back
+   to CDS's own default weight instead. `theme.css`'s `600` for
+   label1/caption is that CDS default leaking through, not verified brand
+   data — `theme.config.ts` cannot corroborate it. It's still the real
+   value `theme.css` emits for those roles, though, so load weight `600`
+   for any UI using label1/caption text — just don't cite it as confirmed
+   brand-sourced data. Don't blindly request all four weights for every
+   change — a screen that only ever renders `body`/`headline` text needs
+   `400` and `500`, not all four. If you can't tell which roles are in
+   play, `400;500;600;700` (the set the starter's own `main.tsx` and
+   `app-entry.tsx` request) is the safe default, not an invented value.
 5. **Verify with Thai *and* Latin sample text — this is the one step that
    actually catches a broken font load.** A font can report as "loaded"
    by family name while still falling back to a system font for Thai
@@ -223,9 +231,14 @@ typography (fonts, sizes, weights) applied to the dashboard.
   `<link>` or a self-hosted `@fontsource` import is acceptable; prefer
   self-hosting since this is a real app, not a prototype.
 - **Load only what's needed:** the dashboard uses `title2`, `body`, and
-  `label1` text roles per the type scale → weights `400` (title2, body)
-  and `600` (label1) are the ones that matter; request `400` and `600`
-  from `@fontsource/ibm-plex-sans-thai` rather than all four.
+  `label1` text roles → weights `400` (title2, body, confirmed Finnomena
+  data) and `600` (label1) are the ones that matter; request `400` and
+  `600` from `@fontsource/ibm-plex-sans-thai` rather than all four.
+  `600` is `label1`'s real value in `theme.css`, but it's CDS's own
+  default leaking through for a role `theme.config.ts`'s header lists as
+  having no confident Finnomena source — not verified brand data. Load it
+  anyway; it's still what renders correctly, just don't tell the employee
+  it's confirmed-brand-sourced.
 - **Verify:** `getComputedStyle` on the dashboard's heading and body text
   resolves to `'IBM Plex Sans Thai'`; render a dashboard string containing
   real Thai sample text (not the English-only mock content the dashboard
