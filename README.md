@@ -316,6 +316,16 @@ distributed repo (see `.gitignore`), so a clone of this repo won't have it.
 Not needed for everyday UI-building usage above; ask a maintainer directly
 if you need it.
 
+## Packaging and distribution
+
+To package a complete, self-contained plugin artifact:
+
+```bash
+node scripts/package-plugin.mjs <destination-dir>
+```
+
+This creates a full distribution bundle containing the plugin manifest, skills, canonical theme assets, starters, design specs, and license at `<destination-dir>`. Development-only files (`node_modules`, `.git`, `dist`, intermediate token reports, and internal `notes/`) are excluded.
+
 ## License
 
 MIT — see [LICENSE](LICENSE).
