@@ -1,6 +1,6 @@
 ---
 name: neon-create
-description: ONLY use this skill if the user's message literally contains the word "Finnomena" or "neon" — do not infer from related terms like "CDS", "Coinbase Design System", or "real CDS components" alone. Implements FULL Finnomena theming on top of the Coinbase Design System (CDS) — install @coinbase/cds-web, wire ThemeProvider, build with real CDS components — for EITHER a brand-new project (scaffolds Vite + React + CDS + a responsive app-shell layout) OR a project that already exists (themes it in place). Normally reached via neon-audit's recommendation for existing projects; invoke directly for a brand-new project. If the user just wants Finnomena's colors (optionally + typography) WITHOUT adopting CDS, use neon-theme-css instead — do not assume CDS is wanted by default.
+description: ONLY use this skill if the user's message literally contains the word "Finnomena" or "neon" — do not infer from related terms like "CDS", "Coinbase Design System", or "real CDS components" alone. Implements FULL Finnomena theming on top of the Coinbase Design System (CDS) — install @coinbase/cds-web, wire ThemeProvider, build with real CDS components — for EITHER a brand-new project (scaffolds Vite + React + CDS + a responsive app-shell layout) OR a project that already exists (themes it in place). Normally reached via neon-audit's recommendation for existing projects; invoke directly for a brand-new project. If the user just wants Finnomena's colors (optionally + typography) WITHOUT adopting CDS, use neon-redesign instead — do not assume CDS is wanted by default.
 ---
 
 # Finnomena Brand Theme + Scaffold (CDS)
@@ -16,7 +16,7 @@ brand, not Coinbase's default — whether that means scaffolding a brand-new
 project or theming one that already exists. Reached via
 `${CLAUDE_PLUGIN_ROOT}/skills/neon-audit` for existing projects, or invoked
 directly for a brand-new one. If the user just wants colors/fonts without
-CDS, use `${CLAUDE_PLUGIN_ROOT}/skills/neon-theme-css` instead.
+CDS, use `${CLAUDE_PLUGIN_ROOT}/skills/neon-redesign` instead.
 
 See `${CLAUDE_PLUGIN_ROOT}/design-md/finnomena/DESIGN.md` — the single
 canonical Finnomena design reference shared by every skill in this repo —
@@ -58,7 +58,7 @@ Read it before making styling decisions rather than guessing from
    code — that's your job, from here on.
 
    If the project already has a `theme.css` (from a prior
-   `${CLAUDE_PLUGIN_ROOT}/skills/neon-theme-css` run), this is an *upgrade*:
+   `${CLAUDE_PLUGIN_ROOT}/skills/neon-redesign` run), this is an *upgrade*:
    leave `theme.css` in place — its `var(--color-fg)` etc. references keep
    working unchanged once CDS is installed, since the variable names are
    byte-identical to what real CDS's `ThemeProvider` emits. Migrate markup to

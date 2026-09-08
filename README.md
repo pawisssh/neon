@@ -6,8 +6,9 @@ branding — with a choice of depth. Ships three skills:
 
 - `neon-audit` — for an *existing* project, checks it and recommends a
   theming depth, then hands off to one of the two below.
-- `neon-theme-css` — Finnomena's colors, or colors + typography/spacing/
-  radius, as plain CSS variables. No CDS install, works with any framework.
+- `neon-redesign` — restyles existing UI with Finnomena's colors, or colors
+  + typography/spacing/radius, as plain CSS variables. No CDS install,
+  works with any framework.
 - `neon-create` — full theming on top of the Coinbase Design System
   (`@coinbase/cds-web`): real CDS components, `ThemeProvider`, the works —
   either scaffolds a brand-new project (Vite + React + full CDS) or themes
@@ -22,7 +23,7 @@ these. Use them when you want to invoke a skill explicitly.
 | Command | What it does |
 | --- | --- |
 | `/neon:neon-audit` | Check an *existing* project and recommend a theming depth (colors only, colors + typography, or full CDS). |
-| `/neon:neon-theme-css` | Apply Finnomena's colors, or colors + typography/spacing/radius, via plain CSS variables — no CDS install. |
+| `/neon:neon-redesign` | Restyle existing UI with Finnomena's colors, or colors + typography/spacing/radius, via plain CSS variables — no CDS install. |
 | `/neon:neon-create` | Apply full theming on top of the Coinbase Design System — real CDS components, `ThemeProvider`, the works. Scaffolds a new Vite + React + TypeScript project, or themes an existing one, depending on what you ask for. |
 
 Commands need a skill-capable host. In **Claude Code / Cowork**, once the
@@ -69,7 +70,7 @@ git clone https://github.com/pawisssh/neon.git ~/finnomena/neon
 
 mkdir -p ~/.agents/skills
 ln -s ~/finnomena/neon/skills/neon-audit ~/.agents/skills/neon-audit
-ln -s ~/finnomena/neon/skills/neon-theme-css ~/.agents/skills/neon-theme-css
+ln -s ~/finnomena/neon/skills/neon-redesign ~/.agents/skills/neon-redesign
 ln -s ~/finnomena/neon/skills/neon-create ~/.agents/skills/neon-create
 ```
 
@@ -115,7 +116,7 @@ startup.
    depth you want:
 
    - **Colors only**, or **colors + typography/spacing/radius** — plain CSS
-     variables (`neon-theme-css`), no CDS install, works with any framework.
+     variables (`neon-redesign`), no CDS install, works with any framework.
    - **Full CDS** (`neon-create`) — installs `@coinbase/cds-web`, wires up
      `MediaQueryProvider` → `ThemeProvider` → `PortalProvider` with
      Finnomena's `neonTheme`, and builds with real CDS components.
@@ -148,7 +149,7 @@ signs that theming actually activated:
 
 - **Claude announces it.** You should see something like "Using neon-audit
   to check your project..." followed by either a brief confirmation or a
-  question about theming depth, then "Using neon-theme-css..." or "Using
+  question about theming depth, then "Using neon-redesign..." or "Using
   neon-create...". If you don't see any of that, the skills probably didn't
   fire.
 - **No hardcoded hex colors or raw pixel values** anywhere, regardless of
@@ -159,12 +160,12 @@ signs that theming actually activated:
     to `ThemeProvider` — never CDS's `defaultTheme` passed through
     unmodified; provider order is exactly `MediaQueryProvider` →
     `ThemeProvider` → `PortalProvider`.
-  - **CSS-only** (`neon-theme-css`): `var(--color-fg)`, `var(--space-2)`,
+  - **CSS-only** (`neon-redesign`): `var(--color-fg)`, `var(--space-2)`,
     `var(--borderRadius-200)`, etc. — a `theme.css` file should exist
     somewhere in the project and be imported once.
 - **Font is IBM Plex Sans Thai**, not a default system font, in both cases.
 - **You can just ask** — "which skill did you use to style this?" Claude
-  will name `neon-theme-css` or `neon-create` depending on which tier was
+  will name `neon-redesign` or `neon-create` depending on which tier was
   used.
 
 If you're unsure the plugin is even installed, run `/plugin` to open the
@@ -221,7 +222,7 @@ neon/
 │       └── app-entry.tsx              # correct provider setup + font loading (existing-project branch)
 ├── skills/neon-audit/                 # entry point: checks an existing project, recommends a theming depth
 │   └── SKILL.md
-├── skills/neon-theme-css/             # colors / colors+typography via plain CSS variables, no CDS
+├── skills/neon-redesign/              # restyles existing UI — colors / colors+typography via plain CSS variables, no CDS
 │   └── SKILL.md
 └── skills/neon-create/                # full CDS theming — scaffolds a new project or themes an existing one
     └── SKILL.md                       # instructions Claude follows when scaffolding/theming UI

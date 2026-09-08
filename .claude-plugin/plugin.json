@@ -1,13 +1,13 @@
 {
   "name": "neon",
-  "description": "Applies Finnomena's brand theme so any employee's vibe-coded apps and UI mockups automatically follow company branding, with a choice of depth: CSS-only colors/typography or the full Coinbase Design System (CDS). Ships neon-audit (recommends a theming depth for an existing project), neon-theme-css (colors/typography via CSS variables, no CDS), and neon-create (full CDS — scaffolds a new project or themes an existing one).",
+  "description": "Applies Finnomena's brand theme so any employee's vibe-coded apps and UI mockups automatically follow company branding, with a choice of depth: CSS-only colors/typography or the full Coinbase Design System (CDS). Ships neon-audit (recommends a theming depth for an existing project), neon-redesign (colors/typography via CSS variables, no CDS), and neon-create (full CDS — scaffolds a new project or themes an existing one).",
   "version": "0.3.1",
   "author": {
     "name": "Finnomena"
   },
   "skills": [
     "./skills/neon-create",
-    "./skills/neon-theme-css",
+    "./skills/neon-redesign",
     "./skills/neon-audit"
   ]
 }

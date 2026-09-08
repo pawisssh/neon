@@ -19,7 +19,7 @@ itself.
 - **Full CDS** — install `@coinbase/cds-web`, use `ThemeProvider` + real
   CDS components.
 
-**Implementation skills:** `${CLAUDE_PLUGIN_ROOT}/skills/neon-theme-css`
+**Implementation skills:** `${CLAUDE_PLUGIN_ROOT}/skills/neon-redesign`
 (first two tiers), `${CLAUDE_PLUGIN_ROOT}/skills/neon-create` (Full CDS —
 handles both an existing project and a brand-new scaffold internally). This
 skill only decides which one to use — follow the chosen skill's own
@@ -38,7 +38,7 @@ instructions for the actual work, don't duplicate them here.
    surface-level check, not a code scan:
    - Is `@coinbase/cds-web` already a dependency in `package.json`? →
      strong signal for Full CDS.
-   - Does `src/theme/theme.css` (or similar, from a prior `neon-theme-css`
+   - Does `src/theme/theme.css` (or similar, from a prior `neon-redesign`
      run) already exist? → the project is already on Colors or
      Colors+Typography; frame this as an upgrade decision, not a
      from-scratch question (see step 3).
@@ -71,7 +71,7 @@ instructions for the actual work, don't duplicate them here.
    present a bare, context-free list.
 
 5. **Hand off.** Once the tier is confirmed:
-   - Colors / Colors+Typography → follow `${CLAUDE_PLUGIN_ROOT}/skills/neon-theme-css/SKILL.md`.
+   - Colors / Colors+Typography → follow `${CLAUDE_PLUGIN_ROOT}/skills/neon-redesign/SKILL.md`.
    - Full CDS → follow `${CLAUDE_PLUGIN_ROOT}/skills/neon-create/SKILL.md`.
 
    Don't duplicate either skill's implementation steps here — this skill's

@@ -1,14 +1,14 @@
 ---
-name: neon-theme-css
-description: ONLY use this skill if the user's message literally contains the word "Finnomena" or "neon" — do not infer from related terms like "brand colors", "on-brand", or a generic "just colors" request alone. Applies Finnomena's brand colors, or colors plus typography/spacing/radius, to a project via plain CSS custom properties — no @coinbase/cds-web install, no React provider, works with any framework or styling system. Normally reached via neon-audit's recommendation; invoke directly only if the user has already said they want "just colors" or similar without CDS components. Do NOT use this if the user wants real CDS components — use neon-create for that instead.
+name: neon-redesign
+description: ONLY use this skill if the user's message literally contains the word "Finnomena" or "neon" — do not infer from related terms like "brand colors", "on-brand", or a generic restyle request alone. Redesigns or restyles EXISTING code, components, or an app to match Finnomena's brand — colors, or colors plus typography/spacing/radius — via plain CSS custom properties, no @coinbase/cds-web install, no React provider, works with any framework or styling system. Trigger on "retheme", "restyle", "make this look like Finnomena", "apply Finnomena design/theme/color palette", migrating an app's visual identity, changing the look and feel, applying a new skin to existing UI, or partial redesigns (e.g. "make just the header look like Finnomena"). Normally reached via neon-audit's recommendation; invoke directly only if the user has already said they want "just colors"/CSS-only or similar without CDS components. Do NOT use this if the user wants real CDS components — use neon-create for that instead.
 ---
 
-# Finnomena Brand Theme (CSS variables only)
+# Finnomena Redesign (CSS variables only)
 
-Lightweight theming: Finnomena's brand values as CSS custom properties, for
-projects not built on CDS. If the user wants real CDS components (`Button`,
-`Box`, etc.) with `ThemeProvider`, use
-`${CLAUDE_PLUGIN_ROOT}/skills/neon-create` instead.
+Restyles existing UI to Finnomena's brand via CSS custom properties — for
+projects not built on CDS, or that don't want to adopt CDS just for a
+redesign. If the user wants real CDS components (`Button`, `Box`, etc.) with
+`ThemeProvider`, use `${CLAUDE_PLUGIN_ROOT}/skills/neon-create` instead.
 
 Normally reached via `${CLAUDE_PLUGIN_ROOT}/skills/neon-audit`; invoke
 directly only if the user already said they want colors (and optionally
