@@ -5,6 +5,10 @@ description: ONLY use this skill if the user's message literally contains the wo
 
 # Finnomena Theming — Entry Point
 
+For a review of existing UI quality (branding, responsiveness, accessibility,
+or interaction states), use **neon-review**. This skill selects an integration
+path; a review-only request must not enter its installer handoff.
+
 Before theming UI in an existing project, figure out how deep the user
 actually wants to go — not everyone wants to adopt the full Coinbase
 Design System just to get on-brand colors. This skill runs a lightweight

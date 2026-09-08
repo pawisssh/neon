@@ -13,3 +13,4 @@ theme/finnomena/tokens.report.json
 # Internal working notes — project brief and raw Figma token exports,
 # not part of the distributed plugin.
 notes/
+docs/

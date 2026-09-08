@@ -1,6 +1,6 @@
 # Neon workflow contract
 
-Shared by all three skills — `neon-audit`, `neon-create`, `neon-redesign`.
+Shared by the three implementation-routing skills — `neon-audit`, `neon-create`, `neon-redesign`.
 Read this before beginning work in any of them. It defines the one handoff
 record the skills pass between each other, the routing rules that decide
 which skill handles a request, and the single intent policy all three
@@ -80,6 +80,14 @@ passing along a `NeonContext`; the "colors only" / "colors + typography" /
 a fourth term for any of these three.
 
 ## Routing rules
+
+- **UI review requests** route to **neon-review**, which has its own read-only
+  evidence/report workflow. Review is not a theming tier or a `NeonContext`
+  implementation operation; do not force it through tier selection. Carry
+  known target/scope and established intent into review without restarting
+  onboarding. Review-only requests end with findings; explicit authorized
+  fixes may continue afterward, subject to any user-specified approval gate.
+
 
 - **`operation: 'new-project'`** — always `${CLAUDE_PLUGIN_ROOT}/skills/neon-create`
   (its scaffold branch). `neon-audit` doesn't apply — there's no existing

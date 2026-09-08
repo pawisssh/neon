@@ -2,7 +2,7 @@
 
 A Claude Code plugin that lets any Finnomena employee vibe-code apps and UI
 mockups (via Claude Code or Cowork) that automatically follow Finnomena's
-branding — with a choice of depth. Ships three skills:
+branding — with a choice of depth. Ships four skills:
 
 - `neon-audit` — for an *existing* project, checks it and recommends a
   theming depth, then hands off to one of the two below.
@@ -13,6 +13,9 @@ branding — with a choice of depth. Ships three skills:
   (`@coinbase/cds-web`): real CDS components, `ThemeProvider`, the works —
   either scaffolds a brand-new project (Vite + React + full CDS) or themes
   one that already exists, depending on what you ask for.
+- `neon-review` — reviews existing UI for brand consistency, responsive
+  behavior, accessibility, and interaction states; reports evidence and
+  unverified checks without changing the app.
 
 ## Commands
 
@@ -25,6 +28,7 @@ these. Use them when you want to invoke a skill explicitly.
 | `/neon:neon-audit` | Check an *existing* project and recommend a theming depth (colors only, colors + typography, or full CDS). |
 | `/neon:neon-redesign` | Restyle existing UI with Finnomena's colors, or colors + typography/spacing/radius, via plain CSS variables — no CDS install. |
 | `/neon:neon-create` | Apply full theming on top of the Coinbase Design System — real CDS components, `ThemeProvider`, the works. Scaffolds a new Vite + React + TypeScript project, or themes an existing one, depending on what you ask for. |
+| `/neon:neon-review` | Review existing UI or screenshots and return prioritized findings with evidence, suggested fixes, and coverage limits. |
 
 Commands need a skill-capable host. In **Claude Code / Cowork**, once the
 plugin is installed (see below), these work as typed slash commands. In
@@ -51,7 +55,7 @@ are two ways to get these in:
 $skill-installer https://github.com/pawisssh/neon
 ```
 
-Run one invocation per skill (the repo holds three skill folders, not one) —
+Run one invocation per skill (the repo holds four skill folders, not one) —
 point it at each skill's own subfolder rather than the repo root, since a
 "skill" to Codex is one directory containing a `SKILL.md`, and the repo
 root has other files alongside the skills. If the installer's prompt
@@ -72,6 +76,7 @@ mkdir -p ~/.agents/skills
 ln -s ~/finnomena/neon/skills/neon-audit ~/.agents/skills/neon-audit
 ln -s ~/finnomena/neon/skills/neon-redesign ~/.agents/skills/neon-redesign
 ln -s ~/finnomena/neon/skills/neon-create ~/.agents/skills/neon-create
+ln -s ~/finnomena/neon/skills/neon-review ~/.agents/skills/neon-review
 ```
 
 Either way, start a new Codex session afterward — skills are discovered at
@@ -188,6 +193,23 @@ startup.
 That's it — no manual setup, no copying theme files by hand for a typical
 mockup. Claude handles the plumbing described in "What's here" below.
 
+## Review an existing UI
+
+Ask: “Review this Finnomena dashboard on mobile and desktop. Report issues;
+don't change the code.” For a smaller scope: “Use neon-review on just this
+header screenshot.”
+
+`neon-review` reports inspected scope, prioritized findings with evidence,
+impact, suggested fixes and rechecks, and unavailable checks. Screenshots
+support visible-state review; keyboard behavior, other viewports, and
+unmeasured contrast remain unverified. A review does not submit live forms,
+approve records, install dependencies, or restyle the app.
+
+Use `neon-audit` to decide how to integrate a theme; use `neon-review` to
+assess UI that already exists. Reviews do not automatically start fixes.
+If you explicitly request fixes too, the agent can continue after presenting
+findings, honoring any approval gate you specified.
+
 ## How to verify it's working
 
 After asking Claude to build UI in an existing project, check for these
@@ -235,7 +257,7 @@ neon/
 ├── LICENSE
 ├── marketplace.example.json           # template for a marketplace repo referencing this one
 ├── .claude-plugin/
-│   ├── plugin.json                    # plugin manifest — lists all three skills below
+│   ├── plugin.json                    # plugin manifest — lists all four skills below
 │   └── marketplace.json               # self-hosted marketplace (source: ".")
 ├── design-md/finnomena/               # standalone Finnomena brand spec, Google Stitch DESIGN.md format
 │   ├── DESIGN.md                      # canonical token + component reference — no install required
@@ -270,8 +292,11 @@ neon/
 │   └── SKILL.md
 ├── skills/neon-redesign/              # restyles existing UI — colors / colors+typography via plain CSS variables, no CDS
 │   └── SKILL.md
-└── skills/neon-create/                # full CDS theming — scaffolds a new project or themes an existing one
-    └── SKILL.md                       # instructions Claude follows when scaffolding/theming UI
+├── skills/neon-create/                # full CDS theming — scaffolds a new project or themes an existing one
+│   └── SKILL.md                       # instructions Claude follows when scaffolding/theming UI
+└── skills/neon-review/                # read-only UI findings and coverage limits
+    ├── SKILL.md
+    └── references/review-checks.md
 ```
 
 ## Maintainer notes
