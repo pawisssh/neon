@@ -98,11 +98,19 @@ interactive UI is backed by a real server that doesn't exist:
 `ImmersiveLayout`) — don't duplicate it here. The rule that matters for
 this task: **pick based on what the specific task needs, don't default to
 `AppShell` because it's what `App.tsx` boots into out of the box.** This
-applies on a new-project's first screen and equally when adding a screen
-to an app that doesn't yet use one of these 5 patterns — introducing one
-for the first time inside an existing app is a layout decision worth
-surfacing to the employee, not something to impose silently alongside the
-requested feature.
+is a **new-project-only** rule, matching `SKILL.md` step 8's own scoping
+("New-project branch only — pick the right layout") — the 5 patterns
+ship as part of the starter copy, and the existing-project installer
+branch (`SKILL.md` step 2) copies only the 4 theme files, never
+provider wiring or component code. Introducing this layout system into
+an app that doesn't already have it has no supported procedure in this
+skill today — porting `layoutPanes.ts`, `breakpoints.config.ts`, and the
+layout components themselves into an arbitrary existing app is a bigger
+structural change than a new-screen request. If a new-screen request
+seems to call for one of these 5 patterns and the app doesn't already
+have them, flag that to the employee as out of scope rather than
+attempting it — reuse whatever layout/shell the app already has instead
+(per §2 above).
 
 Configure the `navigation` prop from destinations that actually exist for
 this app/request — not left empty as a placeholder, and not populated with
@@ -118,15 +126,17 @@ applies to each branch:
 
 - **New project:** the starter's `main.tsx` already loads IBM Plex Sans
   Thai — nothing to set up at scaffold time. As you build the requested
-  content in §3, apply §1's "load only the weights actually in use" rule
-  to whatever type roles the new content introduces.
+  content (this doc's §3), apply `theme-integration.md` §1's "load only
+  the weights actually in use" rule to whatever type roles the new
+  content introduces.
 - **New screen:** inspect how the existing app already loads fonts and
-  integrate into that mechanism per §1 — never bolt on a second, different
-  font-loading path alongside whatever it already does.
-- **Both branches, dark mode:** follow §2 — find and preserve the app's
-  (or, for a brand-new app, the starter's) existing source of truth for
-  dark/light; never introduce a second, competing mechanism for the new
-  screen.
+  integrate into that mechanism per `theme-integration.md` §1 — never
+  bolt on a second, different font-loading path alongside whatever it
+  already does.
+- **Both branches, dark mode:** follow `theme-integration.md` §2 — find
+  and preserve the app's (or, for a brand-new app, the starter's)
+  existing source of truth for dark/light; never introduce a second,
+  competing mechanism for the new screen.
 
 ## 7. Verification and delivery
 
