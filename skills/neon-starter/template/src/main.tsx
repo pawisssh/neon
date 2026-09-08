@@ -1,6 +1,12 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 
+// CDS's required global reset + font-variable styles. Without these,
+// `fontFamilyMono`'s CDS-default var(--defaultFont-mono) points at an
+// undefined CSS variable, and components render without CDS's base reset.
+import "@coinbase/cds-web/globalStyles";
+import "@coinbase/cds-web/defaultFontStyles";
+
 import { AppRoot } from "./app/AppRoot";
 import { App } from "./app/App";
 

@@ -13,7 +13,7 @@
  * (its own Content View width / Inspector View width are never both
  * nonzero at once) and is NOT the same thing as the simultaneous
  * Sidebar+Content+Inspector app shell — that lives in
- * ../../neon-starter/template/src/layout/appShellPanes.ts as a separately
+ * ../../neon-starter/template/src/layout/layoutPanes.ts as a separately
  * hand-maintained, Figma-session-sourced constant. Do not merge the two.
  *
  * breakpoints.config.ts is a generated file — do not hand-edit it. Change
@@ -72,7 +72,7 @@ const output = `/**
  * rhythm (gutter/end-margins/columns) only. It does NOT cover Content/
  * Inspector pane widths for the 3-pane app shell — those come from a
  * separate Figma frame read, not this token export (see
- * skills/neon-starter/template/src/layout/appShellPanes.ts for that data
+ * skills/neon-starter/template/src/layout/layoutPanes.ts for that data
  * and why it's kept separate).
  */
 export interface BreakpointTier {

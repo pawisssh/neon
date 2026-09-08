@@ -1,6 +1,6 @@
 # Color mapping — TODO (human decision required)
 
-**Generated 2026-09-07T14:16:57.294Z by `generate-theme-config.mjs`. Do not hand-edit
+**Generated 2026-09-07T19:19:11.289Z by `generate-theme-config.mjs`. Do not hand-edit
 the lists below without re-running the generator — but DO fill in your
 mapping decisions in a separate file once made (see "Next step" at the
 bottom); this file itself gets overwritten every run.**

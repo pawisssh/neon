@@ -9,7 +9,7 @@
  * rhythm (gutter/end-margins/columns) only. It does NOT cover Content/
  * Inspector pane widths for the 3-pane app shell — those come from a
  * separate Figma frame read, not this token export (see
- * skills/neon-starter/template/src/layout/appShellPanes.ts for that data
+ * skills/neon-starter/template/src/layout/layoutPanes.ts for that data
  * and why it's kept separate).
  */
 export interface BreakpointTier {

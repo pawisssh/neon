@@ -40,7 +40,6 @@ const resolved = JSON.parse(readFileSync(join(THEME_DIR, "tokens.resolved.json")
 const report = JSON.parse(readFileSync(join(THEME_DIR, "tokens.report.json"), "utf8"));
 const rawTheme = JSON.parse(readFileSync(join(TOKENS_DIR, "theme.json"), "utf8"));
 const rawColors = JSON.parse(readFileSync(join(TOKENS_DIR, "colors.json"), "utf8"));
-const rawTypePrimitives = JSON.parse(readFileSync(join(TOKENS_DIR, "type_primitives.json"), "utf8"));
 
 // ---------------------------------------------------------------------------
 // Fixed, verified facts about the real @coinbase/cds-web@9.26.1 ThemeConfig/
@@ -102,10 +101,11 @@ const FONT_ROLE_MAP = {
 
 // Standard CSS font-weight naming convention (not Finnomena-specific) —
 // Finnomena's export only has variant *names* ("Regular", "SemiBold"), never
-// numeric weights.
+// numeric weights. "Heavy" (not "ExtraBold") is the export's own name for
+// 800 — confirmed against tokens/font_weight.json's "800 Heavy" entry.
 const WEIGHT_NAME_TO_NUMBER = {
   Thin: 100, ExtraLight: 200, Light: 300, Regular: 400, Medium: 500,
-  SemiBold: 600, Bold: 700, ExtraBold: 800, Black: 900,
+  SemiBold: 600, Bold: 700, Heavy: 800, Black: 900,
 };
 function weightNameToNumber(name) {
   const base = String(name).replace(/\s*Italic$/, "");

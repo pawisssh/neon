@@ -1,0 +1,30 @@
+/**
+ * Simple Layout (Figma node 732:4002) — Sidebar + a single Content pane,
+ * filling the remaining width. No Inspector at all (Figma's Inspector View
+ * for this pattern has real dimensions but is `hidden="true"` at every
+ * breakpoint checked — it's not a pane this pattern ever shows).
+ *
+ * Confirmed at xxxl: Sidebar 360 (matches breakpoints.config.ts), Content
+ * 1080 (= 1440 viewport − 360 sidebar, filling exactly). Only the xxxl
+ * frame was read — narrower tiers extrapolated using the same sidebar
+ * hidden/rail/full progression as the other patterns; re-verify before
+ * treating as pixel-final.
+ */
+import type { ReactNode } from "react";
+import { useBreakpointTier } from "./useBreakpointTier";
+import { breakpoints } from "../theme/breakpoints.config";
+import { Sidebar } from "./Sidebar";
+import { InspectorView } from "./InspectorView";
+
+export function SimpleLayout({ sidebar, content }: { sidebar: ReactNode; content: ReactNode }) {
+  const tier = useBreakpointTier();
+  const sidebarWidth = breakpoints.find((b) => b.name === tier)!.sidebarWidth;
+
+  return (
+    <div style={{ display: "flex", height: "100vh", width: "100%" }}>
+      <Sidebar width={sidebarWidth}>{sidebar}</Sidebar>
+      {/* InspectorView is the generic "fill" pane component (Toolbar + scrollable body) — reused here for the sole content pane, since Simple Layout has no fixed-width pane at all. */}
+      <InspectorView pane={{}}>{content}</InspectorView>
+    </div>
+  );
+}

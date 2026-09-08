@@ -1,7 +1,9 @@
 /**
- * Content pane: 64px Toolbar (equal Leading/Trailing halves) + scrollable
- * body. Hidden entirely below the `lg` tier (see appShellPanes.ts) —
- * Inspector is the sole visible pane on sm/md.
+ * Generic fixed-width pane: 64px Toolbar (equal Leading/Trailing halves) +
+ * scrollable body. In AppShell/Detailed Layout, hidden entirely below the
+ * `lg` tier (see ./layoutPanes.ts) — Inspector is the sole visible pane on
+ * sm/md. Also reused (by role, not by name) as Content Layout's
+ * fixed-width Inspector pane, and as each column in MultiColumnLayout.
  */
 import type { ReactNode } from "react";
 

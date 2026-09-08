@@ -28,9 +28,14 @@ Finnomena's system is built on restraint — one dominant "ink" color doing almo
 
 ## Tokens — Typography
 
-### Finnomena Trek — the brand's single named font across the entire type scale; Finnomena doesn't split display/body/text families the way some brands do · `--font-finnomena-trek`
-- **Substitute:** `'IBM Plex Sans Thai', sans-serif` (Finnomena Trek isn't packaged as a web font in this repo)
-- **Weights:** Regular, Medium, Bold (export variant names, not verified against either font's real weight set)
+### IBM Plex Sans Thai — the approved web font, used across the entire type scale; Finnomena doesn't split display/body/text families the way some brands do
+- **`'IBM Plex Sans Thai', sans-serif`** is the confirmed choice for web —
+  not a stopgap. (The Figma export's own font-family token names
+  "Finnomena Trek," the brand-asset name used in design files; IBM Plex
+  Sans Thai is the intended web typeface, and `theme.config.ts`'s generator
+  overrides the export's raw value with it deliberately.)
+- **Weights:** Regular, Medium, Bold (export variant names, not verified
+  against IBM Plex Sans Thai's real available weight set)
 - **Role:** every role in the type scale below, from caption to display
 
 ### Type Scale
@@ -104,11 +109,11 @@ Per-component radius (which CDS component uses which named step) comes from CDS'
   | xxxl | 1440–1919 | 360 | 24 | 24 | 12 |
   | max | 1920+ | 360 | 24 | 24 | 12 |
 
-  Source: `skills/neon-theme/theme/tokens/breakpoint.json`. These are
-  resolved in the token pipeline (`tokens.resolved.json`) and projected into
-  a generated `theme/breakpoints.config.ts` via
-  `scripts/generate-breakpoints-config.mjs` — see `skills/neon-starter` for
-  the responsive Sidebar/Content/Inspector app shell built on top of it.
+  Source: `theme/tokens/breakpoint.json`. These are resolved in the token
+  pipeline (`tokens.resolved.json`) and projected into a generated
+  `theme/breakpoints.config.ts` via `scripts/generate-breakpoints-config.mjs`
+  — see `../neon-starter` for the responsive Sidebar/Content/Inspector app
+  shell built on top of it.
   Use the Gutter/End-margins/Columns values above for grid rhythm at each
   breakpoint rather than inventing a fixed max-width; fall back to CDS's own
   default responsive layout system for anything not covered here.
@@ -162,7 +167,7 @@ Light mode has distinct pastel backgrounds per type (success `#e6fdf0`, warning 
 - Build every neutral step from Navy's own tonal ramp rather than mixing in a separate true-gray family.
 - Reserve `Yellow Signal` for the brand-highlight button/tag and `background-brand` only — one per screen, not a general accent.
 - Reserve `Indigo Interactive` for links, focus rings, and the interactive-highlight state only.
-- Route every color, space, and radius value through CDS's semantic style props (`color="textPrimary"`, `padding="medium"`) — never a raw hex or pixel value in JSX/CSS-in-JS.
+- Route every color, space, and radius value through CDS's semantic style props (`color="fg"`, `padding={2}`, `borderRadius="200"` — real `ThemeVars` keys, see SKILL.md) — never a raw hex or pixel value in JSX/CSS-in-JS.
 - Keep provider order exactly `MediaQueryProvider → ThemeProvider → PortalProvider`.
 - Route custom, non-`ThemeVars` tokens through `ThemeVarsExtended` rather than bolting extra keys onto the theme object.
 
@@ -212,14 +217,19 @@ A stylistic comparison, not a claim about Finnomena's actual relationships or so
 This is a CDS-themed app, not a raw-CSS site — there's no CSS custom properties or Tailwind config to copy. Wire the theme through CDS's provider stack:
 
 ```tsx
+import type { ReactNode } from 'react';
 import { MediaQueryProvider, ThemeProvider } from '@coinbase/cds-web/system';
 import { PortalProvider } from '@coinbase/cds-web/overlays';
 import { createNeonTheme } from './theme/createTheme';
 
-export function AppRoot({ children }: { children: React.ReactNode }) {
+// Created once, at module scope — ThemeProvider is memoized on theme
+// identity; calling createNeonTheme() inline in JSX would defeat that.
+const appTheme = createNeonTheme();
+
+export function AppRoot({ children }: { children: ReactNode }) {
   return (
     <MediaQueryProvider>
-      <ThemeProvider theme={createNeonTheme()} activeColorScheme="light">
+      <ThemeProvider theme={appTheme} activeColorScheme="light">
         <PortalProvider>{children}</PortalProvider>
       </ThemeProvider>
     </MediaQueryProvider>
@@ -227,4 +237,4 @@ export function AppRoot({ children }: { children: React.ReactNode }) {
 }
 ```
 
-See `examples/app-entry.tsx` for the full working pattern, including font loading. `neonTheme` in `theme/theme.config.ts` resolves the raw tokens in this document that have an unambiguous, non-color mapping onto CDS's `ThemeVars` shape (spacing, radius, typography) — regenerate it with `node scripts/sync-tokens.mjs && node scripts/generate-theme-config.mjs` after changing anything in `theme/tokens/`. `createTheme.ts`'s `createNeonTheme()` merges those overrides onto CDS's own `defaultTheme` at runtime. Color is deliberately not resolved yet — see `theme/color-mapping.todo.md`.
+See `examples/app-entry.tsx` for the full working pattern, including font loading. `neonTheme` in `theme/theme.config.ts` resolves the raw tokens in this document that have an unambiguous, non-color mapping onto CDS's `ThemeVars` shape (spacing, radius, typography) — regenerate it with `node scripts/sync-tokens.mjs && node scripts/generate-theme-config.mjs` after changing anything in `theme/tokens/`. Color comes from `theme/color-overrides.ts` (hand-written, provisional — see its own header) instead. `createTheme.ts`'s `createNeonTheme()` merges both onto CDS's own `defaultTheme` at runtime.

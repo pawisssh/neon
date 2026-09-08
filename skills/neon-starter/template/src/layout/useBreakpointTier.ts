@@ -2,21 +2,31 @@
  * Framework-agnostic breakpoint hook, keyed off ../theme/breakpoints.config.ts
  * (copied in from neon-theme at scaffold time).
  *
- * Whether @coinbase/cds-web's MediaQueryProvider accepts custom breakpoints
- * is unverified in this repo (the package isn't installed/vendored anywhere
- * to check its real API against) — this plain matchMedia-based hook is the
- * default so the app shell doesn't depend on an unverified CDS API surface.
- * If CDS does support custom breakpoints, switching to its own hook is a
- * possible future simplification, not a blocking dependency.
+ * Confirmed (against the real @coinbase/cds-web@9.26.1 types) that
+ * MediaQueryProvider does NOT accept a custom-breakpoints prop — its only
+ * props are `children` and `defaultValues` (a one-time initial snapshot,
+ * not a breakpoint config, per dts/system/MediaQueryProvider.d.ts). This
+ * plain matchMedia-based hook is the correct approach here, not a
+ * placeholder pending verification — see neon-starter/SKILL.md's known
+ * limitations for the citation.
  */
 import { useEffect, useState } from "react";
 import { breakpoints, type BreakpointName } from "../theme/breakpoints.config";
 
+/**
+ * Breakpoints are sorted narrowest-to-widest and contiguous, so scanning
+ * from the widest down and returning the first tier whose minWidth is at
+ * or below the given width correctly handles every width in range. Widths
+ * narrower than the first tier's minWidth (< 320px) fall through to the
+ * first (narrowest) tier, not the last — a fixed bug: the previous
+ * forward-scanning version fell through to the *widest* tier for any
+ * out-of-range width, so a sub-320px viewport got a full desktop layout.
+ */
 function tierForWidth(width: number): BreakpointName {
-  for (const tier of breakpoints) {
-    if (width >= tier.minWidth && width <= tier.maxWidth) return tier.name;
+  for (let i = breakpoints.length - 1; i >= 0; i--) {
+    if (width >= breakpoints[i].minWidth) return breakpoints[i].name;
   }
-  return breakpoints[breakpoints.length - 1].name;
+  return breakpoints[0].name;
 }
 
 export function useBreakpointTier(): BreakpointName {

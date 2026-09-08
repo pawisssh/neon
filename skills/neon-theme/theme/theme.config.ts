@@ -10,7 +10,7 @@
  * Source of truth: the raw Figma Token Studio export in ./tokens/*.json,
  * resolved by ../scripts/sync-tokens.mjs into ./tokens.resolved.json.
  *
- * STATUS (regenerated 2026-09-07T14:16:57.294Z):
+ * STATUS (regenerated 2026-09-07T19:19:11.289Z):
  *
  *   ✅ space — all 15 of CDS's required step-keys ("0" through "10", plus
  *      "0.25"/"0.5"/"0.75") populated from tokens/size.json.

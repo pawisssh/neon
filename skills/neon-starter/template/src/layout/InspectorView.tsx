@@ -1,11 +1,13 @@
 /**
- * Inspector pane: 64px Toolbar (equal Leading/Trailing halves) + scrollable
- * body. Always visible, always fills the remaining width — from the `max`
- * tier up, its content caps at `capAt` (980px per the Figma frame) and
- * centers, per appShellPanes.ts.
+ * Generic "fill" pane: 64px Toolbar (equal Leading/Trailing halves) +
+ * scrollable body. In AppShell/Detailed Layout, always visible, always
+ * fills the remaining width — from the `max` tier up, its content caps at
+ * `capAt` (980px per the Figma frame) and centers, per ./layoutPanes.ts.
+ * Also reused (by role, not by name) as Content Layout's fill Content
+ * pane, and as the sole pane in SimpleLayout/ImmersiveLayout.
  */
 import type { ReactNode } from "react";
-import type { InspectorPane } from "./appShellPanes";
+import type { InspectorPane } from "./layoutPanes";
 
 const TOOLBAR_HEIGHT = 64;
 

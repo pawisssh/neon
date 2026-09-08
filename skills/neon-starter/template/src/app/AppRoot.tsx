@@ -24,10 +24,15 @@ import { PortalProvider } from "@coinbase/cds-web/overlays";
 
 import { createNeonTheme } from "../theme/createTheme";
 
+// Created once, at module scope — ThemeProvider is memoized on theme
+// identity, so calling createNeonTheme() inline in JSX would create a new
+// object every render and defeat that.
+const appTheme = createNeonTheme();
+
 export function AppRoot({ children }: { children: ReactNode }) {
   return (
     <MediaQueryProvider>
-      <ThemeProvider theme={createNeonTheme()} activeColorScheme="light">
+      <ThemeProvider theme={appTheme} activeColorScheme="light">
         <PortalProvider>{children}</PortalProvider>
       </ThemeProvider>
     </MediaQueryProvider>

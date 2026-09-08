@@ -27,6 +27,11 @@ import { PortalProvider } from "@coinbase/cds-web/overlays";
 
 import { createNeonTheme } from "../theme/createTheme";
 
+// Created once, at module scope — ThemeProvider is memoized on theme
+// identity, so calling createNeonTheme() inline in JSX would create a new
+// object every render and defeat that.
+const appTheme = createNeonTheme();
+
 // Quick-start font loading (swap for a self-hosted @fontsource import before
 // shipping to production):
 //
@@ -47,7 +52,7 @@ import { createNeonTheme } from "../theme/createTheme";
 export function AppRoot({ children }: { children: ReactNode }) {
   return (
     <MediaQueryProvider>
-      <ThemeProvider theme={createNeonTheme()} activeColorScheme="light">
+      <ThemeProvider theme={appTheme} activeColorScheme="light">
         <PortalProvider>{children}</PortalProvider>
       </ThemeProvider>
     </MediaQueryProvider>
@@ -60,8 +65,11 @@ export function AppRoot({ children }: { children: ReactNode }) {
  *   // ❌ forbidden
  *   <div style={{ color: "#1F3344", padding: 16, borderRadius: 8 }} />
  *
- *   // ✅ correct — semantic tokens from neonTheme via CDS's style props
- *   <Box color="textPrimary" padding="medium" borderRadius="sm" />
+ *   // ✅ correct — real CDS token keys (verified against
+ *   // dts/styles/styleProps.d.ts: color -> ThemeVars.Color, padding ->
+ *   // ThemeVars.Space, borderRadius -> ThemeVars.BorderRadius)
+ *   <Box color="fg" padding={2} borderRadius="200" />
  *
- * See SKILL.md for the full rule and how it's enforced.
+ * See SKILL.md for the full rule, the full token-key reference, and how
+ * it's enforced.
  */
