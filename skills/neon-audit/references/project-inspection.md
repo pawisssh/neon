@@ -137,7 +137,38 @@ it — this is what corroborates the manifest guess from step 2:
   can't find one, record `"none found"` rather than assuming
   `prefers-color-scheme` is in play.
 
-### 6. Shared components and existing CDS provider tree → `styling`, `preserve`
+### 6. Shared/reusable component library → `styling`, `preserve`
+
+Separate from CDS specifically (step 7 below): does the project already
+have its own general-purpose component library, and does it need to
+survive this change untouched? Look for:
+
+- A component-library dependency in `package.json` — `@mui/material`,
+  `antd`, `@chakra-ui/react`, `@headlessui/react`, `react-bootstrap`, and
+  similar. Presence is evidence the app's buttons/inputs/dialogs/etc.
+  already come from that library, not just ad-hoc markup.
+- A homegrown shared-component directory — `src/components/`, `src/ui/`,
+  or similar — containing reusable pieces (`Button.tsx`, `Card.tsx`,
+  `Modal.tsx`) that other screens compose from, rather than one-off
+  per-screen styling.
+
+Record what you found in `styling` (e.g. `styling: ['mui', 'tailwind']`)
+and add the library/shared-component directory to `preserve` — per the
+plan's design decision that an existing app keeps its component library
+unless the employee asks to change it. Concretely: theming a project that
+already uses MUI (or a homegrown component set) should restyle *through*
+that library's own theming surface (MUI's `ThemeProvider`/`createTheme`,
+or the homegrown components' own CSS variables) rather than silently
+introducing CDS as a second, parallel component system — unless the
+employee has explicitly chosen `tier: 'cds'` and understands that means
+adopting CDS's components going forward. If there's a real conflict (the
+employee wants Full CDS but the app is heavily invested in another
+component library), surface that as a decision for the user rather than
+picking silently. If no shared library or component directory is found,
+record that plainly (`styling` stays whatever else was found; no
+`preserve` entry needed here) rather than assuming one exists.
+
+### 7. Existing CDS provider tree → `targetPaths`, `preserve`
 
 If `@coinbase/cds-web` is already a dependency (step 2), don't stop at
 "it's installed" — look at the entry file/root component tree for an
@@ -153,7 +184,40 @@ existing `MediaQueryProvider` → `ThemeProvider` → `PortalProvider` wrap
   responsive and theming behavior is keyed to that exact provider order
   and identity.
 
-### 7. Representative requested screens → `targetPaths`, `preserve`
+### 8. Routes, handlers, and data flow → `preserve`
+
+Theming work must leave the app's actual behavior alone — restyling a
+screen is not license to touch how it routes, fetches, or handles data.
+`NeonContext` doesn't carry dedicated fields for these (there's no
+`routes`/`dataFlow` field — don't invent one; per the contract, new fields
+aren't this doc's call to make), so record what you find as `preserve`
+entries: named things a downstream skill must leave untouched.
+
+- **Routes.** Look for a router config: `react-router-dom` in
+  `package.json` plus a `<Routes>`/`createBrowserRouter(...)` call (often
+  in `src/routes.tsx`, `src/App.tsx`, or a `src/routes/` directory);
+  Next.js's own routing via the `app/` or `pages/` directory structure
+  itself; `vue-router` config for a Vue app; or similar. Note the file(s)
+  that own routing and add them to `preserve` (e.g. `"src/routes.tsx —
+  route table, do not modify"`).
+- **Handlers and data flow.** Look for API route handlers (Next.js
+  `app/api/**/route.ts`, an Express/Fastify routes directory, a tRPC
+  router) and the app's data-fetching layer (React Query/SWR hooks, a
+  Redux/Zustand/Context store, an Apollo/GraphQL client setup, or a plain
+  `fetch`/`axios` service layer). These are almost never in scope for a
+  theming request — note their location briefly (e.g. `"src/api/ and
+  src/hooks/useQuery* — data layer, do not modify"`) so an implementation
+  skill recognizes them and stays out, rather than needing to rediscover
+  that boundary mid-edit.
+- If a project has no distinguishable routing (a true single-screen app)
+  or no separate data layer worth naming, say so plainly instead of
+  inventing structure that isn't there — this is evidence for "nothing to
+  preserve here," not a gap to fill with a guess.
+- This inspection is about *locating and preserving* these, not
+  evaluating or auditing them — don't review routing/data-fetching code
+  quality here, that's out of scope for a theming audit.
+
+### 9. Representative requested screens → `targetPaths`, `preserve`
 
 Look at the specific screen(s)/component(s) the request actually names
 (e.g. "just the header" → the header component and whatever renders it),
