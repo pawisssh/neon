@@ -101,10 +101,12 @@ startup.
    ```
 
    The `neon-create` skill activates, scaffolds a Vite + React +
-   TypeScript project pre-wired with Finnomena's theme and a responsive
-   Sidebar/Content/Inspector app shell, and tells you how to run it
-   (`npm install && npm run dev`). Confirm the app boots before assuming
-   it's done.
+   TypeScript project pre-wired with Finnomena's theme, picks a
+   responsive layout matching what you described, and builds the actual
+   feature you asked for — not just an empty themed shell. Claude verifies
+   its own work (build/typecheck, then rendering and interaction checks)
+   before reporting back; running `npm install && npm run dev` yourself is
+   a good final confirmation, not the only check that happened.
 
 3. **Adding a new screen to an existing app?** Say so, mentioning
    Finnomena the first time:

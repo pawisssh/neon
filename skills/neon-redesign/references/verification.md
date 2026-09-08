@@ -97,4 +97,86 @@ assumed. There is no "unrelated screen must stay unchanged" check here
 the way there is for a partial restyle, since nothing existing was
 touched — but if the new UI was wired into existing navigation or shared
 layout, confirm that integration point still works for the screens that
-already used it.
+already used it. Used by both a `neon-create` new-project scaffold and a
+new-screen addition to an existing app — the procedure below doesn't
+distinguish between them; the difference is only in what "the affected
+UI" refers to (a whole fresh app vs. one added screen plus its
+integration points).
+
+### Verification procedure, concretely
+
+Run all of these before claiming a new screen or scaffold is complete:
+
+1. **Build/typecheck first.** Run `NeonContext.verificationCommands` (or
+   the project's normal build/typecheck/test commands if that list wasn't
+   populated) before anything else — this needs no browser and catches a
+   large class of problems for free. A failing build means stop here;
+   don't proceed to visual inspection to "see how close it is."
+2. **Launch and inspect the rendered UI**, not just the diff. Confirm it
+   renders at **375px** (mobile) and **1440px** (desktop) — the two
+   viewport widths any layout in `src/layout/` is expected to handle —
+   plus whatever transition is specific to the layout pattern in use
+   (e.g. `AppShell`/`ContentLayout`/`MultiColumnLayout` collapsing their
+   sidebar into `BottomNav` at the mobile breakpoint; confirm that
+   transition actually happens, not just that both fixed widths look
+   fine in isolation).
+3. **Exercise keyboard navigation and the primary interaction.** Tab
+   through the new UI's interactive elements in a sane order, confirm
+   focus is visible, and actually perform the screen's main action (submit
+   the form, select the list item, open the dialog) rather than only
+   checking that the elements are present.
+4. **Check Thai text wrapping.** Render real Thai-script sample text (not
+   English placeholder copy) in the new UI's text-bearing elements and
+   confirm it wraps/truncates sensibly at both viewport widths — Thai
+   script has no word-space characters, so wrapping behavior that looks
+   fine for English content routinely breaks for Thai.
+5. **Check dialogs/portals.** If the new UI opens a modal, tooltip, or
+   dropdown, confirm it actually renders themed (not unstyled/default) —
+   see
+   `${CLAUDE_PLUGIN_ROOT}/skills/neon-audit/references/theme-integration.md`
+   §3's portal-scope check for why this can silently fail even when
+   everything else looks right.
+6. **Confirm font loading**, not just that no error was thrown — see
+   `theme-integration.md` §1's computed-style + visual-Thai-render check.
+7. **Check the console for errors/warnings** introduced by the new UI —
+   a screen can render acceptably while still throwing on mount, on the
+   primary interaction, or on unmount.
+
+**How to actually do the rendering step:** run it yourself first, don't
+default straight to asking the employee. Use whatever browser/UI
+inspection tooling is available in the current session (e.g. Claude
+Code's browser tools) to launch the app and inspect it at the widths
+above. Fall back to "ask the employee to confirm in their own browser"
+only when this session genuinely has no way to render or inspect the UI
+itself — that's a fallback/handoff step for when local inspection isn't
+possible, not the default verification strategy. (This replaces the
+older guidance to tell the employee to run `npm run dev` and confirm the
+app boots as the primary check — that's still a reasonable last step to
+mention, just not a substitute for Claude checking its own work first.)
+
+### Delivery format
+
+Report, in this order:
+
+1. **Changed scope** — which screens/files were added or touched (new
+   project: the whole scaffold; new screen: the added route/component
+   plus any integration points).
+2. **Verification actually run** — which of the 7 checks above were
+   performed, on which screens/viewports, and their results. Don't claim
+   a check happened if it was skipped (e.g. no browser tool was
+   available, so viewport inspection was asked of the employee instead —
+   say so explicitly).
+3. **Explicit remaining limitations** — anything not verified (untested
+   viewport sizes, browsers, or interaction paths), any demo/mock
+   behavior shipped per
+   `${CLAUDE_PLUGIN_ROOT}/skills/neon-create/references/new-ui-workflow.md`
+   §4 (no fabricated auth/backend), and anything the employee still needs
+   to confirm themselves.
+
+### Acceptance bar
+
+New UI is done when: (a) build/typecheck passes, (b) it renders correctly
+at both required viewports plus its layout-specific transition, (c)
+keyboard navigation and the primary interaction work, and (d) the delivery
+report above was actually produced — not just "it's done, run `npm run
+dev`."

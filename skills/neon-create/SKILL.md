@@ -30,25 +30,24 @@ Before starting, read
 the shared `NeonContext` handoff record, routing rules, and intent policy
 used by all three neon skills. The steps below assume it.
 
-0. **Use established Finnomena branding intent; don't repeat it.** Per the
-   contract's intent policy: if branding intent is already established —
-   the request itself says "Finnomena"/"neon", or it was confirmed earlier
-   in this conversation, including via `neon-audit`'s handoff — treat
-   `brandConfirmed` as true and move on without asking again. Ask a direct
-   brand question only when it's genuinely missing: "Do you want to use
-   Finnomena's neon brand theme for this?" If no, stop — don't install
-   anything, wire `ThemeProvider`, scaffold, or hand off to another skill.
+0. **Use established Finnomena branding intent; don't repeat it** — per
+   the contract's intent policy. Ask directly only when brand intent is
+   genuinely missing ("Do you want to use Finnomena's neon brand theme for
+   this?"); if no, stop — don't install anything, wire `ThemeProvider`,
+   scaffold, or hand off to another skill.
 
-1. **Determine the target: brand-new project, or one that already exists?**
-   If it's obvious from the request or the target directory (empty/
-   nonexistent, explicit "start a new project" wording), proceed without
-   asking; otherwise ask directly.
+1. **Determine the target and confirm the directory.** If it's obvious
+   from the request or the target directory (empty/nonexistent, explicit
+   "start a new project" wording) whether this is a brand-new project or
+   one that already exists, proceed without asking; otherwise ask
+   directly. Either way, confirm the target directory with the user
+   before running anything — never scaffold into a non-empty directory
+   without asking first (the installer below refuses to anyway, but
+   confirm before invoking it). New-project vs. new-screen differ in
+   template-boundary and preserve rules — see
+   `${CLAUDE_PLUGIN_ROOT}/skills/neon-create/references/new-ui-workflow.md`.
 
-2. **Confirm the target directory** with the user before running anything —
-   never scaffold into a non-empty directory without asking first (the
-   installer below refuses to anyway, but confirm before invoking it).
-
-3. **Run the installer** from this repo's root:
+2. **Run the installer** from this repo's root:
 
    ```
    node ${CLAUDE_PLUGIN_ROOT}/theme/finnomena/scripts/install.mjs <target-dir> --new   # brand-new project
@@ -63,8 +62,10 @@ used by all three neon skills. The steps below assume it.
 
    For a new project, this copies `starters/vitejs-cds/` (theme
    pre-wired) into `<target-dir>` and runs the install command. Report its
-   output, then tell the user to run `npm run dev` and confirm the app
-   boots before claiming it "works." For an existing project, it copies
+   output, then build the requested UI and verify it yourself per
+   `${CLAUDE_PLUGIN_ROOT}/skills/neon-create/references/new-ui-workflow.md`
+   before claiming it "works" — don't stop at the scaffold. For an
+   existing project, it copies
    the same 4 theme files into `<target-dir>/src/theme/` (or
    `--theme-dir`) and installs `@coinbase/cds-web` if not already a
    dependency. It never touches provider wiring or component code —
@@ -87,7 +88,7 @@ used by all three neon skills. The steps below assume it.
    §3. Migrate markup to real CDS components incrementally, screen by
    screen, not a big-bang rewrite.
 
-4. **Use `createNeonTheme()` (from the copied `src/theme/createTheme.ts`),
+3. **Use `createNeonTheme()` (from the copied `src/theme/createTheme.ts`),
    never CDS's `defaultTheme` passed through unmodified.** Call it **once,
    at module scope** (not inline in JSX) and pass the result to
    `ThemeProvider`'s `theme` prop alongside `activeColorScheme` (`"light"`
@@ -102,7 +103,7 @@ used by all three neon skills. The steps below assume it.
    (existing project) or the copied `src/app/AppRoot.tsx` (new project,
    already wired) for the exact pattern.
 
-5. **Enforce provider order.** Always:
+4. **Enforce provider order.** Always:
 
    ```
    MediaQueryProvider → ThemeProvider → PortalProvider
@@ -111,7 +112,7 @@ used by all three neon skills. The steps below assume it.
    Do not reorder, skip, or nest these differently — CDS's responsive and
    theming behavior depends on this exact order.
 
-6. **Forbid hardcoded colors and spacing.** Never write a hex/rgb color, raw
+5. **Forbid hardcoded colors and spacing.** Never write a hex/rgb color, raw
    pixel padding/margin, or a raw border-radius number in JSX or CSS-in-JS.
    Always go through CDS's style props using **real CDS token keys**
    (verified against `@coinbase/cds-web`'s actual types
@@ -142,16 +143,16 @@ used by all three neon skills. The steps below assume it.
    header) — flag that any color assignment may need design review before
    treating it as final.
 
-7. **Component-level default overrides** (e.g. "all buttons should have a
+6. **Component-level default overrides** (e.g. "all buttons should have a
    pill radius") go through CDS's `ComponentConfigProvider`, not by editing
    theme tokens. Don't repurpose a color/space token to hack a
    component-specific look.
 
-8. **Custom tokens** outside CDS's built-in `ThemeVars` must be declared via
+7. **Custom tokens** outside CDS's built-in `ThemeVars` must be declared via
    the `ThemeVarsExtended` namespace before use — don't bolt extra keys onto
    the theme object and hope CDS's types pick them up.
 
-9. **New-project branch only — pick the right layout.** `App.tsx` boots into
+8. **New-project branch only — pick the right layout.** `App.tsx` boots into
    `AppShell` (Detailed Layout) by default; five patterns ship in
    `src/layout/`, sharing `Sidebar`/`ContentView`/`InspectorView` pane
    primitives plus `breakpoints.config.ts` for sidebar width. Pick the one
@@ -175,17 +176,17 @@ used by all three neon skills. The steps below assume it.
    numbers are corroborated vs. extrapolated before treating any as
    pixel-final.
 
-10. **Font loading — new-project branch reuses the shipped pattern**
-    (`starters/vitejs-cds/src/main.tsx` loads IBM Plex Sans Thai);
-    **existing-project branch inspects and integrates, never invents a
-    new mechanism.** Never touch font loading at `tier: 'colors'`. At
-    `'visual-system'`/`'cds'`, inspect how the app loads fonts, prefer
-    that mechanism, load only the weights the affected UI uses, support a
-    self-hosted alternative to a CDN link, and verify with real Thai
-    *and* Latin sample text (a font can load by name while still falling
-    back for Thai glyphs specifically) — full procedure in
-    `${CLAUDE_PLUGIN_ROOT}/skills/neon-audit/references/theme-integration.md`
-    §1.
+9. **Font loading — new-project branch reuses the shipped pattern**
+   (`starters/vitejs-cds/src/main.tsx` loads IBM Plex Sans Thai);
+   **existing-project branch inspects and integrates, never invents a
+   new mechanism.** Never touch font loading at `tier: 'colors'`. At
+   `'visual-system'`/`'cds'`, inspect how the app loads fonts, prefer
+   that mechanism, load only the weights the affected UI uses, support a
+   self-hosted alternative to a CDN link, and verify with real Thai
+   *and* Latin sample text (a font can load by name while still falling
+   back for Thai glyphs specifically) — full procedure in
+   `${CLAUDE_PLUGIN_ROOT}/skills/neon-audit/references/theme-integration.md`
+   §1.
 
 For the token-regeneration pipeline and known limitations, read
 `${CLAUDE_PLUGIN_ROOT}/theme/finnomena/theme.config.ts`,
