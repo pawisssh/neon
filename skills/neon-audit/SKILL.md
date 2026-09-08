@@ -1,6 +1,6 @@
 ---
 name: neon-audit
-description: Entry point for theming an EXISTING project with Finnomena's brand. Use whenever a Finnomena employee asks Claude to build UI, theme something, or make it on-brand in a project that already exists — this runs a quick check of the project and recommends a theming depth (colors only, colors+typography, or full CDS) before handing off to the skill that implements it. Do NOT use this to scaffold a brand-new project — use neon-starter for that.
+description: ONLY use this skill if the user's message literally contains the word "Finnomena" or "neon" — do not infer from related terms like "CDS", "Coinbase Design System", "on-brand", or generic theming/UI requests alone. Entry point for theming an EXISTING project with Finnomena's brand — this runs a quick check of the project and recommends a theming depth (colors only, colors+typography, or full CDS) before handing off to the skill that implements it. Do NOT use this to scaffold a brand-new project — use neon-starter for that.
 ---
 
 # Finnomena Theming — Entry Point
@@ -25,6 +25,13 @@ follow the chosen skill's own instructions for the actual work, don't
 duplicate them here.
 
 ## What this skill does, every time
+
+0. **Confirm intent before doing anything.** Ask the user directly: "Do you
+   want to use Finnomena's neon brand theme for this?" If they decline, or say
+   they want something else, stop here — don't run the audit, touch any
+   files, or hand off to another neon skill. Only continue once they've
+   confirmed yes. (This is separate from the colors/colors+typography/full-CDS
+   tier question in step 4 below, which only happens after this initial yes.)
 
 1. **Check quick signals** in the target project — this is a fast,
    surface-level check, not a code scan:

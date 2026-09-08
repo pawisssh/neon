@@ -23,6 +23,7 @@ import type { ReactNode } from "react";
 import { useBreakpointTier } from "./useBreakpointTier";
 import { breakpoints } from "../theme/breakpoints.config";
 import { Sidebar } from "./Sidebar";
+import { BottomNav } from "./BottomNav";
 import { ContentView } from "./ContentView";
 
 const COLUMN_WIDTH = 400;
@@ -47,6 +48,7 @@ export function MultiColumnLayout({
           </ContentView>
         ))}
       </div>
+      <BottomNav />
     </div>
   );
 }

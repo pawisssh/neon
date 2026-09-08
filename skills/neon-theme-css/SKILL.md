@@ -1,6 +1,6 @@
 ---
 name: neon-theme-css
-description: Apply Finnomena's brand colors, or colors plus typography/spacing/radius, to a project via plain CSS custom properties — no @coinbase/cds-web install, no React provider, works with any framework or styling system. Normally reached via neon-audit's recommendation; invoke directly only if the user has already said they want "just colors" or similar without CDS components. Do NOT use this if the user wants real CDS components — use neon-theme for that instead.
+description: ONLY use this skill if the user's message literally contains the word "Finnomena" or "neon" — do not infer from related terms like "brand colors", "on-brand", or a generic "just colors" request alone. Applies Finnomena's brand colors, or colors plus typography/spacing/radius, to a project via plain CSS custom properties — no @coinbase/cds-web install, no React provider, works with any framework or styling system. Normally reached via neon-audit's recommendation; invoke directly only if the user has already said they want "just colors" or similar without CDS components. Do NOT use this if the user wants real CDS components — use neon-theme for that instead.
 ---
 
 # Finnomena Brand Theme (CSS variables only)
@@ -20,6 +20,12 @@ optionally typography) without adopting CDS.
 
 ## What this skill does, every time
 
+0. **Confirm intent before doing anything.** Ask the user directly: "Do you
+   want to use Finnomena's neon brand theme for this?" If they decline, stop
+   here — don't copy `theme.css`, reference its variables, or hand off to
+   another neon skill. Only continue past this point once they've confirmed
+   yes.
+
 1. **Copy `theme.css`** from this skill's folder into the target project
    (e.g. `src/theme/theme.css`, or wherever its global styles already
    live) and **import it once** — in the project's root CSS file, or a
@@ -32,8 +38,9 @@ optionally typography) without adopting CDS.
    - **Colors + typography**: also use `--fontFamily-*`, `--fontSize-*`,
      `--fontWeight-*`, `--lineHeight-*`, `--space-*`, and `--borderRadius-*`.
 
-   See `theme.css`'s own header for the full variable list and exactly
-   which Finnomena role each one traces back to.
+   See `DESIGN.md` for the full color/typography/spacing reference
+   tables and do's/don'ts, or `theme.css`'s own header for the raw variable
+   list and provenance notes.
 
 3. **Forbid hardcoded colors and pixel values** in whatever you write —
    never a raw hex color, a raw pixel padding/margin, or a raw border-radius
@@ -51,9 +58,10 @@ optionally typography) without adopting CDS.
 5. **Color is a provisional, first-pass mapping** — not a final brand
    sign-off. Every value traces to a real Finnomena token, but which
    Finnomena role fills which slot involved real judgment calls (see
-   `theme.css`'s header, and `../neon-theme/theme/color-overrides.ts`'s for
-   the full reasoning). Flag to the user that colors may need design review
-   before treating them as final.
+   `DESIGN.md`'s Colors section, `theme.css`'s header, and
+   `../neon-theme/theme/color-overrides.ts`'s for the full reasoning). Flag
+   to the user that colors may need design review before treating them as
+   final.
 
 ## Upgrading
 
@@ -101,5 +109,6 @@ the `--color-*`/`--space-*`/`--borderRadius-*`/`--fontFamily-*`/
 - Raw spectrum primitives (`--blue60` and similar), illustration colors,
   and fields with no Finnomena data at all (`iconSize`, `avatarSize`,
   `controlSize`, `borderWidth`, `textTransform`, `shadow`,
-  `fontFamilyMono`) are deliberately omitted from `theme.css` — see its own
-  header for why.
+  `fontFamilyMono`) are deliberately omitted from `theme.css` — see
+  `DESIGN.md`'s "What's Not Included" section or `theme.css`'s own header
+  for why.

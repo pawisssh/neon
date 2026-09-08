@@ -6,6 +6,11 @@ import { createRoot } from "react-dom/client";
 // undefined CSS variable, and components render without CDS's base reset.
 import "@coinbase/cds-web/globalStyles";
 import "@coinbase/cds-web/defaultFontStyles";
+// Icon glyph font (@font-face for "CoinbaseIcons") that <Icon> (used by
+// Sidebar/BottomNav's nav rail) renders characters from — without this,
+// every <Icon> shows as a blank/tofu box, since the glyph font itself is
+// never registered by @coinbase/cds-web's own imports above.
+import "@coinbase/cds-icons/fonts/web/icon-font.css";
 
 import { AppRoot } from "./app/AppRoot";
 import { App } from "./app/App";

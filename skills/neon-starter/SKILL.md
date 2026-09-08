@@ -1,6 +1,6 @@
 ---
 name: neon-starter
-description: Scaffold a new, ready-to-run Vite + React + TypeScript project pre-wired with Finnomena's CDS brand theme and a choice of 5 responsive page-layout patterns (Detailed, Content, Simple, Multi-column, Immersive). Use whenever a Finnomena employee asks Claude to start a new app, project, or codebase from scratch. Do NOT use this to add theming to UI inside a project that already exists — use neon-audit for that instead.
+description: ONLY use this skill if the user's message literally contains the word "Finnomena" or "neon" — do not infer from related terms like "CDS", "Coinbase Design System", or a generic "start a new app/project" request alone. Scaffolds a new, ready-to-run Vite + React + TypeScript project pre-wired with Finnomena's CDS brand theme and a choice of 5 responsive page-layout patterns (Detailed, Content, Simple, Multi-column, Immersive). Do NOT use this to add theming to UI inside a project that already exists — use neon-audit for that instead.
 ---
 
 # Finnomena Starter (Vite + React + CDS)
@@ -11,6 +11,13 @@ project and just wants Claude to build on-brand UI inside it, use
 theming skill — this skill and that one are complementary, not overlapping.
 
 ## What this skill does, every time
+
+0. **Confirm intent before doing anything.** Ask the user directly: "Do you
+   want to use Finnomena's neon brand theme for this?" If they decline, stop
+   here — don't apply this skill's steps. Scaffold a plain Vite + React +
+   TypeScript project without the Finnomena theme/layout wiring instead (or
+   ask what they'd like), rather than applying the brand theme anyway. Only
+   continue past this point once they've confirmed yes.
 
 1. **Confirm the target directory and project name** with the user before
    writing any files — never scaffold into a non-empty directory without
@@ -54,13 +61,22 @@ theming skill — this skill and that one are complementary, not overlapping.
    Pick the one that matches what the user is describing, don't default to
    `AppShell` for everything:
 
+   `Sidebar` ships with real Finnomena navigation out of the box, not an
+   empty placeholder — a logo (`Logo.tsx`) and a 5-item ecosystem nav rail
+   (`SidebarNav.tsx`, items in `navItems.ts`: Home/Search/Portfolio/
+   Profile/Notifications, each linking to its real `finnomena.com`/
+   `port.finnomena.com`/`auth.finnomena.com` destination in a new tab).
+   The same items also power `BottomNav.tsx` at phone width. The `sidebar`
+   prop passed into any layout is for *extra*, app-specific content
+   rendered below this built-in nav — pass `null` if there isn't any.
+
    | Component | Panes | Use for |
    |---|---|---|
    | `AppShell` (Detailed Layout) | Sidebar + Content + Inspector, inspector-weighted | The default — general-purpose screens needing a detail/inspector panel |
    | `ContentLayout` | Sidebar + Content + Inspector, content-weighted | Screens where the main content should dominate over a secondary inspector |
    | `SimpleLayout` | Sidebar + Content only | Screens with no need for a third pane |
    | `MultiColumnLayout` | Sidebar + N horizontally-scrolling fixed-width columns | Kanban/board-style views |
-   | `ImmersiveLayout` | Content only, full-bleed, no chrome | Focus/distraction-free flows — full-screen editors, walkthroughs, single-task screens |
+   | `ImmersiveLayout` | Content only, full-bleed, logo-only header (no nav icons, no `BottomNav`) | Focus/distraction-free flows — full-screen editors, walkthroughs, single-task screens |
 
    All 5 are hand-maintained, Figma-sourced constants in
    `src/layout/layoutPanes.ts` (plus inline logic in the simpler
@@ -129,12 +145,17 @@ provenance note in the relevant header comment.
   the same nominal breakpoint. All 5 patterns use the shared
   `breakpoints.config.ts` value for a visually consistent app shell — flag
   to the design owner if this should actually vary per pattern.
-- **Bottom Navigation** exists in the source component set (a component
-  named "Bottom Navigation" appears at the `sm` tier in several source
-  frames) but its activation condition wasn't confirmed from the raw frame
-  data — it's intentionally omitted from every layout component in this
-  version. Ask the design owner whether/when it should appear before
-  adding it.
+- **Bottom Navigation is now implemented** (`src/layout/BottomNav.tsx`),
+  rendered by every layout except `ImmersiveLayout` (which keeps a
+  logo-only header at every tier instead — no nav icons, by design, since
+  it has no room for the nav rail). It activates only at the `sm` tier
+  (`sidebarWidth === 0`, where
+  `Sidebar` renders nothing) and shows the same 5 items as
+  `src/layout/navItems.ts`/`SidebarNav.tsx` — icon-only, no labels. This was
+  a fresh build, not sourced from the Figma "Bottom Navigation" frames
+  (their activation condition still isn't confirmed) — re-verify against
+  Figma/design review before treating its current icon-only phone layout as
+  final.
 - **Confirmed: `MediaQueryProvider` does NOT accept a custom-breakpoints
   prop** (checked against the real `@coinbase/cds-web@9.26.1` types — its
   only props are `children` and `defaultValues`, a one-time initial snapshot,

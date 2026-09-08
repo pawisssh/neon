@@ -1,12 +1,21 @@
 /**
- * Sidebar pane: Header (64px) + scrollable Content Area + Footer (64px).
- * Width comes from ../theme/breakpoints.config.ts's `sidebarWidth` per tier
- * (0 = hidden, 64 = icon-rail, >64 = full sidebar) — see AppShell.tsx for
- * how the tier is picked. These widths are structural pane geometry, not
+ * Sidebar pane: Header (64px, Finnomena logo) + scrollable Content Area
+ * (nav rail) + Footer (64px, reserved). Width comes from
+ * ../theme/breakpoints.config.ts's `sidebarWidth` per tier (0 = hidden,
+ * 64 = icon-rail, >64 = full sidebar) — see AppShell.tsx for how the tier
+ * is picked. These widths are structural pane geometry, not
  * color/spacing/radius, so they're read as plain numbers rather than routed
  * through neonTheme's style tokens.
+ *
+ * `children` (the `sidebar` prop threaded in from App.tsx) is rendered
+ * below the built-in nav — use it for anything app-specific beyond
+ * Finnomena's standard ecosystem rail (see ./navItems.ts).
  */
 import type { ReactNode } from "react";
+import { Box } from "@coinbase/cds-web/layout";
+import { Logo } from "./Logo";
+import { SidebarNav } from "./SidebarNav";
+import { navItems } from "./navItems";
 
 const HEADER_FOOTER_HEIGHT = 64;
 
@@ -24,8 +33,19 @@ export function Sidebar({ width, children }: { width: number; children: ReactNod
         height: "100%",
       }}
     >
-      <div style={{ height: HEADER_FOOTER_HEIGHT, flexShrink: 0 }} />
-      <div style={{ flex: 1, overflowY: "auto" }}>{isRail ? null : children}</div>
+      <Box
+        style={{ height: HEADER_FOOTER_HEIGHT, flexShrink: 0 }}
+        display="flex"
+        alignItems="center"
+        justifyContent={isRail ? "center" : "flex-start"}
+        paddingStart={isRail ? 0 : 2}
+      >
+        {!isRail && <Logo />}
+      </Box>
+      <div style={{ flex: 1, overflowY: "auto" }}>
+        <SidebarNav items={navItems} isRail={isRail} />
+        {!isRail && children}
+      </div>
       <div style={{ height: HEADER_FOOTER_HEIGHT, flexShrink: 0 }} />
     </div>
   );

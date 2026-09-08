@@ -1,6 +1,6 @@
 ---
 name: neon-theme
-description: Implements FULL Finnomena theming on top of the Coinbase Design System (CDS) — install @coinbase/cds-web, wire ThemeProvider, build with real CDS components. Normally reached via neon-audit's recommendation; invoke directly only if the user has already said they want real CDS components. If the user just wants Finnomena's colors (optionally + typography) WITHOUT adopting CDS, use neon-theme-css instead — do not assume CDS is wanted by default.
+description: ONLY use this skill if the user's message literally contains the word "Finnomena" or "neon" — do not infer from related terms like "CDS", "Coinbase Design System", or "real CDS components" alone. Implements FULL Finnomena theming on top of the Coinbase Design System (CDS) — install @coinbase/cds-web, wire ThemeProvider, build with real CDS components. Normally reached via neon-audit's recommendation; invoke directly only if the user has already said they want real CDS components. If the user just wants Finnomena's colors (optionally + typography) WITHOUT adopting CDS, use neon-theme-css instead — do not assume CDS is wanted by default.
 ---
 
 # Finnomena Brand Theme (CDS)
@@ -54,6 +54,13 @@ does, this is an *upgrade*, not a from-scratch integration:
   color="fg">` can coexist in the same codebase during the transition.
 
 ## What this skill does, every time
+
+0. **Confirm intent before doing anything.** Ask the user directly: "Do you
+   want to use Finnomena's neon brand theme for this?" If they decline, stop
+   here — don't install `@coinbase/cds-web` with Finnomena overrides, don't
+   wire `ThemeProvider` with `createNeonTheme()`, and don't hand off to
+   another neon skill. Only continue past this point once they've confirmed
+   yes.
 
 1. **Ensure `@coinbase/cds-web` is installed** in the current project. If it
    isn't, install it before writing any component code:

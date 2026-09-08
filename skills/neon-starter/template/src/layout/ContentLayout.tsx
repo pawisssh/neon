@@ -17,6 +17,7 @@ import { useBreakpointTier } from "./useBreakpointTier";
 import { contentLayoutPanes } from "./layoutPanes";
 import { breakpoints } from "../theme/breakpoints.config";
 import { Sidebar } from "./Sidebar";
+import { BottomNav } from "./BottomNav";
 import { ContentView } from "./ContentView";
 import { InspectorView } from "./InspectorView";
 
@@ -38,6 +39,7 @@ export function ContentLayout({
       <Sidebar width={sidebarWidth}>{sidebar}</Sidebar>
       {pane.inspector !== "hidden" && <ContentView width={pane.inspector}>{inspector}</ContentView>}
       <InspectorView pane={pane.content}>{content}</InspectorView>
+      <BottomNav />
     </div>
   );
 }

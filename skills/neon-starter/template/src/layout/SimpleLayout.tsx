@@ -14,6 +14,7 @@ import type { ReactNode } from "react";
 import { useBreakpointTier } from "./useBreakpointTier";
 import { breakpoints } from "../theme/breakpoints.config";
 import { Sidebar } from "./Sidebar";
+import { BottomNav } from "./BottomNav";
 import { InspectorView } from "./InspectorView";
 
 export function SimpleLayout({ sidebar, content }: { sidebar: ReactNode; content: ReactNode }) {
@@ -25,6 +26,7 @@ export function SimpleLayout({ sidebar, content }: { sidebar: ReactNode; content
       <Sidebar width={sidebarWidth}>{sidebar}</Sidebar>
       {/* InspectorView is the generic "fill" pane component (Toolbar + scrollable body) — reused here for the sole content pane, since Simple Layout has no fixed-width pane at all. */}
       <InspectorView pane={{}}>{content}</InspectorView>
+      <BottomNav />
     </div>
   );
 }

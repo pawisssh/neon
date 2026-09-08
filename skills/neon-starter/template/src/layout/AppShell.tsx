@@ -8,15 +8,16 @@
  * ./MultiColumnLayout.tsx, and ./ImmersiveLayout.tsx for the other 4 named
  * patterns from the same Figma component set.
  *
- * Bottom Navigation exists in the source component set but its activation
- * condition wasn't confirmed from the Figma frame data — intentionally
- * omitted here. Confirm with the design owner before adding it.
+ * Bottom Navigation (see ./BottomNav.tsx) renders at the `sm`/phone tier,
+ * replacing the Sidebar (hidden at that width) with the same Finnomena
+ * ecosystem nav items — see ./navItems.ts.
  */
 import type { ReactNode } from "react";
 import { useBreakpointTier } from "./useBreakpointTier";
 import { detailedLayoutPanes } from "./layoutPanes";
 import { breakpoints } from "../theme/breakpoints.config";
 import { Sidebar } from "./Sidebar";
+import { BottomNav } from "./BottomNav";
 import { ContentView } from "./ContentView";
 import { InspectorView } from "./InspectorView";
 
@@ -38,6 +39,7 @@ export function AppShell({
       <Sidebar width={sidebarWidth}>{sidebar}</Sidebar>
       {pane.content !== "hidden" && <ContentView width={pane.content}>{content}</ContentView>}
       <InspectorView pane={pane.inspector}>{inspector}</InspectorView>
+      <BottomNav />
     </div>
   );
 }
