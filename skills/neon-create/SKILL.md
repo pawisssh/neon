@@ -57,15 +57,26 @@ used by all three neon skills. The steps below assume it.
    node ${CLAUDE_PLUGIN_ROOT}/theme/finnomena/scripts/install.mjs <target-dir>         # existing project
    ```
 
+   The installer also accepts `--theme-dir <project-relative-dir>` (default
+   `src/theme`; existing-project/`--css-only` only, not `--new`),
+   `--package-manager <npm|pnpm|yarn|bun>` (auto-detected otherwise from
+   `package.json`'s `packageManager` field or a lockfile), and
+   `--skip-install` (scaffold/copy files without running any install —
+   the output explicitly reports dependencies as not installed, never an
+   unqualified "Done").
+
    For a new project, this copies `starters/vitejs-cds/` into `<target-dir>`
    verbatim — its `src/theme/` already ships with the 4 Finnomena theme
-   files pre-wired — and runs `npm install`. Report its output to the user,
+   files pre-wired — and runs `npm install` (or the detected/`--package-manager`
+   manager's install command). Report its output to the user,
    then tell them to run `npm run dev` and confirm the app boots before
    claiming it "works." For an existing project, it copies the same 4
    theme files into
-   `<target-dir>/src/theme/` and installs `@coinbase/cds-web` only if it
-   isn't already a dependency. It never touches provider wiring or component
-   code — that's your job, from here on.
+   `<target-dir>/src/theme/` (or `--theme-dir`) and installs
+   `@coinbase/cds-web`, pinned to the version range declared in
+   `starters/vitejs-cds/package.json`, only if it isn't already a
+   dependency. It never touches provider wiring or component code — that's
+   your job, from here on.
 
    If the project already has a `theme.css` (from a prior
    `${CLAUDE_PLUGIN_ROOT}/skills/neon-redesign` run), this is an *upgrade*:

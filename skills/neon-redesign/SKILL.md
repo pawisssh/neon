@@ -35,9 +35,11 @@ used by all three neon skills. The steps below assume it.
    node ${CLAUDE_PLUGIN_ROOT}/theme/finnomena/scripts/install.mjs <target-dir> --css-only
    ```
 
-   This copies `theme.css` into `<target-dir>/src/theme/`. Then **import it
-   once** in the project's root CSS or entry file (e.g.
-   `import "./theme/theme.css";`).
+   This copies `theme.css` into `<target-dir>/src/theme/`. Pass
+   `--theme-dir <project-relative-dir>` to put it somewhere else instead
+   (e.g. `styles/neon` for a plain-HTML project) — validated to stay inside
+   `<target-dir>` before anything is written. Then **import it once** in the
+   project's root CSS or entry file (e.g. `import "./theme/theme.css";`).
 
 2. **Scope which variables you use to the tier the user chose**:
    - **Colors only**: reference only `--color-*` variables (`var(--color-fg)`,
