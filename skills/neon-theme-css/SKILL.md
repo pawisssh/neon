@@ -1,35 +1,33 @@
 ---
 name: neon-theme-css
-description: ONLY use this skill if the user's message literally contains the word "Finnomena" or "neon" — do not infer from related terms like "brand colors", "on-brand", or a generic "just colors" request alone. Applies Finnomena's brand colors, or colors plus typography/spacing/radius, to a project via plain CSS custom properties — no @coinbase/cds-web install, no React provider, works with any framework or styling system. Normally reached via neon-audit's recommendation; invoke directly only if the user has already said they want "just colors" or similar without CDS components. Do NOT use this if the user wants real CDS components — use neon-theme for that instead.
+description: ONLY use this skill if the user's message literally contains the word "Finnomena" or "neon" — do not infer from related terms like "brand colors", "on-brand", or a generic "just colors" request alone. Applies Finnomena's brand colors, or colors plus typography/spacing/radius, to a project via plain CSS custom properties — no @coinbase/cds-web install, no React provider, works with any framework or styling system. Normally reached via neon-audit's recommendation; invoke directly only if the user has already said they want "just colors" or similar without CDS components. Do NOT use this if the user wants real CDS components — use neon-create for that instead.
 ---
 
 # Finnomena Brand Theme (CSS variables only)
 
-This is the lightweight theming path: Finnomena's brand values as CSS
-custom properties, for a project that isn't (or doesn't want to be) built
-on the Coinbase Design System. If the user wants real CDS components
-(`Button`, `Box`, etc.) with `ThemeProvider`, use `../neon-theme` instead —
-this skill and that one are complementary, not overlapping, matching how
-`neon-theme`/`neon-starter` already divide "existing project" vs.
-"brand-new project."
+Lightweight theming: Finnomena's brand values as CSS custom properties, for
+projects not built on CDS. If the user wants real CDS components (`Button`,
+`Box`, etc.) with `ThemeProvider`, use
+`${CLAUDE_PLUGIN_ROOT}/skills/neon-create` instead.
 
-Normally reached via `../neon-audit`, which decides whether this or
-`../neon-theme` fits the project and hands off accordingly. Invoke this
-directly only if the user has already told you they want colors (and
-optionally typography) without adopting CDS.
+Normally reached via `${CLAUDE_PLUGIN_ROOT}/skills/neon-audit`; invoke
+directly only if the user already said they want colors (and optionally
+typography) without CDS.
 
 ## What this skill does, every time
 
 0. **Confirm intent before doing anything.** Ask the user directly: "Do you
    want to use Finnomena's neon brand theme for this?" If they decline, stop
-   here — don't copy `theme.css`, reference its variables, or hand off to
-   another neon skill. Only continue past this point once they've confirmed
-   yes.
+   here. Only continue once they've confirmed yes.
 
-1. **Copy `theme.css`** from this skill's folder into the target project
-   (e.g. `src/theme/theme.css`, or wherever its global styles already
-   live) and **import it once** — in the project's root CSS file, or a
-   single top-level import in its main entry file (e.g.
+1. **Run the installer:**
+
+   ```
+   node ${CLAUDE_PLUGIN_ROOT}/theme/finnomena/scripts/install.mjs <target-dir> --css-only
+   ```
+
+   This copies `theme.css` into `<target-dir>/src/theme/`. Then **import it
+   once** in the project's root CSS or entry file (e.g.
    `import "./theme/theme.css";`).
 
 2. **Scope which variables you use to the tier the user chose**:
@@ -38,77 +36,52 @@ optionally typography) without adopting CDS.
    - **Colors + typography**: also use `--fontFamily-*`, `--fontSize-*`,
      `--fontWeight-*`, `--lineHeight-*`, `--space-*`, and `--borderRadius-*`.
 
-   See `DESIGN.md` for the full color/typography/spacing reference
-   tables and do's/don'ts, or `theme.css`'s own header for the raw variable
-   list and provenance notes.
+   See `${CLAUDE_PLUGIN_ROOT}/design-md/finnomena/DESIGN.md` for the full
+   reference, or `theme.css`'s own header for the raw variable list.
 
-3. **Forbid hardcoded colors and pixel values** in whatever you write —
-   never a raw hex color, a raw pixel padding/margin, or a raw border-radius
-   number. Always `var(--color-fg)`, `var(--space-2)`, `var(--borderRadius-200)`,
-   etc. instead. If a mockup needs a value with no matching variable,
-   that's a signal to flag it to the user rather than inventing one.
+3. **Forbid hardcoded colors and pixel values.** Always `var(--color-fg)`,
+   `var(--space-2)`, `var(--borderRadius-200)`, etc. — never raw hex or
+   pixels. If a mockup needs a value with no matching variable, flag it
+   rather than inventing one. Two values are single-purpose:
+   `--color-accentBoldYellow` (reserved for one brand-highlight per screen)
+   and `--color-bgLinePrimary` (reserved for links/focus rings/interactive
+   highlight only).
 
-4. **Dark mode** is wired via `prefers-color-scheme: dark` by default, with
-   a `[data-theme="dark"]`/`[data-theme="light"]` attribute override — see
-   `theme.css`'s header. If the target project already has its own
-   dark-mode mechanism (a `.dark` class, a different data attribute), adapt
-   the selectors in the copied `theme.css` to match rather than introducing
-   a second, conflicting convention.
+4. **Dark mode** is wired via `prefers-color-scheme: dark` with a
+   `[data-theme="dark"]`/`[data-theme="light"]` override — see
+   `theme.css`'s header. If the project already has its own dark-mode
+   mechanism, adapt the selectors in the copied `theme.css` to match.
 
-5. **Color is a provisional, first-pass mapping** — not a final brand
-   sign-off. Every value traces to a real Finnomena token, but which
-   Finnomena role fills which slot involved real judgment calls (see
-   `DESIGN.md`'s Colors section, `theme.css`'s header, and
-   `../neon-theme/theme/color-overrides.ts`'s for the full reasoning). Flag
-   to the user that colors may need design review before treating them as
-   final.
+5. **Color is a provisional, first-pass mapping** — every value traces to
+   a real Finnomena token, but the mapping involves judgment calls (see
+   `${CLAUDE_PLUGIN_ROOT}/design-md/finnomena/DESIGN.md`'s Colors section
+   and `${CLAUDE_PLUGIN_ROOT}/theme/finnomena/color-overrides.ts`). Flag to
+   the user that colors may need design review before treating as final.
 
 ## Upgrading
 
-**Colors → Colors+Typography** is free — `theme.css` always contains every
-section (colors, typography, spacing, radius) regardless of which tier is
-in use; "tier" is scope of use, not what's present in the file. Moving up
-just means referencing more of the variables that were already there. No
-new copy step, no file changes.
+**Colors → Colors+Typography** is free — `theme.css` contains every
+section regardless of tier. Moving up just means using more variables.
 
-**Colors+Typography → Full CDS** does not require a CSS rewrite. This
-skill's `theme.css` was generated by running `@coinbase/cds-web`'s own real
-`createThemeCssVars()` against `createNeonTheme()`'s output — the variable
-names (`--color-fg`, `--space-2`, `--fontFamily-body`, etc.) are
-byte-identical to what real CDS's `ThemeProvider` emits at runtime
-(verified, not assumed — see `theme.css`'s header). So when a project
-outgrows this tier and adopts `../neon-theme` (install `@coinbase/cds-web`,
-add `ThemeProvider`), existing markup using `var(--color-fg)` etc. keeps
-rendering correctly unchanged. Migrating individual pieces of UI to real
-CDS *components* can then happen incrementally, screen by screen, rather
-than as a forced big-bang rewrite the moment CDS is adopted.
-
-## Regenerating theme.css
-
-`theme.css` is **hand-written, not auto-generated** by the token pipeline
-— the pipeline's `.mjs` scripts can't import
-`../neon-theme/theme/color-overrides.ts` (a real `.ts` file encoding a
-human color decision), and this file's values trace back to that same
-human-reviewed source anyway. If `../neon-theme/theme/theme.config.ts`'s
-`neonTheme` or `color-overrides.ts`'s `colorOverrides` change, regenerate
-by hand using the same method that produced this file: in a scratch
-project with `@coinbase/cds-web` installed, call `createNeonTheme()`,
-resolve it to light and dark `Theme` objects (`color`/`spectrum` picked
-from `lightColor`/`darkColor` and `lightSpectrum`/`darkSpectrum`
-respectively), run each through real `createThemeCssVars()`, and transcribe
-the `--color-*`/`--space-*`/`--borderRadius-*`/`--fontFamily-*`/
-`--fontSize-*`/`--fontWeight-*`/`--lineHeight-*` keys into this file. See
-`notes/README.md` for the exact scratch-project commands.
+**Colors+Typography → Full CDS** doesn't require a CSS rewrite —
+`theme.css`'s variable names are byte-identical to what CDS's
+`ThemeProvider` emits (verified — see `theme.css`'s header). Existing
+`var(--color-fg)` markup keeps working after adopting
+`${CLAUDE_PLUGIN_ROOT}/skills/neon-create`. Migrate to real CDS components
+incrementally.
 
 ## Known limitations
 
-- `theme.css`'s dark-mode selector convention
-  (`prefers-color-scheme` + `data-theme` override) is a default assumption,
-  not verified against any specific target project's own dark-mode
-  mechanism.
-- Raw spectrum primitives (`--blue60` and similar), illustration colors,
-  and fields with no Finnomena data at all (`iconSize`, `avatarSize`,
-  `controlSize`, `borderWidth`, `textTransform`, `shadow`,
-  `fontFamilyMono`) are deliberately omitted from `theme.css` — see
-  `DESIGN.md`'s "What's Not Included" section or `theme.css`'s own header
-  for why.
+- Dark-mode selectors are a default assumption, not verified against any
+  specific project's mechanism.
+- Spectrum primitives (`--blue60` etc.), illustration colors, and
+  `iconSize`/`avatarSize`/`shadow`/`fontFamilyMono` are deliberately
+  omitted — see `theme.css`'s header.
+- No shadow tokens — depth uses `--color-bgElevation1`/`bgElevation2`
+  flat-surface steps per
+  `${CLAUDE_PLUGIN_ROOT}/design-md/finnomena/DESIGN.md`'s Elevation & Depth
+  section. Don't add `box-shadow` to fake depth.
+- `theme.css` regeneration: it's hand-written (not auto-generated). If
+  `theme.config.ts` or `color-overrides.ts` change, regenerate by calling
+  `createNeonTheme()` → `createThemeCssVars()` in a scratch CDS project.
+  See `theme.css`'s own header for the full method.

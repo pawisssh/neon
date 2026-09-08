@@ -8,7 +8,7 @@
  *   node scripts/sync-tokens.mjs && node scripts/generate-theme-config.mjs
  *
  * Source of truth: the raw Figma Token Studio export in ./tokens/*.json,
- * resolved by ../scripts/sync-tokens.mjs into ./tokens.resolved.json.
+ * resolved by ./scripts/sync-tokens.mjs into ./tokens.resolved.json.
  *
  * STATUS (regenerated 2026-09-07T19:19:11.289Z):
  *

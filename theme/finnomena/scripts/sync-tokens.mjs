@@ -2,29 +2,36 @@
 /**
  * sync-tokens.mjs
  *
- * Resolves the raw Figma Variables/Token export in ../theme/tokens/*.json into a
+ * Resolves the raw Figma Variables/Token export in ../tokens/*.json into a
  * flat, alias-resolved token map, then writes:
- *   - theme/tokens.resolved.json   (every token that resolved, with hex colors
- *                                   converted to CDS's "r,g,b" string format)
- *   - theme/tokens.report.json     (counts + a list of every unresolved alias,
- *                                   grouped by the missing root collection name)
+ *   - ../tokens.resolved.json   (every token that resolved, with hex colors
+ *                                converted to CDS's "r,g,b" string format)
+ *   - ../tokens.report.json     (counts + a list of every unresolved alias,
+ *                                grouped by the missing root collection name)
  *
  * This is intentionally generic: it does not hardcode Finnomena's token names,
- * so re-running it after new Figma collections are exported into theme/tokens/
+ * so re-running it after new Figma collections are exported into ../tokens/
  * will pick them up automatically (this doubles as the seed for the Phase 4
  * "token sync automation" step in the project brief).
  *
- * Usage:
- *   node scripts/sync-tokens.mjs
+ * Usage (full regeneration pipeline — run all four in order after changing
+ * anything in tokens/*.json):
+ *   node scripts/sync-tokens.mjs && node scripts/generate-theme-config.mjs && node scripts/generate-breakpoints-config.mjs && node scripts/install.mjs --sync-starter
+ *
+ * The 4th step keeps starters/vitejs-cds/src/theme/'s committed copy of
+ * theme.config.ts/color-overrides.ts/createTheme.ts/breakpoints.config.ts
+ * in sync with this directory's — a pure file copy, no npm side effects
+ * (see install.mjs's own header for why that's kept separate from its
+ * existing-project branch).
  */
 import { readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { dirname, join, basename } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const TOKENS_DIR = join(__dirname, "..", "theme", "tokens");
-const OUT_RESOLVED = join(__dirname, "..", "theme", "tokens.resolved.json");
-const OUT_REPORT = join(__dirname, "..", "theme", "tokens.report.json");
+const TOKENS_DIR = join(__dirname, "..", "tokens");
+const OUT_RESOLVED = join(__dirname, "..", "tokens.resolved.json");
+const OUT_REPORT = join(__dirname, "..", "tokens.report.json");
 
 /** Flatten a token JSON tree into { "a.b.c": {value, type} } leaf entries. */
 function flatten(node, pathParts, out) {

@@ -2,8 +2,8 @@
 /**
  * generate-breakpoints-config.mjs
  *
- * Mechanically emits ../theme/breakpoints.config.ts from ../theme/tokens.resolved.json's
- * "<tier>.Detailed Layout.*" entries (sourced from ../theme/tokens/breakpoint.json).
+ * Mechanically emits ../breakpoints.config.ts from ../tokens.resolved.json's
+ * "<tier>.Detailed Layout.*" entries (sourced from ../tokens/breakpoint.json).
  * Run `node sync-tokens.mjs` first to (re)produce tokens.resolved.json.
  *
  * Only the fields corroborated against the Figma app-shell frame (file
@@ -13,21 +13,26 @@
  * (its own Content View width / Inspector View width are never both
  * nonzero at once) and is NOT the same thing as the simultaneous
  * Sidebar+Content+Inspector app shell — that lives in
- * ../../neon-starter/template/src/layout/layoutPanes.ts as a separately
- * hand-maintained, Figma-session-sourced constant. Do not merge the two.
+ * ${CLAUDE_PLUGIN_ROOT}/starters/vitejs-cds/src/layout/layoutPanes.ts as a
+ * separately hand-maintained, Figma-session-sourced constant. Do not merge
+ * the two.
  *
  * breakpoints.config.ts is a generated file — do not hand-edit it. Change
- * ../theme/tokens/breakpoint.json and re-run this pipeline instead.
+ * ../tokens/breakpoint.json and re-run this pipeline instead.
  *
- * Usage:
- *   node scripts/sync-tokens.mjs && node scripts/generate-breakpoints-config.mjs
+ * Usage (full regeneration pipeline — run all four in order after changing
+ * anything in tokens/*.json):
+ *   node scripts/sync-tokens.mjs && node scripts/generate-theme-config.mjs && node scripts/generate-breakpoints-config.mjs && node scripts/install.mjs --sync-starter
+ *
+ * The 4th step syncs the regenerated theme files into
+ * starters/vitejs-cds/src/theme/ — see sync-tokens.mjs's header for why.
  */
 import { readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const THEME_DIR = join(__dirname, "..", "theme");
+const THEME_DIR = join(__dirname, "..");
 const OUT_FILE = join(THEME_DIR, "breakpoints.config.ts");
 
 const resolved = JSON.parse(readFileSync(join(THEME_DIR, "tokens.resolved.json"), "utf8"));
@@ -72,7 +77,7 @@ const output = `/**
  * rhythm (gutter/end-margins/columns) only. It does NOT cover Content/
  * Inspector pane widths for the 3-pane app shell — those come from a
  * separate Figma frame read, not this token export (see
- * skills/neon-starter/template/src/layout/layoutPanes.ts for that data
+ * starters/vitejs-cds/src/layout/layoutPanes.ts for that data
  * and why it's kept separate).
  */
 export interface BreakpointTier {

@@ -2,15 +2,16 @@
 
 A Claude Code plugin that lets any Finnomena employee vibe-code apps and UI
 mockups (via Claude Code or Cowork) that automatically follow Finnomena's
-branding — with a choice of depth. Ships four skills:
+branding — with a choice of depth. Ships three skills:
 
-- `neon-starter` — scaffolds a brand-new project (Vite + React + full CDS).
 - `neon-audit` — for an *existing* project, checks it and recommends a
   theming depth, then hands off to one of the two below.
 - `neon-theme-css` — Finnomena's colors, or colors + typography/spacing/
   radius, as plain CSS variables. No CDS install, works with any framework.
-- `neon-theme` — full theming on top of the Coinbase Design System
-  (`@coinbase/cds-web`): real CDS components, `ThemeProvider`, the works.
+- `neon-create` — full theming on top of the Coinbase Design System
+  (`@coinbase/cds-web`): real CDS components, `ThemeProvider`, the works —
+  either scaffolds a brand-new project (Vite + React + full CDS) or themes
+  one that already exists, depending on what you ask for.
 
 ## Commands
 
@@ -20,10 +21,9 @@ these. Use them when you want to invoke a skill explicitly.
 
 | Command | What it does |
 | --- | --- |
-| `/neon:neon-starter` | Scaffold a new Vite + React + TypeScript project pre-wired with Finnomena's CDS brand theme. |
 | `/neon:neon-audit` | Check an *existing* project and recommend a theming depth (colors only, colors + typography, or full CDS). |
 | `/neon:neon-theme-css` | Apply Finnomena's colors, or colors + typography/spacing/radius, via plain CSS variables — no CDS install. |
-| `/neon:neon-theme` | Apply full theming on top of the Coinbase Design System — real CDS components, `ThemeProvider`, the works. |
+| `/neon:neon-create` | Apply full theming on top of the Coinbase Design System — real CDS components, `ThemeProvider`, the works. Scaffolds a new Vite + React + TypeScript project, or themes an existing one, depending on what you ask for. |
 
 Commands need a skill-capable host. In **Claude Code / Cowork**, once the
 plugin is installed (see below), these work as typed slash commands. In
@@ -50,7 +50,7 @@ are two ways to get these in:
 $skill-installer https://github.com/pawisssh/neon
 ```
 
-Run one invocation per skill (the repo holds four skill folders, not one) —
+Run one invocation per skill (the repo holds three skill folders, not one) —
 point it at each skill's own subfolder rather than the repo root, since a
 "skill" to Codex is one directory containing a `SKILL.md`, and the repo
 root has other files alongside the skills. If the installer's prompt
@@ -70,8 +70,7 @@ git clone https://github.com/pawisssh/neon.git ~/finnomena/neon
 mkdir -p ~/.agents/skills
 ln -s ~/finnomena/neon/skills/neon-audit ~/.agents/skills/neon-audit
 ln -s ~/finnomena/neon/skills/neon-theme-css ~/.agents/skills/neon-theme-css
-ln -s ~/finnomena/neon/skills/neon-theme ~/.agents/skills/neon-theme
-ln -s ~/finnomena/neon/skills/neon-starter ~/.agents/skills/neon-starter
+ln -s ~/finnomena/neon/skills/neon-create ~/.agents/skills/neon-create
 ```
 
 Either way, start a new Codex session afterward — skills are discovered at
@@ -92,7 +91,7 @@ startup.
    Start a new Finnomena app with the standard layout
    ```
 
-   The `neon-starter` skill activates, scaffolds a Vite + React +
+   The `neon-create` skill activates, scaffolds a Vite + React +
    TypeScript project pre-wired with Finnomena's theme and a responsive
    Sidebar/Content/Inspector app shell, and tells you how to run it
    (`npm install && npm run dev`). Confirm the app boots before assuming
@@ -117,14 +116,14 @@ startup.
 
    - **Colors only**, or **colors + typography/spacing/radius** — plain CSS
      variables (`neon-theme-css`), no CDS install, works with any framework.
-   - **Full CDS** (`neon-theme`) — installs `@coinbase/cds-web`, wires up
+   - **Full CDS** (`neon-create`) — installs `@coinbase/cds-web`, wires up
      `MediaQueryProvider` → `ThemeProvider` → `PortalProvider` with
      Finnomena's `neonTheme`, and builds with real CDS components.
 
    Either way you get Finnomena's brand tokens for spacing, radius,
    typography (IBM Plex Sans Thai), and color — no hardcoded hex/pixel
    values. **Color is a provisional, first-pass mapping** (see
-   `skills/neon-theme/theme/color-overrides.ts`) — real Finnomena colors,
+   `theme/finnomena/color-overrides.ts`) — real Finnomena colors,
    but the exact Finnomena-role → CDS-slug assignment hasn't had design
    sign-off yet, so treat it as a strong draft, not a final answer. If you
    later outgrow a lighter tier, upgrading doesn't mean starting over — see
@@ -136,7 +135,7 @@ startup.
    `@coinbase/cds-web` directly.
 
 4. **Review the result** like any AI-generated UI — check it against
-   [DESIGN.md](skills/neon-theme/DESIGN.md) if something looks off-brand, and flag it if a
+   [DESIGN.md](design-md/finnomena/DESIGN.md) if something looks off-brand, and flag it if a
    design needs a value that doesn't have a matching token yet.
 
 That's it — no manual setup, no copying theme files by hand for a typical
@@ -150,11 +149,11 @@ signs that theming actually activated:
 - **Claude announces it.** You should see something like "Using neon-audit
   to check your project..." followed by either a brief confirmation or a
   question about theming depth, then "Using neon-theme-css..." or "Using
-  neon-theme...". If you don't see any of that, the skills probably didn't
+  neon-create...". If you don't see any of that, the skills probably didn't
   fire.
 - **No hardcoded hex colors or raw pixel values** anywhere, regardless of
   which tier was used:
-  - **Full CDS** (`neon-theme`): real CDS token keys like `color="fg"`,
+  - **Full CDS** (`neon-create`): real CDS token keys like `color="fg"`,
     `padding={2}`, `borderRadius="200"`; the generated code calls
     `createNeonTheme()` (from `theme/createTheme.ts`) and passes the result
     to `ThemeProvider` — never CDS's `defaultTheme` passed through
@@ -165,7 +164,7 @@ signs that theming actually activated:
     somewhere in the project and be imported once.
 - **Font is IBM Plex Sans Thai**, not a default system font, in both cases.
 - **You can just ask** — "which skill did you use to style this?" Claude
-  will name `neon-theme-css` or `neon-theme` depending on which tier was
+  will name `neon-theme-css` or `neon-create` depending on which tier was
   used.
 
 If you're unsure the plugin is even installed, run `/plugin` to open the
@@ -176,10 +175,11 @@ hardcoded colors), the most common cause is the prompt not reading as a
 UI-building request — be explicit the first time, e.g. "build this as a
 React component using our design system."
 
-For `neon-starter`, check instead that: a `template/` copy landed in your
-target directory (`package.json`, `src/app/`, `src/layout/`), `src/theme/`
-got populated (not empty — it's copied in from `neon-theme`), and
-`npm run dev` actually boots without console/import errors.
+For a brand-new project scaffolded by `neon-create`, check instead that: a
+`starters/vitejs-cds/` copy landed in your target directory (`package.json`,
+`src/app/`, `src/layout/`), `src/theme/` got populated (not empty — it's
+copied in from `neon-create`), and `npm run dev` actually boots without
+console/import errors.
 
 ## What's here
 
@@ -188,38 +188,43 @@ neon/
 ├── LICENSE
 ├── marketplace.example.json           # template for a marketplace repo referencing this one
 ├── .claude-plugin/
-│   ├── plugin.json                    # plugin manifest — lists all four skills below
+│   ├── plugin.json                    # plugin manifest — lists all three skills below
 │   └── marketplace.json               # self-hosted marketplace (source: ".")
-├── skills/neon-audit/                 # entry point: checks an existing project, recommends a theming depth
-│   └── SKILL.md
-├── skills/neon-theme-css/             # colors / colors+typography via plain CSS variables, no CDS
-│   ├── SKILL.md
-│   └── theme.css                      # hand-written: real CDS createThemeCssVars() output
-├── skills/neon-theme/                 # full CDS theming in a project that already exists
-│   ├── SKILL.md                       # instructions Claude follows when theming UI
-│   ├── DESIGN.md                      # Finnomena style reference — colors, type, layout, components
-│   ├── theme/
-│   │   ├── theme.config.ts            # generated: neonTheme overrides (space/radius/typography)
-│   │   ├── color-overrides.ts         # hand-written: provisional Finnomena color mapping
-│   │   ├── createTheme.ts             # createNeonTheme(): merges neonTheme + color-overrides onto CDS's defaultTheme
-│   │   ├── color-mapping.todo.md      # generated: reference dump used to build color-overrides.ts
-│   │   ├── breakpoints.config.ts      # generated: 7-tier breakpoint/grid data
-│   │   ├── tokens/                    # raw Figma Variables export (source of truth)
-│   │   │   └── _archive/              # superseded token exports, kept for reference
-│   │   ├── tokens.resolved.json       # generated: flattened + alias-resolved
-│   │   └── tokens.report.json         # generated: what resolved / what's still blocked
+├── design-md/finnomena/               # standalone Finnomena brand spec, Google Stitch DESIGN.md format
+│   ├── DESIGN.md                      # canonical token + component reference — no install required
+│   ├── design_tokens.json             # same tokens as DTCG JSON, for Figma/Style Dictionary/design.md CLI
+│   ├── tailwind.config.js             # derived Tailwind v3 theme.extend config
+│   └── README.md
+├── starters/vitejs-cds/               # committed Vite + React + TS project, copied in by neon-create
+│   ├── package.json
+│   └── src/
+│       ├── app/                       # AppRoot (providers) + example App
+│       ├── layout/                    # 5 responsive page-layout patterns (see neon-create/SKILL.md)
+│       └── theme/                     # theme.config.ts/color-overrides.ts/createTheme.ts/breakpoints.config.ts
+│                                       #   pre-wired here, kept in sync via install.mjs --sync-starter
+├── theme/finnomena/                   # all Finnomena theme assets — CDS-tier + CSS-tier, one source of truth
+│   ├── theme.config.ts                # generated: neonTheme overrides (space/radius/typography)
+│   ├── color-overrides.ts             # hand-written: provisional Finnomena color mapping
+│   ├── createTheme.ts                 # createNeonTheme(): merges neonTheme + color-overrides onto CDS's defaultTheme
+│   ├── color-mapping.todo.md          # generated: reference dump used to build color-overrides.ts
+│   ├── breakpoints.config.ts          # generated: 7-tier breakpoint/grid data
+│   ├── theme.css                      # hand-written: real CDS createThemeCssVars() output (CSS-variable tier)
+│   ├── tokens/                        # raw Figma Variables export (source of truth)
+│   ├── tokens.resolved.json           # generated: flattened + alias-resolved
+│   ├── tokens.report.json             # generated: what resolved / what's still blocked
 │   ├── scripts/
 │   │   ├── sync-tokens.mjs                    # resolves tokens/*.json → tokens.resolved.json
 │   │   ├── generate-theme-config.mjs          # resolved tokens → theme.config.ts + color-mapping.todo.md
-│   │   └── generate-breakpoints-config.mjs    # resolved tokens → breakpoints.config.ts
+│   │   ├── generate-breakpoints-config.mjs    # resolved tokens → breakpoints.config.ts
+│   │   └── install.mjs                        # deploys the theme: new project / existing project / CSS-only / sync starter
 │   └── examples/
-│       └── app-entry.tsx              # correct provider setup + font loading
-└── skills/neon-starter/               # scaffolds a brand-new project
-    ├── SKILL.md                       # instructions Claude follows when scaffolding
-    └── template/                      # committed Vite + React + TS project to copy in
-        └── src/
-            ├── app/                   # AppRoot (providers) + example App
-            └── layout/                # 5 responsive page-layout patterns (see neon-starter/SKILL.md)
+│       └── app-entry.tsx              # correct provider setup + font loading (existing-project branch)
+├── skills/neon-audit/                 # entry point: checks an existing project, recommends a theming depth
+│   └── SKILL.md
+├── skills/neon-theme-css/             # colors / colors+typography via plain CSS variables, no CDS
+│   └── SKILL.md
+└── skills/neon-create/                # full CDS theming — scaffolds a new project or themes an existing one
+    └── SKILL.md                       # instructions Claude follows when scaffolding/theming UI
 ```
 
 ## Maintainer notes

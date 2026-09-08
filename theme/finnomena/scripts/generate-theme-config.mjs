@@ -2,36 +2,40 @@
 /**
  * generate-theme-config.mjs
  *
- * Mechanically emits ../theme/theme.config.ts (the `neonTheme` overrides
- * object) and ../theme/color-mapping.todo.md (a human handoff doc) from
- * ../theme/tokens.resolved.json and the raw ../theme/tokens/*.json export.
+ * Mechanically emits ../theme.config.ts (the `neonTheme` overrides
+ * object) and ../color-mapping.todo.md (a human handoff doc) from
+ * ../tokens.resolved.json and the raw ../tokens/*.json export.
  * Run `node sync-tokens.mjs` first to (re)produce tokens.resolved.json from
- * whatever is currently in ../theme/tokens/.
+ * whatever is currently in ../tokens/.
  *
  * Both outputs are generated files — do not hand-edit them. Change the
- * source token exports in ../theme/tokens/ and re-run this pipeline instead.
+ * source token exports in ../tokens/ and re-run this pipeline instead.
  *
  * `neonTheme`'s shape and key names are verified against the real
  * `@coinbase/cds-web@9.26.1` `ThemeConfig`/`ThemeVars` types (checked in a
  * scratch install — the package isn't installed in this repo). Only fields
  * Finnomena's export has real, unambiguous data for are populated; anything
  * else is left absent so `@coinbase/cds-web`'s own `defaultTheme` values
- * flow through at runtime (see ../theme/createTheme.ts). Color specifically
+ * flow through at runtime (see ../createTheme.ts). Color specifically
  * is NEVER guessed here — Finnomena's semantic token names (`text-primary`,
  * `icon-on-brand`, ...) share no vocabulary with CDS's semantic slugs (`fg`,
  * `bgPrimary`, `accentBoldBlue`, ...), so mapping one onto the other is a
  * real design decision. color-mapping.todo.md exists so a human can make
  * that call instead.
  *
- * Usage:
- *   node scripts/sync-tokens.mjs && node scripts/generate-theme-config.mjs
+ * Usage (full regeneration pipeline — run all four in order after changing
+ * anything in tokens/*.json):
+ *   node scripts/sync-tokens.mjs && node scripts/generate-theme-config.mjs && node scripts/generate-breakpoints-config.mjs && node scripts/install.mjs --sync-starter
+ *
+ * The 4th step syncs the regenerated theme files into
+ * starters/vitejs-cds/src/theme/ — see sync-tokens.mjs's header for why.
  */
 import { readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const THEME_DIR = join(__dirname, "..", "theme");
+const THEME_DIR = join(__dirname, "..");
 const TOKENS_DIR = join(THEME_DIR, "tokens");
 const OUT_THEME_FILE = join(THEME_DIR, "theme.config.ts");
 const OUT_COLOR_TODO_FILE = join(THEME_DIR, "color-mapping.todo.md");
@@ -309,7 +313,7 @@ const header = `/**
  *   node scripts/sync-tokens.mjs && node scripts/generate-theme-config.mjs
  *
  * Source of truth: the raw Figma Token Studio export in ./tokens/*.json,
- * resolved by ../scripts/sync-tokens.mjs into ./tokens.resolved.json.
+ * resolved by ./scripts/sync-tokens.mjs into ./tokens.resolved.json.
  *
  * STATUS (regenerated ${report.generatedAt}):
  *

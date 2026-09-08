@@ -3,8 +3,8 @@
  * ThemeConfig color fields (lightSpectrum/darkSpectrum, lightColor/
  * darkColor). Hand-written, NOT generated — this is a real design decision
  * (which Finnomena role plays which CDS semantic slot), not a mechanical
- * data transform. See ../DESIGN.md's "Tokens — Colors" table for the named
- * brand roles this draws from, and ./color-mapping.todo.md (generated) for
+ * data transform. See ../../design-md/finnomena/DESIGN.md's "Colors" section
+ * for the named brand roles this draws from, and ./color-mapping.todo.md (generated) for
  * the full reference dump of what every Finnomena semantic token resolves
  * to, which this file's assignments were built from.
  *

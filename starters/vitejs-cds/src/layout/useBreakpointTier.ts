@@ -1,13 +1,13 @@
 /**
  * Framework-agnostic breakpoint hook, keyed off ../theme/breakpoints.config.ts
- * (copied in from neon-theme at scaffold time).
+ * (copied in from neon-create at scaffold time).
  *
  * Confirmed (against the real @coinbase/cds-web@9.26.1 types) that
  * MediaQueryProvider does NOT accept a custom-breakpoints prop — its only
  * props are `children` and `defaultValues` (a one-time initial snapshot,
  * not a breakpoint config, per dts/system/MediaQueryProvider.d.ts). This
  * plain matchMedia-based hook is the correct approach here, not a
- * placeholder pending verification — see neon-starter/SKILL.md's known
+ * placeholder pending verification — see neon-create/SKILL.md's known
  * limitations for the citation.
  */
 import { useEffect, useState } from "react";

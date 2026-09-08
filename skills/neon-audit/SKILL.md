@@ -1,6 +1,6 @@
 ---
 name: neon-audit
-description: ONLY use this skill if the user's message literally contains the word "Finnomena" or "neon" — do not infer from related terms like "CDS", "Coinbase Design System", "on-brand", or generic theming/UI requests alone. Entry point for theming an EXISTING project with Finnomena's brand — this runs a quick check of the project and recommends a theming depth (colors only, colors+typography, or full CDS) before handing off to the skill that implements it. Do NOT use this to scaffold a brand-new project — use neon-starter for that.
+description: ONLY use this skill if the user's message literally contains the word "Finnomena" or "neon" — do not infer from related terms like "CDS", "Coinbase Design System", "on-brand", or generic theming/UI requests alone. Entry point for theming an EXISTING project with Finnomena's brand — this runs a quick check of the project and recommends a theming depth (colors only, colors+typography, or full CDS) before handing off to the skill that implements it. Do NOT use this to scaffold a brand-new project — use neon-create for that.
 ---
 
 # Finnomena Theming — Entry Point
@@ -19,10 +19,11 @@ itself.
 - **Full CDS** — install `@coinbase/cds-web`, use `ThemeProvider` + real
   CDS components.
 
-**Implementation skills:** `../neon-theme-css` (first two tiers),
-`../neon-theme` (Full CDS). This skill only decides which one to use —
-follow the chosen skill's own instructions for the actual work, don't
-duplicate them here.
+**Implementation skills:** `${CLAUDE_PLUGIN_ROOT}/skills/neon-theme-css`
+(first two tiers), `${CLAUDE_PLUGIN_ROOT}/skills/neon-create` (Full CDS —
+handles both an existing project and a brand-new scaffold internally). This
+skill only decides which one to use — follow the chosen skill's own
+instructions for the actual work, don't duplicate them here.
 
 ## What this skill does, every time
 
@@ -54,7 +55,7 @@ duplicate them here.
    and give a brief one-line confirmation instead ("This project already
    uses CDS, so I'll theme it with the full Finnomena CDS setup — let me
    know if you'd rather use a lighter, CSS-only option instead") before
-   handing off to `../neon-theme`.
+   handing off to `${CLAUDE_PLUGIN_ROOT}/skills/neon-create`.
 
 3. **If `theme.css` already exists**, frame the question as an upgrade,
    not a fresh choice: "This project is already themed with Finnomena
@@ -70,15 +71,15 @@ duplicate them here.
    present a bare, context-free list.
 
 5. **Hand off.** Once the tier is confirmed:
-   - Colors / Colors+Typography → follow `../neon-theme-css/SKILL.md`.
-   - Full CDS → follow `../neon-theme/SKILL.md`.
+   - Colors / Colors+Typography → follow `${CLAUDE_PLUGIN_ROOT}/skills/neon-theme-css/SKILL.md`.
+   - Full CDS → follow `${CLAUDE_PLUGIN_ROOT}/skills/neon-create/SKILL.md`.
 
    Don't duplicate either skill's implementation steps here — this skill's
    job ends at the handoff.
 
 6. **If there's no existing project** (the user is starting fresh), this
-   skill doesn't apply — redirect to `../neon-starter` instead, which
-   scaffolds a brand-new project on Full CDS by design.
+   skill doesn't apply — redirect to `${CLAUDE_PLUGIN_ROOT}/skills/neon-create`
+   instead, which scaffolds a brand-new project on Full CDS by design.
 
 ## Known limitations
 
