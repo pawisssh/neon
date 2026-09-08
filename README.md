@@ -82,6 +82,14 @@ ln -s ~/finnomena/neon/skills/neon-review ~/.agents/skills/neon-review
 Either way, start a new Codex session afterward — skills are discovered at
 startup.
 
+**Unverified for this path:** every cross-reference between these skill
+docs and their sibling assets (reference docs, `theme/`, `design-md/`,
+`starters/`) uses `${CLAUDE_PLUGIN_ROOT}/...` — a Claude Code plugin-loader
+variable. This repo has not verified whether Codex CLI populates it for a
+manual symlink install above; if it doesn't, those paths won't resolve. If
+you hit this, point Claude at the full cloned repo path
+(`~/finnomena/neon`) explicitly instead of relying on the variable.
+
 ## Usage (for Finnomena employees)
 
 1. **Install the plugin once**, in Claude Code or Cowork:
@@ -302,9 +310,11 @@ neon/
 ## Maintainer notes
 
 Token resolution status, theme regeneration steps, known limitations, the
-roadmap, and marketplace/publishing admin instructions live in
-[notes/README.md](notes/README.md) — not needed for everyday UI-building
-usage above.
+roadmap, and marketplace/publishing admin instructions live in this
+maintainer's internal `notes/` directory — deliberately excluded from the
+distributed repo (see `.gitignore`), so a clone of this repo won't have it.
+Not needed for everyday UI-building usage above; ask a maintainer directly
+if you need it.
 
 ## License
 
