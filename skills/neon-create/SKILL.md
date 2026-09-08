@@ -26,10 +26,20 @@ Read it before making styling decisions rather than guessing from
 
 ## What this skill does, every time
 
-0. **Confirm intent before doing anything.** Ask the user directly: "Do you
-   want to use Finnomena's neon brand theme for this?" If they decline, stop
-   — don't install anything, wire `ThemeProvider`, scaffold, or hand off to
-   another neon skill. Only continue once they've confirmed yes.
+Before starting, read
+`${CLAUDE_PLUGIN_ROOT}/skills/neon-audit/references/workflow-contract.md` —
+the shared `NeonContext` handoff record, routing rules, and intent policy
+used by all three neon skills. The steps below assume it.
+
+0. **Use established Finnomena branding intent; don't repeat it.** Per the
+   contract's intent policy: if branding intent is already established —
+   the request itself says "Finnomena"/"neon", or it was confirmed earlier
+   in this conversation, including via `neon-audit`'s handoff — treat
+   `brandConfirmed` as true and move on without asking again. Ask a direct
+   brand question only when it's genuinely missing: "Do you want to use
+   Finnomena's neon brand theme for this?" If the answer is no, stop —
+   don't install anything, wire `ThemeProvider`, scaffold, or hand off to
+   another neon skill.
 
 1. **Determine the target: brand-new project, or one that already exists?**
    If it's obvious from the request or the target directory (empty/

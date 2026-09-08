@@ -86,6 +86,14 @@ startup.
    /plugin install neon
    ```
 
+   Every skill's activation guard requires your message to literally
+   contain the word "Finnomena" or "neon" the *first* time in a
+   conversation — a bare "build me a login screen" won't trigger any of
+   these skills on its own. Mention Finnomena (or "neon") explicitly once
+   branding intent is established, and every neon skill carries that
+   decision forward for the rest of the conversation — see step 5 below
+   for how that plays out on a follow-up request.
+
 2. **Starting a brand-new project?** Ask Claude to scaffold one:
 
    ```
@@ -98,22 +106,42 @@ startup.
    (`npm install && npm run dev`). Confirm the app boots before assuming
    it's done.
 
-3. **Already have a project? Just ask Claude to build UI** — a mockup, a
-   screen, a React component, a whole page. For example:
+3. **Adding a new screen to an existing app?** Say so, mentioning
+   Finnomena the first time:
 
    ```
-   Build a login screen with email/password fields and a submit button
+   Add a Finnomena login screen to this app, with email/password fields
+   and a submit button
    ```
 
+   `neon-audit` activates first, checks the project (does it already use
+   CDS? Tailwind? something else?), and either proceeds straight to the
+   obvious theming depth or asks which one you want, then hands off to
+   `neon-redesign` or `neon-create` to build the screen. Your existing
+   routes, components, and providers are reused — this doesn't rescaffold
+   the app.
+
+4. **Restyling an existing app?** Say what scope you want, mentioning
+   Finnomena the first time. A whole-app restyle:
+
    ```
-   Make a dashboard card showing portfolio value with a trend chart
+   Restyle this app to Finnomena's brand — colors and typography
    ```
 
-   You don't need to mention "neon," "Finnomena," or "CDS" — the
-   `neon-audit` skill activates automatically first, does a quick check of
-   your project (does it already use CDS? Tailwind? something else?), and
-   either proceeds straight to the obvious choice or asks which theming
-   depth you want:
+   ...or a partial, header-only restyle:
+
+   ```
+   Make just the header look like Finnomena — leave the rest of the app
+   alone
+   ```
+
+   Both go through `neon-audit` → `neon-redesign` (or `neon-create` if you
+   ask for real CDS components). A partial request stays scoped to what
+   you named — the rest of the app's styling is left untouched.
+
+   In every case above, `neon-audit` does a quick check of your project
+   and either proceeds straight to the obvious choice or asks which
+   theming depth you want:
 
    - **Colors only**, or **colors + typography/spacing/radius** — plain CSS
      variables (`neon-redesign`), no CDS install, works with any framework.
@@ -135,7 +163,23 @@ startup.
    available in your environment, otherwise reads real types from
    `@coinbase/cds-web` directly.
 
-4. **Review the result** like any AI-generated UI — check it against
+5. **Once branding intent is established, follow-ups don't need to repeat
+   it.** After any of the requests above, a later, plainly generic request
+   in the *same conversation* still gets Finnomena's theme — you don't
+   need to say "Finnomena" or "neon" again:
+
+   ```
+   Make the buttons clearer
+   ```
+
+   This works because the neon skills carry a confirmed branding decision
+   forward across the conversation rather than re-asking every time — it's
+   not that generic UI requests silently opt into Finnomena branding on
+   their own. A *fresh* conversation, or a request for a different,
+   unrelated project, has no established intent yet, so it's back to
+   mentioning Finnomena/neon explicitly once.
+
+6. **Review the result** like any AI-generated UI — check it against
    [DESIGN.md](design-md/finnomena/DESIGN.md) if something looks off-brand, and flag it if a
    design needs a value that doesn't have a matching token yet.
 

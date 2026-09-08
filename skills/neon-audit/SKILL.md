@@ -12,12 +12,13 @@ audit, recommends a tier, confirms with the user, then hands off to
 whichever skill implements that tier. It does not do any theming work
 itself.
 
-**Three tiers:**
-- **Colors only** — brand colors via CSS variables. No CDS.
-- **Colors + typography** — also brand fonts, spacing, and radius via CSS
-  variables. No CDS.
-- **Full CDS** — install `@coinbase/cds-web`, use `ThemeProvider` + real
-  CDS components.
+**Three tiers** (`NeonContext.tier` — see the shared contract's
+"Tier terminology" table for the exact mapping):
+- **Colors only** (`'colors'`) — brand colors via CSS variables. No CDS.
+- **Colors + typography** (`'visual-system'`) — also brand fonts, spacing,
+  and radius via CSS variables. No CDS.
+- **Full CDS** (`'cds'`) — install `@coinbase/cds-web`, use `ThemeProvider`
+  + real CDS components.
 
 **Implementation skills:** `${CLAUDE_PLUGIN_ROOT}/skills/neon-redesign`
 (first two tiers), `${CLAUDE_PLUGIN_ROOT}/skills/neon-create` (Full CDS —
@@ -27,12 +28,22 @@ instructions for the actual work, don't duplicate them here.
 
 ## What this skill does, every time
 
-0. **Confirm intent before doing anything.** Ask the user directly: "Do you
-   want to use Finnomena's neon brand theme for this?" If they decline, or say
-   they want something else, stop here — don't run the audit, touch any
-   files, or hand off to another neon skill. Only continue once they've
-   confirmed yes. (This is separate from the colors/colors+typography/full-CDS
-   tier question in step 4 below, which only happens after this initial yes.)
+Before starting, read
+`${CLAUDE_PLUGIN_ROOT}/skills/neon-audit/references/workflow-contract.md` —
+the shared `NeonContext` handoff record, routing rules, and intent policy
+used by all three neon skills. The steps below assume it.
+
+0. **Use established Finnomena branding intent; don't repeat it.** Per the
+   contract's intent policy: if branding intent is already established —
+   the request itself says "Finnomena"/"neon", or it was confirmed earlier
+   in this conversation (including in another neon skill) — treat
+   `brandConfirmed` as true and move on. Ask a direct brand question only
+   when it's genuinely missing: "Do you want to use Finnomena's neon brand
+   theme for this?" If the answer is no, or they want something else, stop
+   — don't run the audit, touch any files, or hand off to another neon
+   skill. (This is separate from the tier question in step 4 below, which
+   is a scope question, not a brand question — see the contract's "ask
+   only when missing" rule for both.)
 
 1. **Check quick signals** in the target project — this is a fast,
    surface-level check, not a code scan:
