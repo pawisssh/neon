@@ -12,6 +12,24 @@ branding — with a choice of depth. Ships four skills:
 - `neon-theme` — full theming on top of the Coinbase Design System
   (`@coinbase/cds-web`): real CDS components, `ThemeProvider`, the works.
 
+## Commands
+
+Claude usually activates the right skill on its own from context (see
+[Usage](#usage-for-finnomena-employees) below) — you don't need to type
+these. Use them when you want to invoke a skill explicitly.
+
+| Command | What it does |
+| --- | --- |
+| `/neon:neon-starter` | Scaffold a new Vite + React + TypeScript project pre-wired with Finnomena's CDS brand theme. |
+| `/neon:neon-audit` | Check an *existing* project and recommend a theming depth (colors only, colors + typography, or full CDS). |
+| `/neon:neon-theme-css` | Apply Finnomena's colors, or colors + typography/spacing/radius, via plain CSS variables — no CDS install. |
+| `/neon:neon-theme` | Apply full theming on top of the Coinbase Design System — real CDS components, `ThemeProvider`, the works. |
+
+Commands need a skill-capable host. In **Claude Code / Cowork**, once the
+plugin is installed (see below), these work as typed slash commands. In
+**Codex CLI**, skills are invoked by request rather than slash syntax — see
+the Codex install steps below for how they get discovered.
+
 ## Installation
 
 ### Claude Code / Cowork
