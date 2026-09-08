@@ -31,7 +31,10 @@ instructions for the actual work, don't duplicate them here.
 Before starting, read
 `${CLAUDE_PLUGIN_ROOT}/skills/neon-audit/references/workflow-contract.md` —
 the shared `NeonContext` handoff record, routing rules, and intent policy
-used by all three neon skills. The steps below assume it.
+used by all three neon skills — and
+`${CLAUDE_PLUGIN_ROOT}/skills/neon-audit/references/project-inspection.md` —
+the inspection methodology step 1 below follows to gather real evidence for
+`NeonContext`. The steps below assume both.
 
 0. **Use established Finnomena branding intent; don't repeat it.** Per the
    contract's intent policy: if branding intent is already established —
@@ -45,10 +48,23 @@ used by all three neon skills. The steps below assume it.
    is a scope question, not a brand question — see the contract's "ask
    only when missing" rule for both.)
 
-1. **Check quick signals** in the target project — this is a fast,
-   surface-level check, not a code scan:
+1. **Resolve the target, then check quick signals** — this is a fast,
+   evidence-based check, not a code scan. Follow
+   `${CLAUDE_PLUGIN_ROOT}/skills/neon-audit/references/project-inspection.md`
+   for the full methodology (what to inspect, what to exclude, and how to
+   fill in `NeonContext`); this step summarizes the decisions it feeds:
+   - **Multiple apps (monorepo)?** Resolve which app is the target from the
+     request or the current working directory before inspecting further;
+     ask only if neither resolves it. Never default to the repo root just
+     because it has a `package.json` — that's usually workspace tooling,
+     not an app.
+   - **Framework.** Is this React, or something else (Vue, Svelte, ...)? A
+     non-React target can never take Full CDS — don't offer it as an
+     option in step 4; route straight to `neon-redesign` and say why.
    - Is `@coinbase/cds-web` already a dependency in `package.json`? →
-     strong signal for Full CDS.
+     strong signal for Full CDS — but also check for an existing provider
+     tree (`ThemeProvider`/`MediaQueryProvider`/`PortalProvider` already
+     wired up) before handing off; see step 2.
    - Does `src/theme/theme.css` (or similar, from a prior `neon-redesign`
      run) already exist? → the project is already on Colors or
      Colors+Typography; frame this as an upgrade decision, not a
@@ -57,16 +73,28 @@ used by all three neon skills. The steps below assume it.
      config, `styled-components`/`emotion` in `package.json`, CSS modules,
      or plain CSS? This informs the *reasoning* behind a recommendation,
      not the decision itself.
+   - **Server-rendered (Next-style) React?** Note client/server component
+     boundaries and where a global style import is legal before any CDS
+     provider recommendation — see the reference doc's SSR section.
+   - **Partial scope** (e.g. "just the header")? Check whether the styles
+     involved are local to that scope or shared/global tokens the rest of
+     the app depends on — see the reference doc's scope-conflict section.
    - Does the user's own request already name CDS/Coinbase Design System,
      or say something like "just the colors" / "brand colors only"? A
      clear request overrides the audit.
+   - This inspection is **read-only** — never edit or create files while
+     gathering evidence.
 
 2. **If a signal is decisive** — `@coinbase/cds-web` is already installed,
    or the request clearly wants real CDS components — skip the question
    and give a brief one-line confirmation instead ("This project already
    uses CDS, so I'll theme it with the full Finnomena CDS setup — let me
    know if you'd rather use a lighter, CSS-only option instead") before
-   handing off to `${CLAUDE_PLUGIN_ROOT}/skills/neon-create`.
+   handing off to `${CLAUDE_PLUGIN_ROOT}/skills/neon-create`. If CDS is
+   already installed, also record whether a provider tree already exists
+   (step 1) — pass its location via `NeonContext.targetPaths`/`preserve` so
+   `neon-create` edits that existing wiring instead of wrapping a second
+   `ThemeProvider`/`MediaQueryProvider`/`PortalProvider` around it.
 
 3. **If `theme.css` already exists**, frame the question as an upgrade,
    not a fresh choice: "This project is already themed with Finnomena
@@ -79,7 +107,12 @@ used by all three neon skills. The steps below assume it.
    uses Tailwind extensively — Colors+Typography via CSS variables
    integrates without introducing a second styling system alongside it;
    Full CDS would mean adopting CDS's own component library too") — don't
-   present a bare, context-free list.
+   present a bare, context-free list. For a non-React target, present only
+   Colors / Colors+Typography — omit Full CDS from the list entirely (see
+   step 1). If the requested scope is partial (e.g. just the header) and
+   inspection found the affected styles are shared/global tokens rather
+   than local to that scope, say so and propose a local override instead
+   of silently widening the change to global tokens.
 
 5. **Hand off.** Once the tier is confirmed:
    - Colors / Colors+Typography → follow `${CLAUDE_PLUGIN_ROOT}/skills/neon-redesign/SKILL.md`.
@@ -102,3 +135,8 @@ used by all three neon skills. The steps below assume it.
 - Styling-approach detection is best-effort (checking for a few well-known
   config files/dependencies) — if it can't confidently tell what styling
   system a project uses, say so and ask rather than guessing.
+- See `${CLAUDE_PLUGIN_ROOT}/skills/neon-audit/references/project-inspection.md`
+  for the inspection methodology itself (evidence sources, exclusions,
+  monorepo/SSR/existing-CDS/partial-scope handling, and worked examples) —
+  it's still signal-level and best-effort, per the two points above, not a
+  guarantee of full precision.

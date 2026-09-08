@@ -5,7 +5,12 @@ Read this before beginning work in any of them. It defines the one handoff
 record the skills pass between each other, the routing rules that decide
 which skill handles a request, and the single intent policy all three
 follow (so it's stated once here, not restated three slightly-different
-ways in each `SKILL.md`).
+ways in each `SKILL.md`). For *how* to gather the evidence that fills in
+`NeonContext` for a real project — what to inspect, what to exclude, and
+stack-specific judgment calls (monorepos, SSR, existing CDS, partial
+scope) — see
+`${CLAUDE_PLUGIN_ROOT}/skills/neon-audit/references/project-inspection.md`;
+this doc stays the shape and the rules, that one stays the method.
 
 ## NeonContext
 
@@ -46,9 +51,13 @@ conflicting, say so and ask rather than filling in a guess.
 - `operation` — which of the three employee journeys this is. Determines
   routing (below) together with `tier`.
 - `preserve` — things explicitly out of scope for this change (routes,
-  handlers, data flow, an existing dark-mode mechanism, etc.) that must
-  survive untouched. Carry this forward so a downstream skill doesn't
-  widen scope on its own.
+  handlers, data flow, an existing dark-mode mechanism, an already-wired
+  CDS provider tree, etc.) that must survive untouched. Also where a
+  detected local-vs-shared/global scope conflict on a partial-screen
+  request gets recorded (see `project-inspection.md`'s scope-conflict
+  section) so a downstream skill proposes a local override instead of
+  widening scope to global tokens on its own. Carry this forward so a
+  downstream skill doesn't widen scope on its own.
 - `verificationCommands` — build/typecheck/test commands discovered for
   this project, so the skill doing the work knows what to run before
   claiming completion.
@@ -90,6 +99,12 @@ a fourth term for any of these three.
 - A non-React target (`framework` is `'vue'`, `'svelte'`, or `'other'`)
   cannot take `tier: 'cds'` — route to `neon-redesign` regardless of what
   tier would otherwise be recommended, and say why.
+- An existing CDS app (`@coinbase/cds-web` already a dependency) still
+  routes to `neon-create` — but if a provider tree
+  (`MediaQueryProvider`/`ThemeProvider`/`PortalProvider`) is already
+  wired, the integration must edit that existing wiring, not wrap a second
+  provider tree around it. `neon-audit` inspects for this before handoff;
+  see `project-inspection.md`'s existing-CDS section.
 
 ## Intent policy — carry-forward, not repeat
 
