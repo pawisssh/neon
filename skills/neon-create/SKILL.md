@@ -156,11 +156,11 @@ used by all three neon skills. The steps below assume it.
    `src/layout/`, sharing `Sidebar`/`ContentView`/`InspectorView` pane
    primitives plus `breakpoints.config.ts` for sidebar width. Pick the one
    matching what the user describes, don't default to `AppShell` for
-   everything. `Sidebar` ships with real Finnomena navigation already wired
-   (`Logo.tsx`, a 5-item nav rail in `SidebarNav.tsx`/`navItems.ts`, also
-   powering `BottomNav.tsx` at phone width) — the `sidebar` prop on any
-   layout is for *extra* app-specific content below that, pass `null` if
-   none.
+   everything. Every layout but `ImmersiveLayout` takes a `navigation` prop
+   (`NavItem[]` from `navItems.ts`, empty by default — no dead links out of
+   the box) feeding both `Sidebar` and `BottomNav`; pass its
+   `finnomenaEcosystemNav` only to opt into linking out to Finnomena's own
+   ecosystem. `sidebar` is for *extra* content below the nav, `null` if none.
 
    | Component | Panes | Use for |
    |---|---|---|

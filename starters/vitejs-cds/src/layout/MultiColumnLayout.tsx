@@ -25,14 +25,17 @@ import { breakpoints } from "../theme/breakpoints.config";
 import { Sidebar } from "./Sidebar";
 import { BottomNav } from "./BottomNav";
 import { ContentView } from "./ContentView";
+import type { NavItem } from "./navItems";
 
 const COLUMN_WIDTH = 400;
 
 export function MultiColumnLayout({
   sidebar,
+  navigation = [],
   columns,
 }: {
   sidebar: ReactNode;
+  navigation?: NavItem[];
   columns: ReactNode[];
 }) {
   const tier = useBreakpointTier();
@@ -40,7 +43,9 @@ export function MultiColumnLayout({
 
   return (
     <div style={{ display: "flex", height: "100vh", width: "100%" }}>
-      <Sidebar width={sidebarWidth}>{sidebar}</Sidebar>
+      <Sidebar width={sidebarWidth} navigation={navigation}>
+        {sidebar}
+      </Sidebar>
       <div style={{ display: "flex", flex: 1, minWidth: 0, height: "100%", overflowX: "auto" }}>
         {columns.map((column, i) => (
           <ContentView key={i} width={COLUMN_WIDTH}>
@@ -48,7 +53,7 @@ export function MultiColumnLayout({
           </ContentView>
         ))}
       </div>
-      <BottomNav />
+      <BottomNav navigation={navigation} />
     </div>
   );
 }
