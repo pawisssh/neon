@@ -76,6 +76,14 @@ test('dependencyCommand with no packages returns the bare template install comma
   }
 });
 
+test('dependencyCommand with ci flag runs npm ci for npm, install for others', () => {
+  assert.deepEqual(dependencyCommand('npm', [], { ci: true }), { command: 'npm', args: ['ci'] });
+  assert.deepEqual(dependencyCommand('npm', [], { ci: false }), { command: 'npm', args: ['install'] });
+  assert.deepEqual(dependencyCommand('pnpm', [], { ci: true }), { command: 'pnpm', args: ['install'] });
+  assert.deepEqual(dependencyCommand('yarn', [], { ci: true }), { command: 'yarn', args: ['install'] });
+  assert.deepEqual(dependencyCommand('bun', [], { ci: true }), { command: 'bun', args: ['install'] });
+});
+
 test('dependencyCommand rejects an unsupported manager', () => {
   assert.throws(() => dependencyCommand('cnpm', ['pkg']));
 });

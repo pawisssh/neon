@@ -93,13 +93,18 @@ const ADD_SUBCOMMAND = {
  *
  * @param {'npm'|'pnpm'|'yarn'|'bun'} manager
  * @param {string[]} [packages] - version-qualified package specs, e.g. "@coinbase/cds-web@^9.26.1"
+ * @param {object} [options]
+ * @param {boolean} [options.ci] - whether to run npm ci when no packages specified and lockfile present
  * @returns {{ command: string, args: string[] }}
  */
-export function dependencyCommand(manager, packages = []) {
+export function dependencyCommand(manager, packages = [], { ci = false } = {}) {
   if (!SUPPORTED_MANAGERS.includes(manager)) {
     throw new Error(`Unsupported package manager "${manager}". Supported: ${SUPPORTED_MANAGERS.join(", ")}.`);
   }
   if (packages.length === 0) {
+    if (manager === "npm" && ci) {
+      return { command: "npm", args: ["ci"] };
+    }
     return { command: manager, args: ["install"] };
   }
   return { command: manager, args: [ADD_SUBCOMMAND[manager], ...packages] };

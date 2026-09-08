@@ -364,7 +364,8 @@ function main() {
       );
       console.log(`Files copied into ${targetDir}. Dependencies not installed.`);
     } else {
-      const { command, args } = dependencyCommand(manager);
+      const hasLockfile = existsSync(join(targetDir, "package-lock.json"));
+      const { command, args } = dependencyCommand(manager, [], { ci: hasLockfile });
       run(command, args, targetDir);
       console.log(`\nDone. Next: cd ${targetDir} && ${manager} run dev`);
     }

@@ -253,3 +253,20 @@ test('rejects conflicting lockfile evidence instead of silently picking a packag
   assert.notEqual(result.status, 0);
   assert.match(result.stderr, /[Cc]onflicting/);
 });
+
+test('new-project branch runs npm ci when package-lock.json is present', (t) => {
+  const { root, run } = fixture(t);
+  withStarterManifest(root);
+  writeFileSync(join(root, 'starters/vitejs-cds/package-lock.json'), '{}');
+  const target = join(root, 'new-ci-app');
+  const result = run(target, '--new');
+  assert.match(result.stdout, /> npm ci/);
+});
+
+test('new-project branch runs npm install when package-lock.json is absent', (t) => {
+  const { root, run } = fixture(t);
+  withStarterManifest(root);
+  const target = join(root, 'new-install-app');
+  const result = run(target, '--new');
+  assert.match(result.stdout, /> npm install/);
+});

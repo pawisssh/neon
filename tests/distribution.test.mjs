@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { spawnSync } from "node:child_process";
 import { test } from "node:test";
@@ -12,7 +12,6 @@ test("packages complete plugin to directory with spaces and invokes bundled inst
   const tempDir = join(repoRoot, "dist-test-spaces " + Date.now());
   t.after(() => {
     try {
-      const { rmSync } = require("node:fs");
       rmSync(tempDir, { recursive: true, force: true });
     } catch {}
   });
