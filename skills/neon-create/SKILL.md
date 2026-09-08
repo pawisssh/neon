@@ -36,15 +36,17 @@ used by all three neon skills. The steps below assume it.
    this?"); if no, stop — don't install anything, wire `ThemeProvider`,
    scaffold, or hand off to another skill.
 
-1. **Determine the target and confirm the directory.** If it's obvious
-   from the request or the target directory (empty/nonexistent, explicit
-   "start a new project" wording) whether this is a brand-new project or
-   one that already exists, proceed without asking; otherwise ask
-   directly. Either way, confirm the target directory with the user
-   before running anything — never scaffold into a non-empty directory
-   without asking first (the installer below refuses to anyway, but
-   confirm before invoking it). New-project vs. new-screen differ in
-   template-boundary and preserve rules — see
+1. **Determine the mode and target directory.** Split create into three distinct modes:
+   - **new-project**: Brand-new app scaffolded from template.
+   - **new-screen/component**: Add UI into an existing app in place. Never scaffold over or replace the existing app shell.
+   - **existing CDS integration**: Wire theme/providers into an existing React app.
+   
+   **Preparation contract**: Inspect the target manifest, lockfile, app
+   entry, and existing theme/provider usage. Reuse an active installation.
+   Compare required React/CDS APIs and versions before changing
+   dependencies; a major-version mismatch is a migration decision.
+   Confirm the target directory before running anything — never scaffold
+   into a non-empty directory. See
    `${CLAUDE_PLUGIN_ROOT}/skills/neon-create/references/new-ui-workflow.md`.
 
 2. **Run the installer** from this repo's root:
@@ -60,20 +62,23 @@ used by all three neon skills. The steps below assume it.
    (copy files without installing — output reports deps as not installed,
    never an unqualified "Done"); see `install.mjs`'s header for full semantics.
 
-   For a new project, this copies `starters/vitejs-cds/` (theme
-   pre-wired) into `<target-dir>` and runs the install command. Report its
-   output, then build the requested UI and verify it yourself per
-   `${CLAUDE_PLUGIN_ROOT}/skills/neon-create/references/new-ui-workflow.md`
-   before claiming it "works" — don't stop at the scaffold. For an
-   existing project, it copies
-   the same 4 theme files into `<target-dir>/src/theme/` (or
-   `--theme-dir`) and installs `@coinbase/cds-web` if not already a
-   dependency. It never touches provider wiring or component code —
-   that's your job, from here on. **If a destination theme file is
-   already customized, the installer refuses to overwrite it and exits
-   nonzero rather than touching anything** — don't force a clean rerun by
-   deleting the customized file or bypassing the check; diff, merge, and
-   retain the customization per
+   **Completion contract**: After scaffolding, implement the employee's
+   requested UI in the generated project. A copied starter is not
+   completion. Use existing data/services where present; local mock data
+   is appropriate for a mockup request. Reuse relevant loading, empty,
+   disabled, and validation-state guidance. Do not invent backend
+   authentication or persistence to make a UI demo appear functional.
+   Require actual build and browser checks when available (narrow/wide
+   layouts, long Thai/English labels, keyboard focus, primary interactions,
+   and collapsing regions; check requested color schemes without forcing
+   dark mode). For an existing project, it copies the 4 theme files into
+   `<target-dir>/src/theme/` (or `--theme-dir`) and installs
+   `@coinbase/cds-web` if not already a dependency, never touching
+   existing provider wiring or component code — that's your job, from here
+   on. **If a destination theme file is already customized, the installer
+   refuses to overwrite it and exits nonzero rather than touching anything**
+   — don't force a clean rerun by deleting the customized file or bypassing
+   the check; diff, merge, and retain the customization per
    `${CLAUDE_PLUGIN_ROOT}/skills/neon-audit/references/theme-integration.md`
    §4 (§5 covers a partial multi-file-copy failure).
 

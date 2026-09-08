@@ -140,6 +140,20 @@ Concretely:
   and vice versa. Don't conflate the two questions into one, and don't
   re-ask a scope question that a prior turn already answered.
 
+## Preparation contract
+
+Inspect the target manifest, lockfile, app entry, and existing theme/provider usage. Reuse an active installation. Compare required React/CDS APIs and versions before changing dependencies; a major-version mismatch is a migration decision.
+
+Apply explicit user scope before dependency signals. A colors-only request stays CSS-only even when CDS appears in package.json.
+
+## Completion contract
+
+After scaffolding, implement the employee's requested UI in the generated project. A copied starter is not completion. Use existing data/services where present; local mock data is appropriate for a mockup request.
+
+Reuse relevant loading/empty/disabled/validation-state guidance. Do not invent backend authentication or persistence to make a UI demo appear functional.
+
+Require actual build and browser checks when available. Inspect narrow/wide layouts, long Thai/English labels, keyboard focus, primary interactions, and relevant collapsing regions. Check existing/requested color schemes; do not add dark mode simply to satisfy testing instructions.
+
 ## Verification before claiming done
 
 Whichever skill does the implementation work is responsible for actually

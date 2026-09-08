@@ -83,21 +83,27 @@ the inspection methodology step 1 below follows to gather real evidence for
    - **Partial scope** (e.g. "just the header")? Check whether the styles
      involved are local to that scope or shared/global tokens the rest of
      the app depends on — see the reference doc's scope-conflict section.
-   - Does the user's own request already name CDS/Coinbase Design System,
-     or say something like "just the colors" / "brand colors only"? A
-     clear request overrides the audit.
-   - This inspection is **read-only** — never edit or create files while
-     gathering evidence.
+    - Does the user's own request already name CDS/Coinbase Design System,
+      or say something like "just the colors" / "brand colors only"? Apply
+      explicit user scope before dependency signals: a colors-only request
+      stays CSS-only even when CDS appears in package.json.
+    - **Preparation contract**: Inspect the target manifest, lockfile, app
+      entry, and existing theme/provider usage. Reuse an active installation.
+      Compare required React/CDS APIs and versions before changing
+      dependencies; a major-version mismatch is a migration decision.
+    - This inspection is **read-only** — never edit or create files while
+      gathering evidence.
 
-2. **If a signal is decisive** — `@coinbase/cds-web` is already installed,
-   or the request clearly wants real CDS components — skip the question
-   and give a brief one-line confirmation instead ("This project already
-   uses CDS, so I'll theme it with the full Finnomena CDS setup — let me
-   know if you'd rather use a lighter, CSS-only option instead") before
-   handing off to `${CLAUDE_PLUGIN_ROOT}/skills/neon-create`. If CDS is
-   already installed, also record whether a provider tree already exists
-   (step 1) — pass its location via `NeonContext.targetPaths`/`preserve` so
-   `neon-create` edits that existing wiring instead of wrapping a second
+2. **If a signal is decisive** — unless overridden by explicit colors-only
+   scope, if `@coinbase/cds-web` is already installed, or the request
+   clearly wants real CDS components — skip the question and give a brief
+   one-line confirmation instead ("This project already uses CDS, so I'll
+   theme it with the full Finnomena CDS setup — let me know if you'd rather
+   use a lighter, CSS-only option instead") before handing off to
+   `${CLAUDE_PLUGIN_ROOT}/skills/neon-create`. If CDS is already installed,
+   also record whether a provider tree already exists (step 1) — pass its
+   location via `NeonContext.targetPaths`/`preserve` so `neon-create` edits
+   that existing wiring instead of wrapping a second
    `ThemeProvider`/`MediaQueryProvider`/`PortalProvider` around it.
 
 3. **If `theme.css` already exists**, frame the question as an upgrade,
