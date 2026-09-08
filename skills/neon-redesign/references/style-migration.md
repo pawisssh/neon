@@ -19,9 +19,10 @@ find-and-replace that breaks unrelated UI.
    component styles, shared stylesheets, Tailwind config, theme tokens).
    For each, note what color/typography/spacing values it currently uses
    and in what format (raw hex, a CSS variable, a Tailwind utility class,
-   a shadcn `hsl(var(--x))` reference). This inventory is what step 6's
-   before/after list gets built from — don't discard it once editing
-   starts.
+   a shadcn `hsl(var(--x))` reference). This inventory is what the
+   before/after list required by
+   `${CLAUDE_PLUGIN_ROOT}/skills/neon-redesign/references/verification.md`
+   gets built from — don't discard it once editing starts.
 
 2. **Map by semantic role, not by literal value.** For every color/value
    found, ask "what job is this doing?" (primary action, page background,
@@ -265,3 +266,55 @@ asked to restyle "just the header." `tier: 'colors'`.
   green; the four category colors are visually unchanged (confirmed
   deliberately, not by omission); "Recent Activity" list is pixel-for-
   pixel unchanged; chart tooltips/legend/interactions still work.
+
+### Example 4: Login form, Tailwind v4, colors + validation states
+
+**Before:** `LoginForm.tsx` renders an email input, a password input, and
+a submit button. Colors come from an `@theme` block in `app.css`:
+`--color-brand: #2563eb;`, used two different ways in the component —
+`bg-brand text-white` on the submit button, and `focus:border-brand` on
+both inputs' focus ring. Client-side validation requires `email` (present
+and format-checked) and `password` (present, minimum length); an invalid
+submit shows an inline per-field error message in `text-red-600` and
+keeps the submit button disabled (`disabled:opacity-50
+disabled:cursor-not-allowed`) until both fields pass; a valid submit
+calls `onLogin(email, password)` and shows a loading spinner on the
+button while the request is in flight. `tier: 'colors'`.
+
+- **Inventory:** `app.css`'s `@theme` block (`--color-brand`, one entry,
+  no `--color-*` token yet for errors), `LoginForm.tsx`'s utility classes
+  (`bg-brand`, `focus:border-brand`, `text-red-600`,
+  `disabled:opacity-50`), no other file references `--color-brand`.
+- **Map:** the submit button's `bg-brand` is the primary-action role →
+  Navy Ink (`#01172b`). The inputs' `focus:border-brand` is a *different*
+  role — interactive-highlight/focus — even though the original app
+  reused the same `--color-brand` token for both; per step 2, don't
+  collapse these back onto one Finnomena color just because the source
+  used one token. Focus rings map to Indigo Interactive (`#1817e7`), not
+  Navy Ink. The validation error text (`text-red-600`) is a status color,
+  not a brand color → Finnomena Negative (`#d60808`), per **Chart and
+  status colors** above (the same status-vs-brand distinction applies
+  outside charts).
+- **Update shared tokens:** `app.css`'s `@theme` block changes
+  `--color-brand: #2563eb;` to `--color-brand: #01172b;` and adds two new
+  tokens the app didn't previously separate: `--color-interactive:
+  #1817e7;` and `--color-negative: #d60808;`.
+- **Update remaining:** `LoginForm.tsx`'s submit button keeps `bg-brand`
+  (now resolves to Navy Ink automatically). Inputs' `focus:border-brand`
+  becomes `focus:border-interactive`. Error text's `text-red-600` becomes
+  `text-negative`. `disabled:opacity-50 disabled:cursor-not-allowed` is
+  untouched — it's a state-opacity utility, not a color/theme value.
+- **Verify — form behavior explicitly, not just appearance:** confirm the
+  submit button renders Navy Ink and the input focus ring renders Indigo
+  Interactive. Then exercise the form, not just its colors: submit empty
+  and confirm the same inline validation errors still appear, now in the
+  new negative-red; confirm the submit button is still disabled until
+  both fields pass validation; fill in valid values and confirm submit
+  still calls `onLogin` and the loading spinner still shows while the
+  request is in flight. A CSS-only restyle shouldn't touch the validation
+  logic at all, but that must be *checked* after the change, not assumed
+  from the fact that only `className` strings and an `@theme` block were
+  edited — this is the concrete case
+  `${CLAUDE_PLUGIN_ROOT}/skills/neon-redesign/references/verification.md`'s
+  "unchanged form/route behavior" acceptance criterion is calibrated
+  against.
