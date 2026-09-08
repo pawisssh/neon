@@ -200,6 +200,47 @@ test('detects pnpm from a lockfile already in the target and uses it for the CDS
   assert.match(result.stdout, /pnpm add @coinbase\/cds-web@\^9\.26\.1/);
 });
 
+test('walks up to a workspace root for package-manager evidence when the app directory itself has none', (t) => {
+  const { root, run } = fixture(t);
+  withStarterManifest(root, '^9.26.1');
+  // apps/portal/ (the "app directory" being installed into) has a
+  // package.json but no lockfile and no declared packageManager — exactly
+  // the common monorepo shape where that evidence only lives at the
+  // workspace root. apps/ also carries a minimal manifest so the walk's
+  // "stop at an ancestor with no package.json" safety valve doesn't trip
+  // before reaching workspace/, where the real pnpm-lock.yaml lives.
+  const workspaceRoot = join(root, 'workspace');
+  const appsDir = join(workspaceRoot, 'apps');
+  const portalDir = join(appsDir, 'portal');
+  mkdirSync(portalDir, { recursive: true });
+  writeFileSync(join(appsDir, 'package.json'), JSON.stringify({ private: true }));
+  writeFileSync(join(portalDir, 'package.json'), JSON.stringify({ name: 'portal', dependencies: {} }));
+  writeFileSync(join(workspaceRoot, 'pnpm-lock.yaml'), '');
+  const result = run(portalDir);
+  assert.match(result.stdout, /pnpm add @coinbase\/cds-web@\^9\.26\.1/);
+  // The install itself still targets portalDir, not the workspace root —
+  // only evidence-gathering walked up.
+  assert.equal(existsSync(join(portalDir, 'package-lock.json')), false);
+  assert.equal(existsSync(join(portalDir, 'pnpm-lock.yaml')), false);
+});
+
+test('stops walking upward at an ancestor with no package.json, never reaching a lockfile further up', (t) => {
+  const { root, run } = fixture(t);
+  withStarterManifest(root, '^9.26.1');
+  // apps/ here has neither a package.json nor a lockfile of its own, so
+  // the walk must give up there rather than continuing on to workspace2/,
+  // even though a lockfile does exist there — falls back to the npm
+  // default instead of silently finding it.
+  const workspaceRoot = join(root, 'workspace2');
+  const appsDir = join(workspaceRoot, 'apps');
+  const portalDir = join(appsDir, 'portal');
+  mkdirSync(portalDir, { recursive: true });
+  writeFileSync(join(portalDir, 'package.json'), JSON.stringify({ dependencies: {} }));
+  writeFileSync(join(workspaceRoot, 'pnpm-lock.yaml'), '');
+  const result = run(portalDir);
+  assert.match(result.stdout, /npm install @coinbase\/cds-web@\^9\.26\.1/);
+});
+
 test('rejects conflicting lockfile evidence instead of silently picking a package manager', (t) => {
   const { root, run } = fixture(t);
   withStarterManifest(root, '^9.26.1');

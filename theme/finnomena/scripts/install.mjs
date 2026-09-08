@@ -203,11 +203,68 @@ function findLockfiles(dir) {
   return LOCKFILE_NAMES.filter((name) => entries.has(name));
 }
 
-/** Resolves the package manager to use for `dir`, given pkg.json's declared manager and a CLI override. */
-function resolveManager(dir, pkg, packageManagerOverride) {
+/**
+ * Walks up from startDir through parent directories looking for
+ * package-manager evidence (a lockfile, or a package.json declaring
+ * "packageManager") — the same technique npm/yarn/pnpm/corepack use to
+ * discover a workspace root. An individual monorepo app directory (e.g.
+ * apps/portal/) typically has neither on its own: the lockfile and the
+ * packageManager field usually live only at the workspace root, so
+ * checking only the app directory itself finds nothing and silently falls
+ * back to npm — which would plant a stray npm-generated lockfile inside a
+ * pnpm-managed monorepo.
+ *
+ * Checks startDir itself first, then each parent in turn. Stops at the
+ * first ancestor carrying ANY evidence (a lockfile, or a declared
+ * packageManager) and returns it. Gives up (returns no evidence) at
+ * whichever comes first: the filesystem root, or an ancestor with no
+ * package.json at all — a proxy for "we've left the project tree", so
+ * this doesn't walk indefinitely up unrelated parent directories (e.g. a
+ * user's home directory).
+ *
+ * This only widens where evidence is *gathered* — it does not change
+ * where a dependency install actually *runs* (still startDir, via this
+ * function's caller, resolveManager).
+ */
+function findPackageManagerEvidence(startDir) {
+  let dir = startDir;
+  for (;;) {
+    const lockfiles = findLockfiles(dir);
+    const pkgPath = join(dir, "package.json");
+    const hasPkg = existsSync(pkgPath);
+    let declared;
+    if (hasPkg) {
+      try {
+        declared = JSON.parse(readFileSync(pkgPath, "utf8")).packageManager;
+      } catch {
+        // Malformed package.json at this ancestor — no declared evidence here.
+      }
+    }
+    if (lockfiles.length > 0 || declared) {
+      return { lockfiles, declared };
+    }
+    if (!hasPkg) {
+      return { lockfiles: [], declared: undefined };
+    }
+    const parent = dirname(dir);
+    if (parent === dir) {
+      return { lockfiles: [], declared: undefined };
+    }
+    dir = parent;
+  }
+}
+
+/**
+ * Resolves the package manager to use for `dir`'s dependency install,
+ * walking up to a workspace root for evidence if `dir` itself has none
+ * (see findPackageManagerEvidence). The install itself still runs in
+ * `dir` — only evidence-gathering walks up.
+ */
+function resolveManager(dir, packageManagerOverride) {
+  const evidence = findPackageManagerEvidence(dir);
   return selectPackageManager({
-    declared: pkg?.packageManager,
-    lockfiles: findLockfiles(dir),
+    declared: evidence.declared,
+    lockfiles: evidence.lockfiles,
     override: packageManagerOverride,
   });
 }
@@ -300,7 +357,7 @@ function main() {
     }
     console.log(`Scaffolding new project into ${targetDir} from ${STARTER_DIR}`);
     cpSync(STARTER_DIR, targetDir, { recursive: true });
-    const manager = resolveManager(targetDir, undefined, packageManagerOverride);
+    const manager = resolveManager(targetDir, packageManagerOverride);
     if (skipInstall) {
       console.log(
         `\n--skip-install: dependencies were NOT installed. Run \`${manager} install\` in ${targetDir} yourself.`
@@ -329,7 +386,7 @@ function main() {
         `\n--skip-install: dependencies were NOT installed. @coinbase/cds-web@${declaredCdsVersion()} still needs to be added.`
       );
     } else {
-      const manager = resolveManager(targetDir, pkg, packageManagerOverride);
+      const manager = resolveManager(targetDir, packageManagerOverride);
       const { command, args } = dependencyCommand(manager, [`@coinbase/cds-web@${declaredCdsVersion()}`]);
       run(command, args, targetDir);
     }
