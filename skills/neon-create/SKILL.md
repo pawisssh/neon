@@ -181,6 +181,11 @@ used by all three neon skills. The steps below assume it.
    numbers are corroborated vs. extrapolated before treating any as
    pixel-final.
 
+   **Use the shipped SVG logos.** `src/assets/logo/` contains full and compact
+   Finnomena marks for light and dark surfaces. Use `Logo` rather than
+   recreating the wordmark as text: full in a header or full sidebar, compact
+   in an icon rail. See `design-md/finnomena/DESIGN.md` for the asset mapping.
+
 9. **Font loading — new-project branch reuses the shipped pattern**
    (`starters/vitejs-cds/src/main.tsx` loads IBM Plex Sans Thai);
    **existing-project branch inspects and integrates, never invents a
