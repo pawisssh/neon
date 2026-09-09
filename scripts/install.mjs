@@ -35,20 +35,29 @@
  *                 without touching the filesystem.
  *
  * --theme-dir <project-relative-dir>: overrides the default "src/theme"
- *                 destination for (default)/--css-only. Validated to stay
- *                 inside <target-dir> before anything is written (see
- *                 resolveThemeDir below) — rejects absolute paths, paths
- *                 that resolve outside <target-dir>, and paths that pass
- *                 through a symlinked ancestor that resolves outside
- *                 <target-dir>. Not accepted with --new: the scaffolded
- *                 starter's own source (AppRoot.tsx etc.) imports theme
- *                 files from a fixed "src/theme" path, so moving that
+ *                 destination for (default)/--css-only. Both the default
+ *                 destination and an explicit override go through the same
+ *                 resolveThemeDir check, which validates the resolved path
+ *                 stays inside <target-dir> before anything is written —
+ *                 rejects absolute paths, paths that resolve outside
+ *                 <target-dir>, and paths that pass through a symlinked
+ *                 ancestor that resolves outside <target-dir>. This applies
+ *                 even when --theme-dir is never passed (e.g. a symlinked
+ *                 default "src/theme"), so a failure here does not always
+ *                 mean --theme-dir was used. Not accepted with --new: the
+ *                 scaffolded starter's own source (AppRoot.tsx etc.) imports
+ *                 theme files from a fixed "src/theme" path, so moving that
  *                 destination would silently break the scaffolded app.
  *
  * --package-manager <npm|pnpm|yarn|bun>: overrides package-manager
  *                 detection (see project-config.mjs's selectPackageManager)
  *                 for --new's post-scaffold install and (default)'s CDS
- *                 install.
+ *                 install. An explicit value's shape is validated up front,
+ *                 before any filesystem mutation, in every mode — including
+ *                 --css-only, an existing CDS dependency, and --skip-install,
+ *                 none of which ever invoke a package manager themselves —
+ *                 so an invalid value is rejected even in modes that would
+ *                 otherwise just copy files and exit cleanly.
  *
  * --skip-install: scaffold/copy files but never invoke a package manager.
  *                 Applies to --new and (default), the only modes that ever
