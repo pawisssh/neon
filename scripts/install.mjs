@@ -335,8 +335,7 @@ async function main() {
 
   if (isCssOnly) {
     // CSS-only mode: copy just theme.css, no CDS install
-    const destThemeDir =
-      themeDirOverride !== undefined ? resolveThemeDir(targetDir, themeDirOverride) : join(targetDir, "src", "theme");
+    const destThemeDir = resolveThemeDir(targetDir, themeDirOverride ?? "src/theme");
     copyThemeFiles(CSS_DIR, destThemeDir, ["theme.css"]);
     console.log(
       `\nDone. Import it once (e.g. \`import "./theme/theme.css"\`) and use var(--color-fg), var(--space-2), etc.`
@@ -362,8 +361,7 @@ async function main() {
       process.exit(1);
     }
     const pkg = JSON.parse(readFileSync(pkgPath, "utf8"));
-    const destThemeDir =
-      themeDirOverride !== undefined ? resolveThemeDir(targetDir, themeDirOverride) : join(targetDir, "src", "theme");
+    const destThemeDir = resolveThemeDir(targetDir, themeDirOverride ?? "src/theme");
     copyThemeFiles(CDS_DIR, destThemeDir, CDS_FILES);
     const hasCds = Boolean(pkg.dependencies?.["@coinbase/cds-web"] || pkg.devDependencies?.["@coinbase/cds-web"]);
     if (hasCds) {

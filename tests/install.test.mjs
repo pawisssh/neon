@@ -135,6 +135,57 @@ test('CLI rejects an escaping --theme-dir before writing anything', (t) => {
   assert.equal(existsSync(join(target, '..', 'escaped')), false);
 });
 
+for (const css of [false, true]) {
+  test(`default ${css ? 'CSS' : 'CDS'} destination rejects escaping src symlink`, (t) => {
+    const { root, target, run } = fixture(t);
+    const outside = join(root, 'outside');
+    mkdirSync(outside);
+    symlinkSync(outside, join(target, 'src'), process.platform === 'win32' ? 'junction' : 'dir');
+    const result = run(target, ...(css ? ['--css-only'] : []));
+    assert.notEqual(result.status, 0);
+    assert.deepEqual(readdirSync(outside), []);
+    assert.equal(existsSync(join(target, 'src/theme')), false);
+  });
+}
+
+for (const css of [false, true]) {
+  test(`explicit --theme-dir src/theme rejects escaping src symlink (${css ? 'CSS' : 'CDS'})`, (t) => {
+    const { root, target, run } = fixture(t);
+    const outside = join(root, 'outside');
+    mkdirSync(outside);
+    symlinkSync(outside, join(target, 'src'), process.platform === 'win32' ? 'junction' : 'dir');
+    const result = run(target, ...(css ? ['--css-only'] : []), '--theme-dir', 'src/theme');
+    assert.notEqual(result.status, 0);
+    assert.deepEqual(readdirSync(outside), []);
+    assert.equal(existsSync(join(target, 'src/theme')), false);
+  });
+}
+
+for (const css of [false, true]) {
+  test(`default ${css ? 'CSS' : 'CDS'} destination rejects a symlink placed at src/theme itself`, (t) => {
+    const { root, target, run } = fixture(t);
+    const outside = join(root, 'outside');
+    mkdirSync(outside);
+    mkdirSync(join(target, 'src'));
+    symlinkSync(outside, join(target, 'src/theme'), process.platform === 'win32' ? 'junction' : 'dir');
+    const result = run(target, ...(css ? ['--css-only'] : []));
+    assert.notEqual(result.status, 0);
+    assert.deepEqual(readdirSync(outside), []);
+  });
+}
+
+test('accepts a src symlink that resolves inside the target directory (internal symlink, not an escape)', (t) => {
+  const { target, cdsDir, run } = fixture(t);
+  const realSrc = join(target, 'real-src');
+  mkdirSync(realSrc, { recursive: true });
+  symlinkSync(realSrc, join(target, 'src'), process.platform === 'win32' ? 'junction' : 'dir');
+  const result = run(target);
+  assert.equal(result.status, 0, result.stderr);
+  for (const file of ['theme.config.ts', 'color-overrides.ts', 'createTheme.ts', 'breakpoints.config.ts']) {
+    assert.deepEqual(readFileSync(join(target, 'src/theme', file)), readFileSync(join(cdsDir, file)));
+  }
+});
+
 test('rejects --theme-dir combined with --new', (t) => {
   const { root, pluginSource, run } = fixture(t);
   withStarterManifest(pluginSource);
