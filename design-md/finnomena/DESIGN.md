@@ -247,38 +247,59 @@ components:
     rounded: "{rounded.sm}"
 ---
 
+# Finnomena Neon — Design Guide
+
+Light theme. Use this file alone to design a screen: the frontmatter defines tokens; the sections below define their use. `design_tokens.json` is optional. Token references such as `{colors.button-primary}` resolve to values above; no starter, framework, or local assets are required. Logo images require network access.
+
 ## Brand & Style
 
 Finnomena Neon is a black-on-white system: white surfaces, hairline boundaries, dark controls, and color reserved for semantic states, charts, links, and illustrations.
 
 ## Colors
 
-Use \`background-primary\` for page, header, and footer surfaces; \`border-subtle\` for separation; \`button-primary\` for high-emphasis actions; and \`background-secondary\` for quiet differentiation. Links and focus use indigo. Do not use dark full-width structural bands or decorative UI color.
+| Role | Tokens | Use |
+| --- | --- | --- |
+| Canvas and surfaces | `background-primary`, `background-secondary` | White page, header, footer; light gray grouped content |
+| Text | `text-primary`, `text-secondary`, `text-disabled` | Main content, supporting copy, unavailable controls |
+| Boundaries | `border-subtle`, `border-interactive`, `border-strong` | Separators, control edges, selected or emphasized edges |
+| Actions | `button-primary`, `button-secondary`, `button-tertiary` | Main, supporting, and quiet actions; use their hover/active variants |
+| Links and focus | `link-primary`, `link-primary-hover`, `focus` | Indigo links and visible keyboard focus |
+| Feedback | `support-success`, `support-warning`, `support-error` | State icons and matching notification backgrounds; pair with text |
+| Financial change | `text-positive`, `text-negative` | Gains and losses, with signs or labels |
+
+Keep structural surfaces white; reserve navy for controls and emphasis. Yellow `background-brand` / `button-highlight` is an exceptional brand highlight, not the default CTA. Use the `support-*` family for feedback: legacy `status-*` names in the token inventory do not reliably match their semantic colors.
 
 ### Data Visualization Colors (Multi-asset)
 
-Use these colors only for multi-asset visualization:
-
-- **Cryptocurrency:** Dark Red (`#8f0606`)
-- **Crowdfunding:** Red (`#d60808`)
-- **P2P Lending:** Orange (`#ba4a0a`)
-- **Thai Equity:** Indigo (`#1211ad`)
-- **Equity (Global):** Purple (`#aa46c3`)
-- **Mutual Fund:** Navy (`#01172b`)
-- **Gold:** Yellow (`#f1f92d`)
-- **Tax Saving:** Sky Blue (`#50cfff`)
-- **E-Savings:** Light Green (`#40ed90`)
-- **Cash:** Forest Green (`#007435`)
+Use the `multi-asset-*` tokens only for their named asset categories. Keep category colors consistent across charts; add labels, values, and legends so color is never the sole identifier. Use dark labels beside light yellow/green marks. Label units, periods, and unavailable data; never imply that missing values are zero.
 
 ## Typography
 
-Use **IBM Plex Sans Thai** throughout. Reserve display and large-title styles for page titles or hero figures; use body styles for normal copy and heavier weights only for navigation, labels, or emphasis.
+Use **IBM Plex Sans Thai** for Thai and Latin text, with `sans-serif` as the loading fallback. Load weights 400, 500, and 700 when available; preserve Thai marks and wrapping without clipping.
+
+| Role | Token | Size / line height |
+| --- | --- | --- |
+| Hero | `display2` | 60 / 70px; step down to `largeTitle` on phones |
+| Page title | `largeTitle` or `title1` | 34 / 41px or 28 / 34px |
+| Section title | `title2` | 22 / 28px |
+| Emphasized label | `headline` | 17 / 22px, weight 500 |
+| Body and controls | `body` | 17 / 22px |
+| Secondary copy | `subheadline` | 15 / 20px |
+| Metadata | `footnote` | 13 / 18px |
+
+Use the frontmatter weights and tracking; larger display tokens are optional for spacious heroes. Keep body copy left-aligned, allow longer reading text more line height, and right-align comparable numeric values with consistent precision and units.
+
+## Spacing, Shapes & Depth
+
+Use the 8px spacing unit: 8px within small groups, 16px between related elements, 24px card/pane padding, 32px between workspace sections, and 64px between landing-page sections. Reduce outer padding to 16px on phones. These are defaults; let content determine height.
+
+Use 8px radii for controls and cards; reserve full pills for tags, toggles, and occasional navigation CTAs. Create depth with white/secondary surfaces and 1px subtle separators, without shadows. Keep reading columns around 60–75 characters; wide workspaces may fill the viewport.
 
 ## Layout Patterns
 
-This section is self-contained; `design_tokens.json` is optional implementation support. Choose the layout from the screen’s task.
+Choose the layout from the screen’s task without asking the user to select a component. These names describe visual patterns, not required imports.
 
-| Component | Panes | Use for |
+| Pattern | Panes | Use for |
 | --- | --- | --- |
 | `DetailedLayout` | Sidebar + Content + Inspector; inspector-weighted | List-and-detail workspaces, inboxes, orders, holdings |
 | `ContentLayout` | Sidebar + Content + Inspector; content-weighted | Content-led reports, dashboards, articles, editors |
@@ -286,18 +307,32 @@ This section is self-contained; `design_tokens.json` is optional implementation 
 | `MultiColumnLayout` | Sidebar + scrolling fixed-width columns | Kanban, pipelines, comparisons |
 | `ImmersiveLayout` | Full-bleed content + logo header | Landing pages and focused flows |
 
-If a focused flow later needs navigation, choose the simplest pane layout that preserves its task.
+Use the simplest pattern that supports the task. Do not add an inspector without detail content. An immersive landing page may contain several sections; “immersive” means no persistent sidebar.
 
 ### Shared pane primitives
 
 - **`Sidebar`:** Desktop logo, navigation, and optional app content; hidden → icon rail → full sidebar.
-- **`ContentView`:** Fixed-width toolbar-and-scroll pane.
-- **`InspectorView`:** Flexible toolbar-and-scroll pane.
+- **Content:** Main list or working area with an optional toolbar.
+- **Inspector:** Selected-item details or supporting context. Let it dominate in Detailed; let content dominate in Content layout.
 - **`BottomNav`:** Phone replacement for Sidebar; omit when navigation is empty.
 
-### Navigation and sidebar contract
+### Navigation
 
-Except for `ImmersiveLayout`, layouts receive one `NavItem[]` for both `Sidebar` and `BottomNav`; default it to empty. `sidebar` is only extra content below navigation.
+Use the same destinations and selected state in Sidebar and BottomNav. Include only navigation relevant to the requested screen; omit it when empty. Extra sidebar content sits below navigation. Do not invent ecosystem links or destinations.
+
+### Responsive behavior
+
+Use these defaults when no project breakpoints are supplied; switch earlier if the content cannot fit.
+
+| Width | Behavior |
+| --- | --- |
+| Below 768px | One working pane, 16px outer padding, logo header, BottomNav only when navigation exists |
+| 768–1199px | Icon rail; show a companion pane only if the main task remains usable |
+| 1200px and above | Full sidebar and relevant companion panes; give remaining space to the dominant pane |
+
+On phones, open selected details as a separate view or sheet with a Back/Close action; preserve list selection, filters, and scroll position. Keep board columns horizontally scrollable within their region. Stack landing-page columns, allow labels and controls to wrap, and prevent page-level horizontal overflow. Sticky toolbars and BottomNav must leave content and keyboard focus unobscured, including device safe areas.
+
+## Components
 
 ### Logo requirement
 
@@ -310,37 +345,48 @@ Every screen uses an approved Finnomena SVG, never recreated text. This document
 
 Example: `<img src="https://raw.githubusercontent.com/pawisssh/neon/main/starters/vitejs-cds/src/assets/logo/logo-finnomena-text-light.svg" alt="Finnomena" width="136" height="32">`. Preserve its intrinsic 136×32 or 32×32 dimensions; do not recolor or redraw the mark.
 
-### Responsive behavior
-
-Hide fixed companion panes before the flexible working pane. On phones, hide `Sidebar` and show `BottomNav` only when navigation exists; at compact widths use an icon rail; at wide widths restore the full sidebar and relevant fixed pane. Keep board columns fixed and horizontally scrollable. `ImmersiveLayout` stays logo-header plus one full-bleed pane. Do not create a mobile layout that changes the chosen hierarchy.
-
-## Elevation & Depth
-
-No shadows. Create depth with white-to-secondary surfaces and 1px subtle borders; reserve dark fills for controls.
-
-## Shapes
-
-Use \`sm\` (8px) for standard controls and cards; use \`full\` only for navigation CTAs, toggles, and tags. Icons are minimal and monochrome.
-
-## Components
-
-### Black Filled Button
-Solid \`#01172b\` background, \`#ffffff\` text in IBM Plex Sans Thai 16px weight 400. 8px border-radius, 12px vertical padding × 16px horizontal padding. No shadow, no border, no hover state variation visible.
-
-### White Pill Button
-\`#ffffff\` background, \`#01172b\` text in IBM Plex Sans Thai 14px weight 400. 9999px border-radius (full pill), 6px vertical × 16px horizontal padding. Use only where a light, low-emphasis action is appropriate; it is not required to invert header or footer chrome.
-
-### Location Input Field
-\`#ffffff\` background with a 1px \`#8d97a0\` border, 8px radius. 16px vertical padding. Left side has a vertical timeline track. Placeholder text in IBM Plex Sans Thai 16px weight 400, \`#01172b\`.
-
 ### Header
-\`{colors.background-primary}\` background with a bottom \`{colors.border-subtle}\` hairline, not a navy band. Use this treatment for the sidebar header and the Immersive logo header. The header carries the real Finnomena logo according to the Logo requirement; reserve \`{colors.button-primary}\` for a distinct high-emphasis action rather than using it as a full-width structural fill.
+
+White `background-primary` with a bottom `border-subtle` hairline. Place the real logo in the full sidebar or page header; keep it visible when the sidebar disappears. Use the logo-only header for Immersive. Separate any primary action from the header surface.
 
 ### Sidebar and Bottom Navigation
-For starter app shells, use `Sidebar` and `BottomNav` rather than inventing a separate horizontal navigation component. Both consume the same caller-supplied `NavItem[]`; Sidebar is the desktop navigation region and BottomNav replaces it only on phones. Keep Sidebar chrome on `background-primary` with `border-subtle` separation and use a solid `button-primary` only for a distinct high-emphasis action. Treat BottomNav as mobile navigation rather than as a page footer.
+
+White surfaces with subtle separators. Use consistent monochrome icons from one icon set, with matching size and stroke weight. Show the active destination with a quiet fill plus label/icon emphasis; provide accessible names and tooltips in icon rails. Keep phone destinations labeled. BottomNav is navigation, not a page footer.
 
 ### Footer
-\`{colors.background-primary}\` background with a top \`{colors.border-subtle}\` hairline, not a navy or black band. Apply this treatment to the sidebar footer and any page footer. Footer text and links use the standard dark-on-white text and link tokens; reserve \`{colors.button-primary}\` for controls and high-emphasis actions rather than a full-width structural fill.
+
+White `background-primary` with a top `border-subtle` hairline, secondary text, and standard link tokens. Include supporting information only when useful; a page footer is optional.
+
+### Buttons
+
+Primary: `button-primary` fill, `text-on-color`, `body` typography, 8px radius, minimum 48px height, and 12px × 16px padding. Let height grow for wrapping labels. Secondary and tertiary actions use their corresponding token families. Use hover/active variants, `button-disabled` for unavailable actions, and `button-danger` for destructive actions. Keep one visually dominant action per task region.
+
+### Form Fields
+
+Use a visible label, white fill, `border-interactive` edge, 8px radius, and 16px padding. Strengthen the border with `border-strong` when needed for visibility. Placeholders supplement labels. Keep helper/error text adjacent, identify errors in words, and retain entered values after validation.
+
+### Cards, Lists & Tables
+
+Use white or `background-secondary` surfaces, 8px radii where bounded, 24px padding, and subtle row separators. Keep primary identifiers left-aligned and comparable amounts right-aligned. Make selection visible with `highlight` and an additional edge or indicator. On small screens retain essential fields and expose secondary details on selection; wide tables may scroll in a labeled region.
+
+### Tabs & Filters
+
+Use quiet neutral surfaces, clear selected labels, and an underline or border indicator. Separate view-switching tabs from filtering controls. Expose active filters and a reset action when applicable.
 
 ### Illustration Panel
-Contained rectangular panels (~480px wide) holding flat vector illustrations. Illustrations carry all the color in the system; the UI around them stays strictly achromatic.
+
+Use contained flat illustrations or relevant product visuals beside explanatory copy. Scale within the content width; preserve space around text. Illustrations may use color alongside semantic UI and charts. Avoid decorative visuals in dense task areas.
+
+## Interaction & Accessibility
+
+- Support default, hover, pressed, focus, selected, disabled, and loading states where relevant. Use a visible 2px `focus` outline with offset; never rely on hover alone.
+- Keep controls keyboard-operable, icon buttons named, form labels associated, and reading/focus order logical. Use approximately 44px minimum touch targets and respect reduced-motion preferences.
+- Check text and essential control contrast on the rendered surface; subtle separators are not sufficient as the only control boundary. Pair status colors with words or symbols.
+- Loading: preserve layout with skeletons or a labeled progress indicator. Empty: explain the absence and offer a relevant next action. Error: state what failed and offer recovery. Success: confirm the result without disrupting the task.
+- Use clear Thai or English matching the request. Show currency, dates, units, and precision consistently; identify sample data in prototypes.
+
+## Screen Recipe & Review
+
+Choose a layout → place the real logo → apply the tokens → build the primary task → adapt companion panes → verify states and keyboard access. For example, orders use Detailed with a selectable list and details; a report uses Content with supporting filters; a landing page uses Immersive with stacked sections on phones.
+
+Before delivery, check that the screen has the correct layout, a visible logo at every width, white header/footer surfaces, consistent typography and spacing, functional navigation, and usable loading/empty/error states. Avoid recreated logos, navy structural bands, decorative asset colors, clipped Thai text, and hidden mobile detail content.
