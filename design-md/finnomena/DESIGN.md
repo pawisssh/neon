@@ -291,7 +291,7 @@ Use the frontmatter weights and tracking; larger display tokens are optional for
 
 ## Spacing, Shapes & Depth
 
-Use the 8px spacing unit: 8px within small groups, 16px between related elements, 24px card/pane padding, 32px between workspace sections, and 64px between landing-page sections. Reduce outer padding to 16px on phones. These are defaults; let content determine height.
+Use the 8px spacing unit: 8px within small groups, 16px between related elements, 24px card/pane padding, 32px between workspace sections, and 64px between landing-page sections. Reduce outer padding to 16px on phones; step end margins and pane gutters up to 24px above roughly 1440px. These are defaults; let content determine height.
 
 Use 8px radii for controls and cards; reserve full pills for tags, toggles, and occasional navigation CTAs. Create depth with white/secondary surfaces and 1px subtle separators, without shadows. Keep reading columns around 60–75 characters; wide workspaces may fill the viewport.
 
@@ -322,13 +322,14 @@ Use the same destinations and selected state in Sidebar and BottomNav. Include o
 
 ### Responsive behavior
 
-Use these defaults when no project breakpoints are supplied; switch earlier if the content cannot fit.
+Use these defaults when no project breakpoints are supplied; switch earlier if the content cannot fit. If the project has a token file (e.g. `breakpoint.json` / `layout.json`), treat its per-layout Sidebar/Content/Inspector widths as the source of truth and use this table only as the general shape.
 
 | Width | Behavior |
 | --- | --- |
-| Below 768px | One working pane, 16px outer padding, logo header, BottomNav only when navigation exists |
-| 768–1199px | Icon rail; show a companion pane only if the main task remains usable |
-| 1200px and above | Full sidebar and relevant companion panes; give remaining space to the dominant pane |
+| Below 500px | One working pane, no sidebar, 16px outer padding, logo header, BottomNav only when navigation exists |
+| 500–1079px | Icon-rail sidebar (~64px, resizable); show a companion pane only if the main task remains usable |
+| 1080–1439px | Full sidebar (default ~240–320px, resizable roughly 64–360px) and relevant companion panes; give remaining space to the dominant pane |
+| 1440px and above | Same arrangement as above; end margins and pane gutters step up from 16px to 24px, and fixed companion panes may grow |
 
 On phones, open selected details as a separate view or sheet with a Back/Close action; preserve list selection, filters, and scroll position. Keep board columns horizontally scrollable within their region. Stack landing-page columns, allow labels and controls to wrap, and prevent page-level horizontal overflow. Sticky toolbars and BottomNav must leave content and keyboard focus unobscured, including device safe areas.
 
