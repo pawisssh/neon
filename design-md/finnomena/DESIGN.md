@@ -318,22 +318,22 @@ Use \`sm\` (8px) for standard controls and cards; use \`full\` only for navigati
 ## Components
 
 ### Black Filled Button
-\`button-primary\` fill, white text, \`sm\` radius, 12px × 16px padding, and no shadow.
+Solid \`#01172b\` background, \`#ffffff\` text in IBM Plex Sans Thai 16px weight 400. 8px border-radius, 12px vertical padding × 16px horizontal padding. No shadow, no border, no hover state variation visible.
 
 ### White Pill Button
-White, dark text, \`full\` radius, 6px × 16px padding; use only for low-emphasis actions.
+\`#ffffff\` background, \`#01172b\` text in IBM Plex Sans Thai 14px weight 400. 9999px border-radius (full pill), 6px vertical × 16px horizontal padding. Use only where a light, low-emphasis action is appropriate; it is not required to invert header or footer chrome.
 
 ### Location Input Field
-White fill, 1px border, \`sm\` radius, 16px padding, and dark placeholder text; add a timeline track only when needed.
+\`#ffffff\` background with a 1px \`#8d97a0\` border, 8px radius. 16px vertical padding. Left side has a vertical timeline track. Placeholder text in IBM Plex Sans Thai 16px weight 400, \`#01172b\`.
 
 ### Header
-\`background-primary\` with a bottom \`border-subtle\` hairline. Use for sidebar and Immersive headers; reserve \`button-primary\` for a distinct action.
+\`{colors.background-primary}\` background with a bottom \`{colors.border-subtle}\` hairline, not a navy band. Use this treatment for the sidebar header and the Immersive logo header. The header carries the real Finnomena logo according to the Logo requirement; reserve \`{colors.button-primary}\` for a distinct high-emphasis action rather than using it as a full-width structural fill.
 
 ### Sidebar and Bottom Navigation
-Use `Sidebar` on desktop and `BottomNav` on phones. Share one `NavItem[]`; BottomNav is navigation, not a footer.
+For starter app shells, use `Sidebar` and `BottomNav` rather than inventing a separate horizontal navigation component. Both consume the same caller-supplied `NavItem[]`; Sidebar is the desktop navigation region and BottomNav replaces it only on phones. Keep Sidebar chrome on `background-primary` with `border-subtle` separation and use a solid `button-primary` only for a distinct high-emphasis action. Treat BottomNav as mobile navigation rather than as a page footer.
 
 ### Footer
-\`background-primary\` with a top \`border-subtle\` hairline and dark text. Never use a dark full-width footer band.
+\`{colors.background-primary}\` background with a top \`{colors.border-subtle}\` hairline, not a navy or black band. Apply this treatment to the sidebar footer and any page footer. Footer text and links use the standard dark-on-white text and link tokens; reserve \`{colors.button-primary}\` for controls and high-emphasis actions rather than a full-width structural fill.
 
 ### Illustration Panel
-Use flat vector illustration panels when needed; surrounding UI remains neutral.
+Contained rectangular panels (~480px wide) holding flat vector illustrations. Illustrations carry all the color in the system; the UI around them stays strictly achromatic.
