@@ -194,7 +194,14 @@ function declaredCdsVersion() {
 /** Lists lockfile basenames present directly in dir (non-recursive, missing dir is fine). */
 function findLockfiles(dir) {
   if (!existsSync(dir)) return [];
-  const entries = new Set(readdirSync(dir));
+  let entries;
+  try {
+    entries = new Set(readdirSync(dir));
+  } catch {
+    // Exists but unreadable (e.g. a permissions-restricted ancestor) —
+    // treat it as having no lockfile evidence rather than crashing the walk.
+    return [];
+  }
   return LOCKFILE_NAMES.filter((name) => entries.has(name));
 }
 
@@ -412,16 +419,21 @@ async function main() {
     // rejects ambiguous manager configuration consistently before
     // mutation, computed once here and reused below.
     const manager = resolveManager(targetDir, packageManagerOverride);
-    const commandSpec =
-      !hasCds && !skipInstall
-        ? dependencyCommand(manager, [`@coinbase/cds-web@${declaredCdsVersion()}`])
-        : null;
+    // Read the declared CDS version once, up front — before copyThemeFiles —
+    // for every sub-branch that needs it (the actual-install command and the
+    // --skip-install message), rather than calling declaredCdsVersion() again
+    // later inside the --skip-install log line. A malformed starter manifest
+    // (missing the version declaration) then fails consistently before
+    // copyThemeFiles regardless of which sub-branch (hasCds/skipInstall/
+    // actual-install) is taken.
+    const cdsVersion = hasCds ? null : declaredCdsVersion();
+    const commandSpec = !hasCds && !skipInstall ? dependencyCommand(manager, [`@coinbase/cds-web@${cdsVersion}`]) : null;
     copyThemeFiles(CDS_DIR, destThemeDir, CDS_FILES);
     if (hasCds) {
       console.log("@coinbase/cds-web already a dependency — skipping install.");
     } else if (skipInstall) {
       console.log(
-        `\n--skip-install: dependencies were NOT installed. @coinbase/cds-web@${declaredCdsVersion()} still needs to be added.`
+        `\n--skip-install: dependencies were NOT installed. @coinbase/cds-web@${cdsVersion} still needs to be added.`
       );
     } else {
       run(commandSpec.command, commandSpec.args, targetDir);
