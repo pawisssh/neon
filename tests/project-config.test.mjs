@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { selectPackageManager, dependencyCommand } from '../theme/scripts/project-config.mjs';
+import { selectPackageManager, dependencyCommand } from '../scripts/lib/project-config.mjs';
 
 test('selects pnpm from a declared packageManager field plus matching lockfile', () => {
   assert.equal(selectPackageManager({ declared: 'pnpm@9.0.0', lockfiles: ['pnpm-lock.yaml'] }), 'pnpm');
