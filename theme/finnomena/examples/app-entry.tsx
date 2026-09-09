@@ -20,6 +20,21 @@
  * theme.config.ts's token pipeline. Prefer self-hosting (via @fontsource) in
  * production apps instead of the Google Fonts <link> shown as the quick-start
  * option below.
+ *
+ * When integrating into a project that ALREADY loads fonts some other way
+ * (a framework font loader, an existing self-hosted @font-face), reuse that
+ * mechanism instead of adding this one as a second, competing loader — and
+ * only request the weights the affected UI actually renders (400/500/600/700
+ * cover this theme's own type scale; check theme.config.ts's fontWeight
+ * export before assuming a different set). See
+ * ${CLAUDE_PLUGIN_ROOT}/skills/neon-audit/references/theme-integration.md
+ * §1 for the full inspect-and-verify procedure — "loaded" by family name is
+ * not sufficient; verify with real Thai sample text too.
+ *
+ * activeColorScheme below is hardcoded "light" for this minimal example.
+ * In a real app, derive it from whatever already controls dark/light there
+ * (an existing toggle/hook/stored preference) rather than hardcoding it or
+ * defaulting to prefers-color-scheme — see theme-integration.md §2.
  */
 import type { ReactNode } from "react";
 import { MediaQueryProvider, ThemeProvider } from "@coinbase/cds-web/system";
@@ -49,10 +64,16 @@ const appTheme = createNeonTheme();
 //   import "@fontsource/ibm-plex-sans-thai/600.css";
 //   import "@fontsource/ibm-plex-sans-thai/700.css";
 
-export function AppRoot({ children }: { children: ReactNode }) {
+export function AppRoot({
+  children,
+  colorScheme = "light",
+}: {
+  children: ReactNode;
+  colorScheme?: "light" | "dark";
+}) {
   return (
     <MediaQueryProvider>
-      <ThemeProvider theme={appTheme} activeColorScheme="light">
+      <ThemeProvider theme={appTheme} activeColorScheme={colorScheme}>
         <PortalProvider>{children}</PortalProvider>
       </ThemeProvider>
     </MediaQueryProvider>

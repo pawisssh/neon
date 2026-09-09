@@ -16,17 +16,28 @@ import { breakpoints } from "../theme/breakpoints.config";
 import { Sidebar } from "./Sidebar";
 import { BottomNav } from "./BottomNav";
 import { InspectorView } from "./InspectorView";
+import type { NavItem } from "./navItems";
 
-export function SimpleLayout({ sidebar, content }: { sidebar: ReactNode; content: ReactNode }) {
+export function SimpleLayout({
+  sidebar,
+  navigation = [],
+  content,
+}: {
+  sidebar: ReactNode;
+  navigation?: NavItem[];
+  content: ReactNode;
+}) {
   const tier = useBreakpointTier();
   const sidebarWidth = breakpoints.find((b) => b.name === tier)!.sidebarWidth;
 
   return (
     <div style={{ display: "flex", height: "100vh", width: "100%" }}>
-      <Sidebar width={sidebarWidth}>{sidebar}</Sidebar>
+      <Sidebar width={sidebarWidth} navigation={navigation}>
+        {sidebar}
+      </Sidebar>
       {/* InspectorView is the generic "fill" pane component (Toolbar + scrollable body) — reused here for the sole content pane, since Simple Layout has no fixed-width pane at all. */}
       <InspectorView pane={{}}>{content}</InspectorView>
-      <BottomNav />
+      <BottomNav navigation={navigation} />
     </div>
   );
 }

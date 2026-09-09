@@ -7,19 +7,28 @@
  * color/spacing/radius, so they're read as plain numbers rather than routed
  * through neonTheme's style tokens.
  *
- * `children` (the `sidebar` prop threaded in from App.tsx) is rendered
- * below the built-in nav — use it for anything app-specific beyond
- * Finnomena's standard ecosystem rail (see ./navItems.ts).
+ * `navigation` (see ./navItems.ts's `NavItem`) drives the nav rail and
+ * defaults to an empty list — no items render until a layout is given one.
+ * `children` (the `sidebar` prop threaded in from App.tsx) renders below
+ * the nav — use it for anything app-specific.
  */
 import type { ReactNode } from "react";
 import { Box } from "@coinbase/cds-web/layout";
 import { Logo } from "./Logo";
 import { SidebarNav } from "./SidebarNav";
-import { navItems } from "./navItems";
+import type { NavItem } from "./navItems";
 
 const HEADER_FOOTER_HEIGHT = 64;
 
-export function Sidebar({ width, children }: { width: number; children: ReactNode }) {
+export function Sidebar({
+  width,
+  navigation = [],
+  children,
+}: {
+  width: number;
+  navigation?: NavItem[];
+  children: ReactNode;
+}) {
   if (width === 0) return null;
   const isRail = width === 64;
 
@@ -43,7 +52,7 @@ export function Sidebar({ width, children }: { width: number; children: ReactNod
         {!isRail && <Logo />}
       </Box>
       <div style={{ flex: 1, overflowY: "auto" }}>
-        <SidebarNav items={navItems} isRail={isRail} />
+        <SidebarNav items={navigation} isRail={isRail} />
         {!isRail && children}
       </div>
       <div style={{ height: HEADER_FOOTER_HEIGHT, flexShrink: 0 }} />

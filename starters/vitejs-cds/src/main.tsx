@@ -12,16 +12,14 @@ import "@coinbase/cds-web/defaultFontStyles";
 // never registered by @coinbase/cds-web's own imports above.
 import "@coinbase/cds-icons/fonts/web/icon-font.css";
 
+// Self-hosted Thai font weights used by Finnomena theme
+import "@fontsource/ibm-plex-sans-thai/400.css";
+import "@fontsource/ibm-plex-sans-thai/500.css";
+import "@fontsource/ibm-plex-sans-thai/600.css";
+import "@fontsource/ibm-plex-sans-thai/700.css";
+
 import { AppRoot } from "./app/AppRoot";
 import { App } from "./app/App";
-
-// Quick-start font loading (swap for a self-hosted @fontsource import before
-// shipping to production) — see AppRoot.tsx for the alternative.
-const link = document.createElement("link");
-link.rel = "stylesheet";
-link.href =
-  "https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap";
-document.head.appendChild(link);
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
