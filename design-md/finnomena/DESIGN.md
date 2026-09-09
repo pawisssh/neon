@@ -291,7 +291,7 @@ Use the frontmatter weights and tracking; larger display tokens are optional for
 
 ## Spacing, Shapes & Depth
 
-Use the 8px spacing unit: 8px within small groups, 16px between related elements, 24px card/pane padding, 32px between workspace sections, and 64px between landing-page sections. Reduce outer padding to 16px on phones; step end margins and pane gutters up to 24px above roughly 1440px. These are defaults; let content determine height.
+Use the 8px spacing unit: 8px within small groups, 16px between related elements, 24px card/pane padding, 32px between workspace sections, and 64px between landing-page sections. Reduce outer padding to 16px on phones; workspace layout grids use 16px end margins/gutters below 1440px and 24px from 1440px up (see Responsive behavior). These are defaults; let content determine height.
 
 Use 8px radii for controls and cards; reserve full pills for tags, toggles, and occasional navigation CTAs. Create depth with white/secondary surfaces and 1px subtle separators, without shadows. Keep reading columns around 60–75 characters; wide workspaces may fill the viewport.
 
@@ -309,11 +309,25 @@ Choose the layout from the screen’s task without asking the user to select a c
 
 Use the simplest pattern that supports the task. Do not add an inspector without detail content. An immersive landing page may contain several sections; “immersive” means no persistent sidebar.
 
+### Pane sizing
+
+At a 1440px viewport, use the dimensions below. Fixed panes retain their tier width; flexible panes fill the remaining space.
+
+| Layout | Sidebar | Content | Inspector |
+| --- | --- | --- | --- |
+| Detailed | 360px | Fixed 400px | Flexible 680px |
+| Simple | 360px | Flexible 1080px | Hidden |
+| Content | 320px | Flexible 720px | Fixed 400px |
+| Multi-column | 320px | Repeated 400px columns; 24px gaps | Hidden |
+| Immersive | Hidden | Full viewport width | Hidden |
+
+These figures match the reference frames; Simple's 360px sidebar follows Figma over the token export's 320px value at this tier. Keep workspace panes full-height, with 64px toolbars and independently scrolling content areas; sidebar header/footer slots are 64px when present. Apply padding inside panes — only Multi-column has gaps between panes. Immersive keeps a real-logo header and may scroll as a normal page for landing content. Diagram colors indicate structure only; use Neon's white surface tokens in the UI.
+
 ### Shared pane primitives
 
-- **`Sidebar`:** Desktop logo, navigation, and optional app content; hidden → icon rail → full sidebar.
-- **Content:** Main list or working area with an optional toolbar.
-- **Inspector:** Selected-item details or supporting context. Let it dominate in Detailed; let content dominate in Content layout.
+- **`Sidebar`:** Desktop logo, navigation, and optional app content; hidden → icon rail → full sidebar. Absent in Immersive.
+- **Content:** Main list or working area with an optional toolbar. Fixed-width in Detailed (the list column); flexible and dominant in Simple and Content layout.
+- **Inspector:** Selected-item details or supporting context. Flexible and dominant in Detailed; fixed-width in Content layout. Absent in Simple and Multi-column.
 - **`BottomNav`:** Phone replacement for Sidebar; omit when navigation is empty.
 
 ### Navigation
@@ -322,16 +336,25 @@ Use the same destinations and selected state in Sidebar and BottomNav. Include o
 
 ### Responsive behavior
 
-Use these defaults when no project breakpoints are supplied; switch earlier if the content cannot fit. If the project has a token file (e.g. `breakpoint.json` / `layout.json`), treat its per-layout Sidebar/Content/Inspector widths as the source of truth and use this table only as the general shape.
+Use these viewport tiers when no project breakpoints are supplied; switch earlier if the content cannot fit. Sidebar rules exclude Immersive, which hides its sidebar at every width. If the project has a token file (e.g. `breakpoint.json` / `layout.json`), treat its per-layout widths as the source of truth over these defaults.
 
-| Width | Behavior |
-| --- | --- |
-| Below 500px | One working pane, no sidebar, 16px outer padding, logo header, BottomNav only when navigation exists |
-| 500–1079px | Icon-rail sidebar (~64px, resizable); show a companion pane only if the main task remains usable |
-| 1080–1439px | Full sidebar (default ~240–320px, resizable roughly 64–360px) and relevant companion panes; give remaining space to the dominant pane |
-| 1440px and above | Same arrangement as above; end margins and pane gutters step up from 16px to 24px, and fixed companion panes may grow |
+| Tier | Viewport | Sidebar |
+| --- | --- | --- |
+| SM | Below 500px | Hidden |
+| MD | 500–987px | 64px icon rail |
+| LG | 988–1079px | 64px icon rail |
+| XL | 1080–1271px | 240px |
+| XXL | 1272–1439px | 320px |
+| XXXL | 1440–1919px | 360px (Detailed, Simple); 320px (Content, Multi-column) |
+| Max | 1920px and above | 360px (Detailed); 320px (other sidebar layouts) |
 
-On phones, open selected details as a separate view or sheet with a Back/Close action; preserve list selection, filters, and scroll position. Keep board columns horizontally scrollable within their region. Stack landing-page columns, allow labels and controls to wrap, and prevent page-level horizontal overflow. Sticky toolbars and BottomNav must leave content and keyboard focus unobscured, including device safe areas.
+Detailed's fixed content column and Content's fixed inspector column use 320px at SM/MD, 360px at LG–XXL, 400px at XXXL, and 560px at Max, when shown alongside another pane. Multi-column uses the same progression for its column width. End margins and pane gutters are 16px through XXL and 24px from XXXL up. A sole working pane fills the available width.
+
+Adapt panes to fit:
+
+- Reserve at least 320px for the flexible working pane before showing a fixed companion; otherwise fall back to a separate view or sheet. Detailed keeps list-and-detail access; Content keeps the main content visible and opens the inspector on demand. Preserve selection, filters, scroll position, and a Back/Close action.
+- Simple keeps a single content pane at every width. Multi-column keeps fixed-width columns and scrolls horizontally within the board, without page-level overflow. Immersive hides sidebar, inspector, and BottomNav at every width, and stacks landing-page sections on narrow screens.
+- Below 500px, show BottomNav only when navigation exists; keep the real logo visible and reserve space for fixed navigation, keyboard focus, and device safe areas.
 
 ## Components
 
