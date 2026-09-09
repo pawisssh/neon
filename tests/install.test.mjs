@@ -468,6 +468,38 @@ test('rejects conflicting lockfile evidence instead of silently picking a packag
   const result = run(target);
   assert.notEqual(result.status, 0);
   assert.match(result.stderr, /[Cc]onflicting/);
+  assert.equal(existsSync(join(target, 'src/theme')), false);
+});
+
+test('conflicting lockfile evidence is rejected before writing with --skip-install (no CDS declared)', (t) => {
+  const { root, pluginSource, run } = fixture(t);
+  withStarterManifest(pluginSource, '^9.26.1');
+  const target = join(root, 'conflict-skip-install');
+  mkdirSync(target, { recursive: true });
+  writeFileSync(join(target, 'package.json'), JSON.stringify({ dependencies: {} }));
+  writeFileSync(join(target, 'yarn.lock'), '');
+  writeFileSync(join(target, 'package-lock.json'), '');
+  const result = run(target, '--skip-install');
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /[Cc]onflicting/);
+  assert.equal(existsSync(join(target, 'src/theme')), false);
+});
+
+test('conflicting lockfile evidence is rejected before writing even when @coinbase/cds-web is already a dependency', (t) => {
+  const { root, pluginSource, run } = fixture(t);
+  withStarterManifest(pluginSource, '^9.26.1');
+  const target = join(root, 'conflict-has-cds');
+  mkdirSync(target, { recursive: true });
+  writeFileSync(
+    join(target, 'package.json'),
+    JSON.stringify({ dependencies: { '@coinbase/cds-web': '^9.26.1' } })
+  );
+  writeFileSync(join(target, 'yarn.lock'), '');
+  writeFileSync(join(target, 'package-lock.json'), '');
+  const result = run(target);
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /[Cc]onflicting/);
+  assert.equal(existsSync(join(target, 'src/theme')), false);
 });
 
 test('new-project branch runs npm ci when package-lock.json is present', (t) => {
@@ -496,6 +528,120 @@ test('--new refuses to scaffold into a non-empty directory', (t) => {
   const result = run(target, '--new', '--skip-install');
   assert.notEqual(result.status, 0);
   assert.deepEqual(readdirSync(target), ['existing.txt']);
+});
+
+// --- Invalid --package-manager override: rejected before any write, in
+// every mode, including modes that never touch the manager for anything
+// else (--css-only) or never actually run an install (already-has-CDS,
+// --skip-install). ---
+
+test('--new rejects an invalid --package-manager override before assembling anything', (t) => {
+  const { root, pluginSource, run } = fixture(t);
+  withStarterManifest(pluginSource);
+  const target = join(root, 'invalid-new');
+  const result = run(target, '--new', '--skip-install', '--package-manager', 'invalid');
+  assert.notEqual(result.status, 0);
+  assert.equal(existsSync(target), false);
+});
+
+test('default CDS mode rejects an invalid --package-manager override before writing (existing empty target)', (t) => {
+  const { root, run } = fixture(t);
+  const target = join(root, 'invalid-empty-target');
+  mkdirSync(target, { recursive: true });
+  const result = run(target, '--package-manager', 'invalid');
+  assert.notEqual(result.status, 0);
+  assert.deepEqual(readdirSync(target), []);
+});
+
+test('default CDS mode rejects an invalid --package-manager override before writing (existing app, no CDS yet)', (t) => {
+  const { root, run } = fixture(t);
+  const target = join(root, 'invalid-existing-app');
+  mkdirSync(target, { recursive: true });
+  const manifestText = JSON.stringify({ dependencies: {} });
+  writeFileSync(join(target, 'package.json'), manifestText);
+  const before = readdirSync(target).sort();
+  const result = run(target, '--package-manager', 'invalid');
+  assert.notEqual(result.status, 0);
+  assert.equal(existsSync(join(target, 'src/theme')), false);
+  assert.deepEqual(readdirSync(target).sort(), before);
+  assert.equal(readFileSync(join(target, 'package.json'), 'utf8'), manifestText);
+});
+
+test('rejects an invalid --package-manager override before writing even when @coinbase/cds-web is already a dependency', (t) => {
+  const { target, run } = fixture(t); // fixture's default target already declares @coinbase/cds-web
+  const manifestText = readFileSync(join(target, 'package.json'), 'utf8');
+  const before = readdirSync(target).sort();
+  const result = run(target, '--package-manager', 'invalid');
+  assert.notEqual(result.status, 0);
+  assert.equal(existsSync(join(target, 'src/theme')), false);
+  assert.deepEqual(readdirSync(target).sort(), before);
+  assert.equal(readFileSync(join(target, 'package.json'), 'utf8'), manifestText);
+});
+
+test('rejects an invalid --package-manager override before writing with --skip-install', (t) => {
+  const { root, run } = fixture(t);
+  const target = join(root, 'invalid-skip-install');
+  mkdirSync(target, { recursive: true });
+  writeFileSync(join(target, 'package.json'), JSON.stringify({ dependencies: {} }));
+  const result = run(target, '--skip-install', '--package-manager', 'invalid');
+  assert.notEqual(result.status, 0);
+  assert.equal(existsSync(join(target, 'src/theme')), false);
+});
+
+test('rejects an invalid --package-manager override even in --css-only mode, which never uses the manager', (t) => {
+  const { root, run } = fixture(t);
+  const target = join(root, 'invalid-css-only');
+  mkdirSync(target, { recursive: true });
+  const result = run(target, '--css-only', '--package-manager', 'invalid');
+  assert.notEqual(result.status, 0);
+  assert.equal(existsSync(join(target, 'src/theme')), false);
+});
+
+test('a valid retry after an invalid --package-manager value succeeds without manual cleanup', (t) => {
+  const { root, pluginSource, run } = fixture(t);
+  withStarterManifest(pluginSource);
+  const target = join(root, 'retry-new-app');
+  const failed = run(target, '--new', '--skip-install', '--package-manager', 'invalid');
+  assert.notEqual(failed.status, 0);
+  assert.equal(existsSync(target), false);
+  const retried = run(target, '--new', '--skip-install');
+  assert.equal(retried.status, 0, retried.stderr);
+  assert.equal(existsSync(join(target, 'src/theme/createTheme.ts')), true);
+});
+
+// --- --new starter-evidence tests: manager evidence is now gathered from
+// the starter's own manifest/lockfiles (and, failing that, the future
+// destination's ancestry) before assembleStarter ever runs. ---
+
+test('--new inherits root-level pnpm evidence when the starter carries none of its own', (t) => {
+  const { root, pluginSource, run } = fixture(t);
+  withStarterManifest(pluginSource, '^9.26.1');
+  const workspaceRoot = join(root, 'new-workspace');
+  const target = join(workspaceRoot, 'apps', 'new-app');
+  mkdirSync(workspaceRoot, { recursive: true });
+  writeFileSync(join(workspaceRoot, 'package.json'), JSON.stringify({ packageManager: 'pnpm@9.0.0' }));
+  writeFileSync(join(workspaceRoot, 'pnpm-lock.yaml'), '');
+  const result = run(target, '--new');
+  assert.match(result.stdout, /> pnpm install/);
+});
+
+test('--new: explicit --package-manager override wins even when the starter has different evidence', (t) => {
+  const { root, pluginSource, run } = fixture(t);
+  const starterDir = withStarterManifest(pluginSource, '^9.26.1');
+  writeFileSync(join(starterDir, 'package-lock.json'), '{}'); // starter's own evidence says npm
+  const target = join(root, 'override-new-app');
+  const result = run(target, '--new', '--package-manager', 'yarn');
+  assert.match(result.stdout, /> yarn install/);
+});
+
+test('--new: malformed starter package.json leaves the target directory entirely absent', (t) => {
+  const { root, pluginSource, run } = fixture(t);
+  const starterDir = withStarterManifest(pluginSource);
+  writeFileSync(join(starterDir, 'package.json'), '{ not valid json');
+  const target = join(root, 'malformed-starter-app');
+  const result = run(target, '--new', '--skip-install');
+  assert.notEqual(result.status, 0);
+  assert.equal(existsSync(target), false);
 });
 
 // Old-path forwarding shim: theme/finnomena/scripts/install.mjs still

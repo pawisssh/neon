@@ -335,6 +335,18 @@ async function main() {
     process.exit(1);
   }
 
+  // Validate an explicit --package-manager value's shape alone, before any
+  // mode-specific logic (and therefore before any filesystem mutation)
+  // runs. Covers --css-only, existing-CDS, and --new uniformly, and
+  // --skip-install combinations too since this runs before those branches
+  // are even reached. selectPackageManager already throws a clear error on
+  // an unsupported override — that's allowed to propagate uncaught here,
+  // exiting non-zero with no partial writes, matching declaredCdsVersion's
+  // established uncaught-throw pattern elsewhere in this file.
+  if (packageManagerOverride !== undefined) {
+    selectPackageManager({ override: packageManagerOverride });
+  }
+
   const targetDir = resolve(positionals[0]);
 
   if (isCssOnly) {
@@ -345,17 +357,44 @@ async function main() {
       `\nDone. Import it once (e.g. \`import "./theme/theme.css"\`) and use var(--color-fg), var(--space-2), etc.`
     );
   } else if (isNew) {
+    // Determine manager evidence for the future app BEFORE assembling
+    // it — assembleStarterOrExit is a real mutation (creates targetDir and
+    // copies the whole starter + theme into it), so an invalid override or
+    // conflicting evidence must be caught first. Read the starter's OWN
+    // manifest/lockfiles directly (not via findPackageManagerEvidence,
+    // which would walk upward past STARTER_DIR into the plugin checkout);
+    // only fall back to evidence discovery rooted at the future
+    // destination (targetDir — it doesn't exist yet, but
+    // findPackageManagerEvidence only does existsSync checks and climbs to
+    // real parents, so that's fine) when the starter itself carries none.
+    // A malformed starter package.json throws here, uncaught, before
+    // anything has been written — leaving the target directory absent,
+    // matching declaredCdsVersion's established uncaught-throw pattern.
+    const starterPkg = JSON.parse(readFileSync(join(STARTER_DIR, "package.json"), "utf8"));
+    const starterEvidence = {
+      declared: starterPkg.packageManager,
+      lockfiles: findLockfiles(STARTER_DIR),
+    };
+    const evidence =
+      starterEvidence.declared || starterEvidence.lockfiles.length
+        ? starterEvidence
+        : findPackageManagerEvidence(targetDir);
+    const manager = selectPackageManager({ ...evidence, override: packageManagerOverride });
+    // The starter's own package-lock.json presence predicts the assembled
+    // destination's, since assembleStarter copies the whole starter tree
+    // through unchanged (aside from node_modules/dist/.git/.DS_Store/src/theme).
+    const commandSpec = skipInstall
+      ? null
+      : dependencyCommand(manager, [], { ci: existsSync(join(STARTER_DIR, "package-lock.json")) });
+
     const { destination } = await assembleStarterOrExit(targetDir);
-    const manager = resolveManager(destination, packageManagerOverride);
     if (skipInstall) {
       console.log(
         `\n--skip-install: dependencies were NOT installed. Run \`${manager} install\` in ${destination} yourself.`
       );
       console.log(`Files copied into ${destination}. Dependencies not installed.`);
     } else {
-      const hasLockfile = existsSync(join(destination, "package-lock.json"));
-      const { command, args } = dependencyCommand(manager, [], { ci: hasLockfile });
-      run(command, args, destination);
+      run(commandSpec.command, commandSpec.args, destination);
       console.log(`\nDone. Next: cd ${destination} && ${manager} run dev`);
     }
   } else {
@@ -365,9 +404,19 @@ async function main() {
       process.exit(1);
     }
     const pkg = JSON.parse(readFileSync(pkgPath, "utf8"));
-    const destThemeDir = resolveThemeDir(targetDir, themeDirOverride ?? "src/theme");
-    copyThemeFiles(CDS_DIR, destThemeDir, CDS_FILES);
     const hasCds = Boolean(pkg.dependencies?.["@coinbase/cds-web"] || pkg.devDependencies?.["@coinbase/cds-web"]);
+    const destThemeDir = resolveThemeDir(targetDir, themeDirOverride ?? "src/theme");
+    // Resolve manager evidence — and, when an install will actually run,
+    // the dependency command too — BEFORE copyThemeFiles, even when CDS is
+    // already a dependency or --skip-install is set. This intentionally
+    // rejects ambiguous manager configuration consistently before
+    // mutation, computed once here and reused below.
+    const manager = resolveManager(targetDir, packageManagerOverride);
+    const commandSpec =
+      !hasCds && !skipInstall
+        ? dependencyCommand(manager, [`@coinbase/cds-web@${declaredCdsVersion()}`])
+        : null;
+    copyThemeFiles(CDS_DIR, destThemeDir, CDS_FILES);
     if (hasCds) {
       console.log("@coinbase/cds-web already a dependency — skipping install.");
     } else if (skipInstall) {
@@ -375,9 +424,7 @@ async function main() {
         `\n--skip-install: dependencies were NOT installed. @coinbase/cds-web@${declaredCdsVersion()} still needs to be added.`
       );
     } else {
-      const manager = resolveManager(targetDir, packageManagerOverride);
-      const { command, args } = dependencyCommand(manager, [`@coinbase/cds-web@${declaredCdsVersion()}`]);
-      run(command, args, targetDir);
+      run(commandSpec.command, commandSpec.args, targetDir);
     }
     const installedNote = skipInstall && !hasCds ? " Dependencies not installed (--skip-install)." : "";
     console.log(
