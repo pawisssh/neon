@@ -33,7 +33,7 @@ At `tier: 'visual-system'` or `'cds'`, before adding anything:
    all is free to pick either a CDN `<link>` or a self-hosted package —
    prefer self-hosting for a production app, a CDN link is fine for a
    quick prototype (see
-   `${CLAUDE_PLUGIN_ROOT}/theme/finnomena/examples/app-entry.tsx` for both
+   `${CLAUDE_PLUGIN_ROOT}/theme/examples/app-entry.tsx` for both
    forms side by side).
 3. **Support local/self-hosted font files as an alternative to a CDN
    link.** Some target apps can't or won't load from Google Fonts
@@ -46,7 +46,7 @@ At `tier: 'visual-system'` or `'cds'`, before adding anything:
    scale: `400` (most text roles — body, title1–4, display1/2, legal,
    label2), `500` (headline), `600` (label1, caption), `700` (display3
    only). Only `400`/`500`/`700` are confirmed Finnomena data —
-   `${CLAUDE_PLUGIN_ROOT}/theme/finnomena/theme.config.ts`'s own header
+   `${CLAUDE_PLUGIN_ROOT}/theme/cds/theme.config.ts`'s own header
    populates `fontWeight` for only 8 of CDS's 13 font roles (display1–3,
    title1–3, headline, body) and explicitly lists title4/label1/label2/
    caption/legal as having "no confident Finnomena source," falling back
@@ -156,7 +156,7 @@ variable names alone.
 ## 4. Installer conflict: `install.mjs` already refuses to overwrite a customized file
 
 `copyThemeFiles` in
-`${CLAUDE_PLUGIN_ROOT}/theme/finnomena/scripts/install.mjs` validates
+`${CLAUDE_PLUGIN_ROOT}/scripts/install.mjs` validates
 every source/destination pair *before* copying any of them: if a
 destination theme file's content differs from the source about to be
 copied, it throws `Refusing to overwrite customized file: <path>` and

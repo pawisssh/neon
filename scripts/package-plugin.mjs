@@ -9,9 +9,12 @@ const defaultSourceRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..")
 const PAYLOAD_ENTRIES = [
   ".claude-plugin",
   "skills",
-  "theme/finnomena",
+  "theme",
   "starters/vitejs-cds",
   "design-md/finnomena",
+  "scripts/install.mjs",
+  "scripts/assemble-starter.mjs",
+  "scripts/lib",
   "LICENSE",
 ];
 

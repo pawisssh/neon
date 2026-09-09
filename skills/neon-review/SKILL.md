@@ -10,7 +10,7 @@ Produce actionable findings about the requested UI, with evidence and coverage l
 ## Scope and evidence
 
 1. Reuse the requested target and established brand intent; do not repeat settled questions. Identify the page/component and requested dimensions. Colors-only excludes typography/spacing changes. A header-only review stays within the header and directly affected behavior. Ask only if the missing target prevents useful inspection.
-2. Read the relevant sections of [Finnomena design guidance](../../design-md/finnomena/DESIGN.md). For disputed CDS color mappings, inspect [color-overrides.ts](../../theme/finnomena/color-overrides.ts). Resolve paths from this loaded skill's real directory, not the working directory. If references are unavailable, report that limitation; do not invent brand rules. The mapping is provisional: distinguish documented mismatches from design judgment.
+2. Read the relevant sections of [Finnomena design guidance](../../design-md/finnomena/DESIGN.md). For disputed CDS color mappings, inspect [color-overrides.ts](../../theme/cds/color-overrides.ts). Resolve paths from this loaded skill's real directory, not the working directory. If references are unavailable, report that limitation; do not invent brand rules. The mapping is provisional: distinguish documented mismatches from design judgment.
 3. Record the evidence available: live UI, screenshots, source, or supplied test results. A screenshot establishes only the visible state; source establishes implementation details. Neither alone proves runtime behavior. Use [review-checks.md](references/review-checks.md) for checks relevant to the selected dimensions and evidence.
 
 ## Inspect

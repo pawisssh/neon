@@ -121,7 +121,7 @@ scope) or on a scoped class/CSS-module root (partial scope — see
 and step 3 above). Values usually hold a complete
 color (`#01172b` or `rgb(1, 23, 43)`) referenced directly as
 `var(--name)` — this is the same convention
-`${CLAUDE_PLUGIN_ROOT}/theme/finnomena/theme.css` itself uses, so its
+`${CLAUDE_PLUGIN_ROOT}/theme/css/theme.css` itself uses, so its
 values can often be used close to verbatim. **Still check** — some
 plain-CSS projects also use the bare-component convention from
 **shadcn-style** below without using shadcn itself.

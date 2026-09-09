@@ -1,6 +1,6 @@
 # Color mapping — TODO (human decision required)
 
-**Generated 2026-09-07T19:19:11.289Z by `generate-theme-config.mjs`. Do not hand-edit
+**Generated 2026-09-09T06:34:31.377Z by `generate-theme-config.mjs`. Do not hand-edit
 the lists below without re-running the generator — but DO fill in your
 mapping decisions in a separate file once made (see "Next step" at the
 bottom); this file itself gets overwritten every run.**
@@ -758,7 +758,7 @@ alias-walking logic `generate-theme-config.mjs` uses internally.
 Once a human has decided the mapping, it needs a real place to live and a
 generator update to consume it — neither exists yet (deliberately, to avoid
 building a mechanism for a decision nobody's made). Options to consider at
-that point: a small hand-written `theme/color-overrides.ts` merged in by
+that point: a small hand-written `theme/cds/color-overrides.ts` merged in by
 `createTheme.ts` alongside `theme.config.ts`'s `neonTheme`, or a new
 `tokens/color-mapping.json` input this script learns to read. Don't build
 either speculatively before the mapping itself exists.

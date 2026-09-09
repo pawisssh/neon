@@ -2,27 +2,28 @@
 /**
  * sync-tokens.mjs
  *
- * Resolves the raw Figma Variables/Token export in ../tokens/*.json into a
+ * Resolves the raw Figma Variables/Token export in theme/tokens/*.json into a
  * flat, alias-resolved token map, then writes:
  *   - ../tokens.resolved.json   (every token that resolved, with hex colors
  *                                converted to CDS's "r,g,b" string format)
  *   - ../tokens.report.json     (counts + a list of every unresolved alias,
  *                                grouped by the missing root collection name)
+ * Both land at theme/tokens.resolved.json / theme/tokens.report.json —
+ * gitignored intermediates, not source of truth.
  *
  * This is intentionally generic: it does not hardcode Finnomena's token names,
- * so re-running it after new Figma collections are exported into ../tokens/
- * will pick them up automatically (this doubles as the seed for the Phase 4
- * "token sync automation" step in the project brief).
+ * so re-running it after new Figma collections are exported into
+ * theme/tokens/ will pick them up automatically (this doubles as the seed
+ * for the Phase 4 "token sync automation" step in the project brief).
  *
- * Usage (full regeneration pipeline — run all four in order after changing
- * anything in tokens/*.json):
- *   node scripts/sync-tokens.mjs && node scripts/generate-theme-config.mjs && node scripts/generate-breakpoints-config.mjs && node scripts/install.mjs --sync-starter
+ * Usage (full regeneration pipeline — run all three in order after changing
+ * anything in theme/tokens/*.json):
+ *   node theme/scripts/sync-tokens.mjs && node theme/scripts/generate-theme-config.mjs && node theme/scripts/generate-breakpoints-config.mjs
  *
- * The 4th step keeps starters/vitejs-cds/src/theme/'s committed copy of
- * theme.config.ts/color-overrides.ts/createTheme.ts/breakpoints.config.ts
- * in sync with this directory's — a pure file copy, no npm side effects
- * (see install.mjs's own header for why that's kept separate from its
- * existing-project branch).
+ * Nothing needs to sync a starter copy afterward — starters/vitejs-cds/ has
+ * no tracked theme files of its own. scripts/assemble-starter.mjs (or
+ * scripts/install.mjs --new) pulls the regenerated theme/cds/*.ts files in
+ * fresh at assembly time.
  */
 import { readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { dirname, join, basename } from "node:path";

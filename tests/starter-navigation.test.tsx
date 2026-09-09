@@ -26,12 +26,12 @@ import assert from "node:assert/strict";
 import type { ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { ThemeProvider } from "@coinbase/cds-web/system";
-import { createNeonTheme } from "../starters/vitejs-cds/src/theme/createTheme";
-import { Sidebar } from "../starters/vitejs-cds/src/layout/Sidebar";
-import { BottomNav } from "../starters/vitejs-cds/src/layout/BottomNav";
-import { finnomenaEcosystemNav, type NavItem } from "../starters/vitejs-cds/src/layout/navItems";
-import { AppRoot } from "../starters/vitejs-cds/src/app/AppRoot";
-import { App } from "../starters/vitejs-cds/src/app/App";
+import { createNeonTheme } from '@neon-test-app/theme/createTheme';
+import { Sidebar } from '@neon-test-app/layout/Sidebar';
+import { BottomNav } from '@neon-test-app/layout/BottomNav';
+import { finnomenaEcosystemNav, type NavItem } from '@neon-test-app/layout/navItems';
+import { AppRoot } from '@neon-test-app/app/AppRoot';
+import { App } from '@neon-test-app/app/App';
 
 const theme = createNeonTheme();
 
