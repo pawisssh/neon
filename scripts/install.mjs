@@ -35,20 +35,29 @@
  *                 without touching the filesystem.
  *
  * --theme-dir <project-relative-dir>: overrides the default "src/theme"
- *                 destination for (default)/--css-only. Validated to stay
- *                 inside <target-dir> before anything is written (see
- *                 resolveThemeDir below) — rejects absolute paths, paths
- *                 that resolve outside <target-dir>, and paths that pass
- *                 through a symlinked ancestor that resolves outside
- *                 <target-dir>. Not accepted with --new: the scaffolded
- *                 starter's own source (AppRoot.tsx etc.) imports theme
- *                 files from a fixed "src/theme" path, so moving that
+ *                 destination for (default)/--css-only. Both the default
+ *                 destination and an explicit override go through the same
+ *                 resolveThemeDir check, which validates the resolved path
+ *                 stays inside <target-dir> before anything is written —
+ *                 rejects absolute paths, paths that resolve outside
+ *                 <target-dir>, and paths that pass through a symlinked
+ *                 ancestor that resolves outside <target-dir>. This applies
+ *                 even when --theme-dir is never passed (e.g. a symlinked
+ *                 default "src/theme"), so a failure here does not always
+ *                 mean --theme-dir was used. Not accepted with --new: the
+ *                 scaffolded starter's own source (AppRoot.tsx etc.) imports
+ *                 theme files from a fixed "src/theme" path, so moving that
  *                 destination would silently break the scaffolded app.
  *
  * --package-manager <npm|pnpm|yarn|bun>: overrides package-manager
  *                 detection (see project-config.mjs's selectPackageManager)
  *                 for --new's post-scaffold install and (default)'s CDS
- *                 install.
+ *                 install. An explicit value's shape is validated up front,
+ *                 before any filesystem mutation, in every mode — including
+ *                 --css-only, an existing CDS dependency, and --skip-install,
+ *                 none of which ever invoke a package manager themselves —
+ *                 so an invalid value is rejected even in modes that would
+ *                 otherwise just copy files and exit cleanly.
  *
  * --skip-install: scaffold/copy files but never invoke a package manager.
  *                 Applies to --new and (default), the only modes that ever
@@ -110,15 +119,15 @@ export function buildSpawnOptions(cwd, platform) {
  */
 export function resolveThemeDir(baseTargetDir, themeDirRelative) {
   if (isAbsolute(themeDirRelative)) {
-    throw new Error(`--theme-dir must be a project-relative path, got an absolute path: ${themeDirRelative}`);
+    throw new Error(`Theme destination path must be project-relative, got an absolute path: ${themeDirRelative}`);
   }
   const resolved = resolve(baseTargetDir, themeDirRelative);
   const rel = relative(baseTargetDir, resolved);
   if (rel === "") {
-    throw new Error(`--theme-dir must not resolve to the target directory itself: ${themeDirRelative}`);
+    throw new Error(`Theme destination must not resolve to the target directory itself: ${themeDirRelative}`);
   }
   if (rel.startsWith("..") || isAbsolute(rel)) {
-    throw new Error(`--theme-dir escapes the target directory: ${themeDirRelative}`);
+    throw new Error(`Theme destination escapes the target directory: ${themeDirRelative}`);
   }
 
   // Walk up from the resolved path to find the deepest ancestor that
@@ -137,7 +146,7 @@ export function resolveThemeDir(baseTargetDir, themeDirRelative) {
     const realRel = relative(realTarget, realAncestor);
     if (realRel.startsWith("..") || isAbsolute(realRel)) {
       throw new Error(
-        `--theme-dir resolves outside the target directory via a symlinked ancestor: ${themeDirRelative}`
+        `Theme destination resolves outside the target directory via a symlinked ancestor: ${themeDirRelative}`
       );
     }
   }
@@ -194,7 +203,14 @@ function declaredCdsVersion() {
 /** Lists lockfile basenames present directly in dir (non-recursive, missing dir is fine). */
 function findLockfiles(dir) {
   if (!existsSync(dir)) return [];
-  const entries = new Set(readdirSync(dir));
+  let entries;
+  try {
+    entries = new Set(readdirSync(dir));
+  } catch {
+    // Exists but unreadable (e.g. a permissions-restricted ancestor) —
+    // treat it as having no lockfile evidence rather than crashing the walk.
+    return [];
+  }
   return LOCKFILE_NAMES.filter((name) => entries.has(name));
 }
 
@@ -351,7 +367,7 @@ async function main() {
 
   if (isCssOnly) {
     // CSS-only mode: copy just theme.css, no CDS install
-    const destThemeDir = resolveThemeDir(targetDir, themeDirOverride ?? "src/theme");
+    const destThemeDir = resolveThemeDirOrExit(targetDir, themeDirOverride ?? "src/theme");
     copyThemeFiles(CSS_DIR, destThemeDir, ["theme.css"]);
     console.log(
       `\nDone. Import it once (e.g. \`import "./theme/theme.css"\`) and use var(--color-fg), var(--space-2), etc.`
@@ -405,23 +421,28 @@ async function main() {
     }
     const pkg = JSON.parse(readFileSync(pkgPath, "utf8"));
     const hasCds = Boolean(pkg.dependencies?.["@coinbase/cds-web"] || pkg.devDependencies?.["@coinbase/cds-web"]);
-    const destThemeDir = resolveThemeDir(targetDir, themeDirOverride ?? "src/theme");
+    const destThemeDir = resolveThemeDirOrExit(targetDir, themeDirOverride ?? "src/theme");
     // Resolve manager evidence — and, when an install will actually run,
     // the dependency command too — BEFORE copyThemeFiles, even when CDS is
     // already a dependency or --skip-install is set. This intentionally
     // rejects ambiguous manager configuration consistently before
     // mutation, computed once here and reused below.
     const manager = resolveManager(targetDir, packageManagerOverride);
-    const commandSpec =
-      !hasCds && !skipInstall
-        ? dependencyCommand(manager, [`@coinbase/cds-web@${declaredCdsVersion()}`])
-        : null;
+    // Read the declared CDS version once, up front — before copyThemeFiles —
+    // for every sub-branch that needs it (the actual-install command and the
+    // --skip-install message), rather than calling declaredCdsVersion() again
+    // later inside the --skip-install log line. A malformed starter manifest
+    // (missing the version declaration) then fails consistently before
+    // copyThemeFiles regardless of which sub-branch (hasCds/skipInstall/
+    // actual-install) is taken.
+    const cdsVersion = hasCds ? null : declaredCdsVersion();
+    const commandSpec = !hasCds && !skipInstall ? dependencyCommand(manager, [`@coinbase/cds-web@${cdsVersion}`]) : null;
     copyThemeFiles(CDS_DIR, destThemeDir, CDS_FILES);
     if (hasCds) {
       console.log("@coinbase/cds-web already a dependency — skipping install.");
     } else if (skipInstall) {
       console.log(
-        `\n--skip-install: dependencies were NOT installed. @coinbase/cds-web@${declaredCdsVersion()} still needs to be added.`
+        `\n--skip-install: dependencies were NOT installed. @coinbase/cds-web@${cdsVersion} still needs to be added.`
       );
     } else {
       run(commandSpec.command, commandSpec.args, targetDir);
@@ -437,6 +458,22 @@ async function main() {
 async function assembleStarterOrExit(targetDir) {
   try {
     return await assembleStarter({ sourceRoot: REPO_ROOT, destination: targetDir });
+  } catch (err) {
+    console.error(err.message);
+    process.exit(1);
+  }
+}
+
+/**
+ * Calls resolveThemeDir, exiting with a clean console.error message (no
+ * stack trace) on any validation failure, matching assembleStarterOrExit's
+ * pattern above and every other user-facing refusal in main(). resolveThemeDir
+ * itself keeps throwing (tests call it directly and expect that) — only this
+ * caller converts the throw into a clean exit.
+ */
+function resolveThemeDirOrExit(baseTargetDir, themeDirRelative) {
+  try {
+    return resolveThemeDir(baseTargetDir, themeDirRelative);
   } catch (err) {
     console.error(err.message);
     process.exit(1);

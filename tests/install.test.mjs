@@ -15,6 +15,15 @@ import { buildSpawnOptions, resolveThemeDir } from '../scripts/install.mjs';
 function fixture(t) {
   const root = mkdtempSync(join(tmpdir(), 'neon-install-test-'));
   t.after(() => rmSync(root, { recursive: true, force: true }));
+  // Self-bounding: Task 3's evidence walk (findPackageManagerEvidence)
+  // climbs past manifest-less ancestors using a `.git` marker as its stop
+  // condition (existsSync(join(dir, '.git'))), not "no package.json". Without
+  // a `.git` here, a test that doesn't construct its own boundary would have
+  // its walk climb straight out of the fixture root into the real system
+  // temp directory and beyond — harmless today, but latent flakiness if a
+  // stray package-lock.json/yarn.lock/pnpm-lock.yaml ever sits in an
+  // ancestor of the OS temp dir.
+  mkdirSync(join(root, '.git'));
   const pluginSource = join(root, 'plugin-source');
   cpSync(new URL('../scripts/', import.meta.url), join(pluginSource, 'scripts'), { recursive: true });
   cpSync(new URL('../theme/cds/', import.meta.url), join(pluginSource, 'theme/cds'), { recursive: true });
@@ -145,6 +154,12 @@ for (const css of [false, true]) {
     assert.notEqual(result.status, 0);
     assert.deepEqual(readdirSync(outside), []);
     assert.equal(existsSync(join(target, 'src/theme')), false);
+    // No --theme-dir flag was passed for this default-destination case, so
+    // the error must not blame that flag, and must be a clean console.error
+    // message rather than an uncaught throw's Node stack trace.
+    assert.doesNotMatch(result.stderr, /--theme-dir/);
+    assert.doesNotMatch(result.stderr, /at resolveThemeDir/);
+    assert.doesNotMatch(result.stderr, /at main/);
   });
 }
 
