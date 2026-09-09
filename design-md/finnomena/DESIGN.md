@@ -33,6 +33,7 @@ colors:
   focus: "#6968ef"
   focus-inset: "#ffffff"
   focus-inverse: "#ffffff"
+  # Legacy status-* values: compatibility only. Use support-* for new semantic feedback.
   status-primary: "#00ad50"
   status-success: "#f26414"
   status-warning: "#f73232"
@@ -229,7 +230,7 @@ components:
     textColor: "{colors.text-on-color}"
     typography: "{typography.body}"
     rounded: "{rounded.sm}"
-    height: 48px
+    minHeight: 48px
     padding: 12px 16px
   button-secondary:
     backgroundColor: "{colors.button-secondary}"
@@ -249,11 +250,13 @@ components:
 
 # Finnomena Neon — Design Guide
 
-Light theme. Use this file alone to design a screen: the frontmatter defines tokens; the sections below define their use. `design_tokens.json` is optional. Token references such as `{colors.button-primary}` resolve to values above; no starter, framework, or local assets are required. Logo images require network access.
+Light theme. Use this file alone to design a screen: the frontmatter defines tokens; the sections below define their use. `design_tokens.json` is optional. Token references such as `{colors.button-primary}` resolve to values above; no starter, framework, or local assets are required. Logo images require network access. Explicit user requirements take precedence. Otherwise follow this guide, including its documented exceptions; optional token files supply values only where the guide is silent. Within this file, explicit usage exceptions override legacy token names.
+
+Start here: identify the task → choose a layout → apply typography and spacing → build interactions and states → review at narrow and wide widths.
 
 ## Brand & Style
 
-Finnomena Neon is a black-on-white system: white surfaces, hairline boundaries, dark controls, and color reserved for semantic states, charts, links, and illustrations.
+Finnomena Neon is a black-on-white system: white surfaces, hairline boundaries, dark controls, and color reserved for semantic states, charts, links, and illustrations. Start with the audience, their task, and the information needed to act. Choose the appropriate Neon layout and give the primary task clear visual priority. Create character through typography, proportion, spacing, and useful content. Keep familiar interactions predictable. Every panel, label, image, and animation should help understanding or action.
 
 ## Colors
 
@@ -294,6 +297,14 @@ Use the frontmatter weights and tracking; larger display tokens are optional for
 Use the 8px spacing unit: 8px within small groups, 16px between related elements, 24px card/pane padding, 32px between workspace sections, and 64px between landing-page sections. Reduce outer padding to 16px on phones; workspace layout grids use 16px end margins/gutters below 1440px and 24px from 1440px up (see Responsive behavior). These are defaults; let content determine height.
 
 Use 8px radii for controls and cards; reserve full pills for tags, toggles, and occasional navigation CTAs. Create depth with white/secondary surfaces and 1px subtle separators, without shadows. Keep reading columns around 60–75 characters; wide workspaces may fill the viewport.
+
+## Design Decisions
+
+- Infer the screen type, audience, primary action, and content needs from the brief. Briefly state the chosen direction; ask only when ambiguity would materially change the result.
+- In workspaces, prioritize scanning, comparison, and stable alignment. Adjust spacing before reducing text size; retain useful tables and repeated rows.
+- On landing pages, organize a clear message, supporting evidence, and a prominent next action. Vary composition when the content warrants it.
+- Group with whitespace and separators. Use cards when content represents a distinct object or interaction.
+- When redesigning, preserve meaningful content, navigation, and familiar workflows unless their change is requested.
 
 ## Layout Patterns
 
@@ -336,7 +347,7 @@ Use the same destinations and selected state in Sidebar and BottomNav. Include o
 
 ### Responsive behavior
 
-Use these viewport tiers when no project breakpoints are supplied; switch earlier if the content cannot fit. Sidebar rules exclude Immersive, which hides its sidebar at every width. If the project has a token file (e.g. `breakpoint.json` / `layout.json`), treat its per-layout widths as the source of truth over these defaults.
+Use the viewport tiers below unless the user explicitly requests different project breakpoints. Apply the pane-fit rules when content cannot fit. Immersive hides its sidebar at every width. Optional token files do not override the dimensions and exceptions documented here.
 
 | Tier | Viewport | Sidebar |
 | --- | --- | --- |
@@ -348,7 +359,7 @@ Use these viewport tiers when no project breakpoints are supplied; switch earlie
 | XXXL | 1440–1919px | 360px (Detailed, Simple); 320px (Content, Multi-column) |
 | Max | 1920px and above | 360px (Detailed); 320px (other sidebar layouts) |
 
-Detailed's fixed content column and Content's fixed inspector column use 320px at SM/MD, 360px at LG–XXL, 400px at XXXL, and 560px at Max, when shown alongside another pane. Multi-column uses the same progression for its column width. End margins and pane gutters are 16px through XXL and 24px from XXXL up. A sole working pane fills the available width.
+Detailed's fixed content column and Content's fixed inspector column use 320px at SM/MD, 360px at LG–XXL, 400px at XXXL, and 560px at Max, when shown alongside another pane. Multi-column uses 320px columns through LG, 360px at XL/XXL, 400px at XXXL, and 560px at Max. End margins and pane gutters are 16px through XXL and 24px from XXXL up. A sole working pane fills the available width.
 
 Adapt panes to fit:
 
@@ -391,7 +402,7 @@ Use a visible label, white fill, `border-interactive` edge, 8px radius, and 16px
 
 ### Cards, Lists & Tables
 
-Use white or `background-secondary` surfaces, 8px radii where bounded, 24px padding, and subtle row separators. Keep primary identifiers left-aligned and comparable amounts right-aligned. Make selection visible with `highlight` and an additional edge or indicator. On small screens retain essential fields and expose secondary details on selection; wide tables may scroll in a labeled region.
+Use white or `background-secondary` surfaces, 8px radii where bounded, 24px padding, and subtle row separators. Keep primary identifiers left-aligned and comparable amounts right-aligned. Make selection visible with `highlight` and an additional edge or indicator. On small screens retain essential fields and expose secondary details on selection; wide tables may scroll in a labeled region. Avoid automatic three-card sections, redundant labels, empty panels, and decorative status indicators. Equal grids and repeated patterns are appropriate when they help compare information.
 
 ### Tabs & Filters
 
@@ -399,18 +410,29 @@ Use quiet neutral surfaces, clear selected labels, and an underline or border in
 
 ### Illustration Panel
 
-Use contained flat illustrations or relevant product visuals beside explanatory copy. Scale within the content width; preserve space around text. Illustrations may use color alongside semantic UI and charts. Avoid decorative visuals in dense task areas.
+Use real brand assets and relevant flat illustrations or product visuals when they aid understanding. Keep them contained and clear of text; color may appear alongside semantic UI and charts. Dense task screens need no decorative image. Do not present an invented preview as an existing product; identify illustrative mockups as examples.
 
 ## Interaction & Accessibility
 
 - Support default, hover, pressed, focus, selected, disabled, and loading states where relevant. Use a visible 2px `focus` outline with offset; never rely on hover alone.
-- Keep controls keyboard-operable, icon buttons named, form labels associated, and reading/focus order logical. Use approximately 44px minimum touch targets and respect reduced-motion preferences.
+- Keep controls keyboard-operable, icon buttons named, form labels associated, and reading/focus order logical. Use approximately 44px minimum touch targets.
+- Default to still content with clear interaction feedback. Use motion to explain state changes or preserve orientation; avoid effects that delay reading or operating the screen. Respect reduced-motion preferences.
 - Check text and essential control contrast on the rendered surface; subtle separators are not sufficient as the only control boundary. Pair status colors with words or symbols.
 - Loading: preserve layout with skeletons or a labeled progress indicator. Empty: explain the absence and offer a relevant next action. Error: state what failed and offer recovery. Success: confirm the result without disrupting the task.
-- Use clear Thai or English matching the request. Show currency, dates, units, and precision consistently; identify sample data in prototypes.
+- Use concrete Thai or English matching the request, with consistent currency, dates, units, and precision. Do not invent testimonials, customer endorsements, performance claims, or financial results. Clearly identify sample data.
 
 ## Screen Recipe & Review
 
-Choose a layout → place the real logo → apply the tokens → build the primary task → adapt companion panes → verify states and keyboard access. For example, orders use Detailed with a selectable list and details; a report uses Content with supporting filters; a landing page uses Immersive with stacked sections on phones.
+Choose a layout → place the real logo → apply the tokens → build the primary task → adapt companion panes → verify states and keyboard access.
 
-Before delivery, check that the screen has the correct layout, a visible logo at every width, white header/footer surfaces, consistent typography and spacing, functional navigation, and usable loading/empty/error states. Avoid recreated logos, navy structural bands, decorative asset colors, clipped Thai text, and hidden mobile detail content.
+- **Orders:** Detailed at 1440px: 360px sidebar, 400px selectable order list, and 680px details pane. Use `title1` for the page title, `body` for rows, aligned amounts, and one dominant detail action. On narrow screens, open details with Back navigation and preserve list state.
+- **Financial report:** Content at 1440px: 320px sidebar, 720px report, and 400px supporting inspector. Use `title2` section headings, labeled charts/tables, and 24px internal spacing. Keep the report visible when the inspector moves to an on-demand view; identify units, periods, and sample values.
+- **Landing page:** Immersive with a real-logo header, `display2` hero, concise supporting copy, and one primary CTA. Use 64px section spacing and imagery only when useful. At narrow widths use `largeTitle`, stack sections, and retain 16px side margins without clipping Thai text.
+
+Before delivery, verify:
+
+- The primary task is clear; layout, hierarchy, and density support it.
+- The real logo is visible at every width; white chrome, typography, spacing, and semantic colors remain consistent.
+- Content and claims are supported or clearly labeled as examples; every visual serves a purpose.
+- Motion explains feedback or change, respects reduced motion, and does not obstruct use.
+- Navigation, mobile details, keyboard access, and loading/empty/error states are usable; Thai text is not clipped.
