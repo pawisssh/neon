@@ -16,3 +16,6 @@ theme/tokens.report.json
 notes/
 docs/
 tests/
+
+# Subagent-driven-development scratch workspace
+.superpowers/
