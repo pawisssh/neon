@@ -301,14 +301,14 @@ Except for `ImmersiveLayout`, layouts receive one `NavItem[]` for both `Sidebar`
 
 ### Logo requirement
 
-Every screen uses an approved Finnomena SVG, never recreated text. Use the full wordmark in a header or full sidebar and the compact mark in an icon rail.
+Every screen uses an approved Finnomena SVG, never recreated text. This document is standalone: render the matching raw GitHub URL below directly—do not depend on a local asset path. Use the full wordmark in a header or full sidebar and the compact mark in an icon rail.
 
 | Surface | Full wordmark | Compact mark |
 | --- | --- | --- |
-| Light surface | `logo-finnomena-text-light.svg` | `logo-finnomena-icon-light.svg` |
-| Dark surface | `logo-finnomena-text-dark.svg` | `logo-finnomena-icon-dark.svg` |
+| Light surface | `https://raw.githubusercontent.com/pawisssh/neon/main/starters/vitejs-cds/src/assets/logo/logo-finnomena-text-light.svg` | `https://raw.githubusercontent.com/pawisssh/neon/main/starters/vitejs-cds/src/assets/logo/logo-finnomena-icon-light.svg` |
+| Dark surface | `https://raw.githubusercontent.com/pawisssh/neon/main/starters/vitejs-cds/src/assets/logo/logo-finnomena-text-dark.svg` | `https://raw.githubusercontent.com/pawisssh/neon/main/starters/vitejs-cds/src/assets/logo/logo-finnomena-icon-dark.svg` |
 
-Canonical source: `notes/resources/logo/`; starter copy: `src/assets/logo/`.
+Example: `<img src="https://raw.githubusercontent.com/pawisssh/neon/main/starters/vitejs-cds/src/assets/logo/logo-finnomena-text-light.svg" alt="Finnomena" width="136" height="32">`. Preserve its intrinsic 136×32 or 32×32 dimensions; do not recolor or redraw the mark.
 
 ### Responsive behavior
 
