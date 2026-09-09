@@ -33,6 +33,7 @@ colors:
   focus: "#6968ef"
   focus-inset: "#ffffff"
   focus-inverse: "#ffffff"
+  # Legacy status-* values: compatibility only. Use support-* for new semantic feedback.
   status-primary: "#00ad50"
   status-success: "#f26414"
   status-warning: "#f73232"
@@ -229,7 +230,7 @@ components:
     textColor: "{colors.text-on-color}"
     typography: "{typography.body}"
     rounded: "{rounded.sm}"
-    height: 48px
+    minHeight: 48px
     padding: 12px 16px
   button-secondary:
     backgroundColor: "{colors.button-secondary}"
@@ -249,7 +250,9 @@ components:
 
 # Finnomena Neon — Design Guide
 
-Light theme. Use this file alone to design a screen: the frontmatter defines tokens; the sections below define their use. `design_tokens.json` is optional. Token references such as `{colors.button-primary}` resolve to values above; no starter, framework, or local assets are required. Logo images require network access.
+Light theme. Use this file alone to design a screen: the frontmatter defines tokens; the sections below define their use. `design_tokens.json` is optional. Token references such as `{colors.button-primary}` resolve to values above; no starter, framework, or local assets are required. Logo images require network access. Explicit user requirements take precedence. Otherwise follow this guide, including its documented exceptions; optional token files supply values only where the guide is silent. Within this file, explicit usage exceptions override legacy token names.
+
+Start here: identify the task → choose a layout → apply typography and spacing → build interactions and states → review at narrow and wide widths.
 
 ## Brand & Style
 
@@ -344,7 +347,7 @@ Use the same destinations and selected state in Sidebar and BottomNav. Include o
 
 ### Responsive behavior
 
-Use these viewport tiers when no project breakpoints are supplied; switch earlier if the content cannot fit. Sidebar rules exclude Immersive, which hides its sidebar at every width. If the project has a token file (e.g. `breakpoint.json` / `layout.json`), treat its per-layout widths as the source of truth over these defaults.
+Use the viewport tiers below unless the user explicitly requests different project breakpoints. Apply the pane-fit rules when content cannot fit. Immersive hides its sidebar at every width. Optional token files do not override the dimensions and exceptions documented here.
 
 | Tier | Viewport | Sidebar |
 | --- | --- | --- |
@@ -356,7 +359,7 @@ Use these viewport tiers when no project breakpoints are supplied; switch earlie
 | XXXL | 1440–1919px | 360px (Detailed, Simple); 320px (Content, Multi-column) |
 | Max | 1920px and above | 360px (Detailed); 320px (other sidebar layouts) |
 
-Detailed's fixed content column and Content's fixed inspector column use 320px at SM/MD, 360px at LG–XXL, 400px at XXXL, and 560px at Max, when shown alongside another pane. Multi-column uses the same progression for its column width. End margins and pane gutters are 16px through XXL and 24px from XXXL up. A sole working pane fills the available width.
+Detailed's fixed content column and Content's fixed inspector column use 320px at SM/MD, 360px at LG–XXL, 400px at XXXL, and 560px at Max, when shown alongside another pane. Multi-column uses 320px columns through LG, 360px at XL/XXL, 400px at XXXL, and 560px at Max. End margins and pane gutters are 16px through XXL and 24px from XXXL up. A sole working pane fills the available width.
 
 Adapt panes to fit:
 
@@ -420,7 +423,11 @@ Use real brand assets and relevant flat illustrations or product visuals when th
 
 ## Screen Recipe & Review
 
-Choose a layout → place the real logo → apply the tokens → build the primary task → adapt companion panes → verify states and keyboard access. For example, orders use Detailed with a selectable list and details; a report uses Content with supporting filters; a landing page uses Immersive with stacked sections on phones.
+Choose a layout → place the real logo → apply the tokens → build the primary task → adapt companion panes → verify states and keyboard access.
+
+- **Orders:** Detailed at 1440px: 360px sidebar, 400px selectable order list, and 680px details pane. Use `title1` for the page title, `body` for rows, aligned amounts, and one dominant detail action. On narrow screens, open details with Back navigation and preserve list state.
+- **Financial report:** Content at 1440px: 320px sidebar, 720px report, and 400px supporting inspector. Use `title2` section headings, labeled charts/tables, and 24px internal spacing. Keep the report visible when the inspector moves to an on-demand view; identify units, periods, and sample values.
+- **Landing page:** Immersive with a real-logo header, `display2` hero, concise supporting copy, and one primary CTA. Use 64px section spacing and imagery only when useful. At narrow widths use `largeTitle`, stack sections, and retain 16px side margins without clipping Thai text.
 
 Before delivery, verify:
 
