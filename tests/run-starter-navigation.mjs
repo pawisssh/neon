@@ -97,7 +97,7 @@ await build({
   // lived inside starters/vitejs-cds — that's where its real dependencies
   // are installed, not anywhere under the repo root.
   nodePaths: [starterNodeModules],
-  loader: { ".css": "empty" },
+  loader: { ".css": "empty", ".svg": "dataurl" },
   logLevel: "warning",
 });
 
