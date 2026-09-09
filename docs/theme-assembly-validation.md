@@ -110,8 +110,10 @@ fixes discovered by review of the work above. Commits, in order:
 - Theme-destination validation (default and explicit CSS/CDS symlink-escape
   checks) is unified through a single `resolveThemeDir` path.
 - Workspace-manager evidence discovery now climbs through manifest-less
-  grouping directories, stopping at a `.git` boundary and the verified
-  target cwd, instead of stopping short and missing evidence.
+  grouping directories, starting at the target directory and stopping at a
+  `.git` boundary or the filesystem root, instead of stopping short and
+  missing evidence. Where the install itself runs is unchanged — still the
+  target directory, confirmed by the fake-executable cwd assertion.
 - Manager-configuration validation (an invalid `--package-manager` value)
   now happens before any filesystem mutation, in both `--new` and
   existing-CDS install modes, so a bad value never leaves a partially
