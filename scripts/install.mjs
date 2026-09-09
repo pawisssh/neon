@@ -207,15 +207,20 @@ function findLockfiles(dir) {
  * packageManager field usually live only at the workspace root, so
  * checking only the app directory itself finds nothing and silently falls
  * back to npm — which would plant a stray npm-generated lockfile inside a
- * pnpm-managed monorepo.
+ * pnpm-managed monorepo. Intermediate grouping directories (e.g. a bare
+ * apps/ with no package.json of its own) are common too, so this climbs
+ * through directories with no manifest at all rather than stopping there.
  *
- * Checks startDir itself first, then each parent in turn. Stops at the
- * first ancestor carrying ANY evidence (a lockfile, or a declared
- * packageManager) and returns it. Gives up (returns no evidence) at
- * whichever comes first: the filesystem root, or an ancestor with no
- * package.json at all — a proxy for "we've left the project tree", so
- * this doesn't walk indefinitely up unrelated parent directories (e.g. a
- * user's home directory).
+ * Checks startDir itself first, then each parent in turn. At each
+ * directory: if it carries ANY evidence (a lockfile, or a declared
+ * packageManager), returns it immediately. Otherwise, if the directory
+ * itself contains a `.git` entry (a directory for a normal repo, or a file
+ * for a git-worktree checkout), stops and gives up — `.git` is used purely
+ * as a walk boundary here, not as a check that this is actually the
+ * project's workspace root; it never validates workspace membership, it
+ * just marks a point past which the walk won't climb. Otherwise continues
+ * to the parent directory, giving up once the filesystem root is reached
+ * (parent === dir).
  *
  * This only widens where evidence is *gathered* — it does not change
  * where a dependency install actually *runs* (still startDir, via this
@@ -226,9 +231,8 @@ function findPackageManagerEvidence(startDir) {
   for (;;) {
     const lockfiles = findLockfiles(dir);
     const pkgPath = join(dir, "package.json");
-    const hasPkg = existsSync(pkgPath);
     let declared;
-    if (hasPkg) {
+    if (existsSync(pkgPath)) {
       try {
         declared = JSON.parse(readFileSync(pkgPath, "utf8")).packageManager;
       } catch {
@@ -238,7 +242,7 @@ function findPackageManagerEvidence(startDir) {
     if (lockfiles.length > 0 || declared) {
       return { lockfiles, declared };
     }
-    if (!hasPkg) {
+    if (existsSync(join(dir, ".git"))) {
       return { lockfiles: [], declared: undefined };
     }
     const parent = dirname(dir);

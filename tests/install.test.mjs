@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, readdirSync, cpSync, existsSync, rmSync, symlinkSync } from 'node:fs';
+import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, readdirSync, cpSync, existsSync, rmSync, symlinkSync, chmodSync, realpathSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { spawnSync } from 'node:child_process';
@@ -287,22 +287,175 @@ test('walks up to a workspace root for package-manager evidence when the app dir
   assert.equal(existsSync(join(portalDir, 'pnpm-lock.yaml')), false);
 });
 
-test('stops walking upward at an ancestor with no package.json, never reaching a lockfile further up', (t) => {
+test('climbs through a manifest-less grouping directory to reach workspace-root package-manager evidence', (t) => {
   const { root, pluginSource, run } = fixture(t);
   withStarterManifest(pluginSource, '^9.26.1');
-  // apps/ here has neither a package.json nor a lockfile of its own, so
-  // the walk must give up there rather than continuing on to workspace2/,
-  // even though a lockfile does exist there — falls back to the npm
-  // default instead of silently finding it.
-  const workspaceRoot = join(root, 'workspace2');
+  // apps/ here is a bare grouping directory with no package.json of its
+  // own at all (common in monorepos that don't put a manifest on every
+  // intermediate directory) — the walk must climb straight through it
+  // instead of stopping there, reaching workspace3/'s declared
+  // packageManager and lockfile.
+  const workspaceRoot = join(root, 'workspace3');
   const appsDir = join(workspaceRoot, 'apps');
   const portalDir = join(appsDir, 'portal');
   mkdirSync(portalDir, { recursive: true });
-  writeFileSync(join(portalDir, 'package.json'), JSON.stringify({ dependencies: {} }));
+  writeFileSync(join(workspaceRoot, 'package.json'), JSON.stringify({ packageManager: 'pnpm@9.0.0' }));
   writeFileSync(join(workspaceRoot, 'pnpm-lock.yaml'), '');
+  writeFileSync(join(portalDir, 'package.json'), JSON.stringify({ dependencies: {} }));
   const result = run(portalDir);
-  assert.match(result.stdout, /npm install @coinbase\/cds-web@\^9\.26\.1/);
+  assert.match(result.stdout, /> pnpm add @coinbase\/cds-web@\^9\.26\.1/);
+  // The install itself still targets portalDir, not the workspace root —
+  // only evidence-gathering walked up.
+  assert.equal(existsSync(join(portalDir, 'package-lock.json')), false);
+  assert.equal(existsSync(join(workspaceRoot, 'package-lock.json')), false);
 });
+
+test('climbs through a manifest-less grouping directory to reach a yarn workspace root', (t) => {
+  const { root, pluginSource, run } = fixture(t);
+  withStarterManifest(pluginSource, '^9.26.1');
+  // Same manifest-less-apps/ shape as above, but the evidence at the
+  // workspace root is a bare yarn.lock (no package.json there either) —
+  // proving evidence is found purely from a lockfile even when the
+  // directory holding it has no manifest of its own.
+  const workspaceRoot = join(root, 'yarn-workspace');
+  const appsDir = join(workspaceRoot, 'apps');
+  const portalDir = join(appsDir, 'portal');
+  mkdirSync(portalDir, { recursive: true });
+  writeFileSync(join(workspaceRoot, 'yarn.lock'), '');
+  writeFileSync(join(portalDir, 'package.json'), JSON.stringify({ dependencies: {} }));
+  const result = run(portalDir);
+  assert.match(result.stdout, /> yarn add @coinbase\/cds-web@\^9\.26\.1/);
+});
+
+test('local package-manager evidence in the app directory retains priority over different evidence further up', (t) => {
+  const { root, pluginSource, run } = fixture(t);
+  withStarterManifest(pluginSource, '^9.26.1');
+  // portalDir carries its own yarn.lock, while the workspace root above it
+  // declares pnpm — the walk must stop at portalDir's own evidence rather
+  // than climbing past it to different evidence further up.
+  const workspaceRoot = join(root, 'priority-workspace');
+  const portalDir = join(workspaceRoot, 'portal');
+  mkdirSync(portalDir, { recursive: true });
+  writeFileSync(join(workspaceRoot, 'package.json'), JSON.stringify({ packageManager: 'pnpm@9.0.0' }));
+  writeFileSync(join(workspaceRoot, 'pnpm-lock.yaml'), '');
+  writeFileSync(join(portalDir, 'package.json'), JSON.stringify({ dependencies: {} }));
+  writeFileSync(join(portalDir, 'yarn.lock'), '');
+  const result = run(portalDir);
+  assert.match(result.stdout, /> yarn add @coinbase\/cds-web@\^9\.26\.1/);
+});
+
+test('a .git directory boundary stops the walk before reaching evidence further up', (t) => {
+  const { root, pluginSource, run } = fixture(t);
+  withStarterManifest(pluginSource, '^9.26.1');
+  // repoRoot has a .git directory but no package-manager evidence of its
+  // own; evidence exists one level further up (outside the repo) and must
+  // never be reached — the walk gives up at the .git boundary instead.
+  const repoRoot = join(root, 'git-dir-boundary-repo');
+  const portalDir = join(repoRoot, 'apps', 'portal');
+  mkdirSync(portalDir, { recursive: true });
+  mkdirSync(join(repoRoot, '.git'));
+  writeFileSync(join(portalDir, 'package.json'), JSON.stringify({ dependencies: {} }));
+  writeFileSync(join(root, 'pnpm-lock.yaml'), '');
+  const result = run(portalDir);
+  assert.match(result.stdout, /> npm install @coinbase\/cds-web@\^9\.26\.1/);
+});
+
+test('evidence found exactly at a .git directory boundary is honored', (t) => {
+  const { root, pluginSource, run } = fixture(t);
+  withStarterManifest(pluginSource, '^9.26.1');
+  // repoRoot itself carries both the .git directory AND the evidence —
+  // evidence at a directory is returned before the .git boundary check
+  // ever stops the walk there.
+  const repoRoot = join(root, 'git-dir-boundary-repo2');
+  const portalDir = join(repoRoot, 'apps', 'portal');
+  mkdirSync(portalDir, { recursive: true });
+  mkdirSync(join(repoRoot, '.git'));
+  writeFileSync(join(repoRoot, 'package.json'), JSON.stringify({ packageManager: 'pnpm@9.0.0' }));
+  writeFileSync(join(repoRoot, 'pnpm-lock.yaml'), '');
+  writeFileSync(join(portalDir, 'package.json'), JSON.stringify({ dependencies: {} }));
+  const result = run(portalDir);
+  assert.match(result.stdout, /> pnpm add @coinbase\/cds-web@\^9\.26\.1/);
+});
+
+test('a .git file boundary (git-worktree marker) stops the walk before reaching evidence further up', (t) => {
+  const { root, pluginSource, run } = fixture(t);
+  withStarterManifest(pluginSource, '^9.26.1');
+  // A .git *file* (as used by `git worktree add` checkouts) must stop the
+  // walk exactly like a .git directory does — evidence one level further
+  // up must never be reached.
+  const repoRoot = join(root, 'git-file-boundary-repo');
+  const portalDir = join(repoRoot, 'apps', 'portal');
+  mkdirSync(portalDir, { recursive: true });
+  writeFileSync(join(repoRoot, '.git'), 'gitdir: /elsewhere/.git/worktrees/git-file-boundary-repo\n');
+  writeFileSync(join(portalDir, 'package.json'), JSON.stringify({ dependencies: {} }));
+  writeFileSync(join(root, 'pnpm-lock.yaml'), '');
+  const result = run(portalDir);
+  assert.match(result.stdout, /> npm install @coinbase\/cds-web@\^9\.26\.1/);
+});
+
+test('evidence found exactly at a .git file boundary (git-worktree marker) is honored', (t) => {
+  const { root, pluginSource, run } = fixture(t);
+  withStarterManifest(pluginSource, '^9.26.1');
+  const repoRoot = join(root, 'git-file-boundary-repo2');
+  const portalDir = join(repoRoot, 'apps', 'portal');
+  mkdirSync(portalDir, { recursive: true });
+  writeFileSync(join(repoRoot, '.git'), 'gitdir: /elsewhere/.git/worktrees/git-file-boundary-repo2\n');
+  writeFileSync(join(repoRoot, 'package.json'), JSON.stringify({ packageManager: 'yarn@1.22.19' }));
+  writeFileSync(join(repoRoot, 'yarn.lock'), '');
+  writeFileSync(join(portalDir, 'package.json'), JSON.stringify({ dependencies: {} }));
+  const result = run(portalDir);
+  assert.match(result.stdout, /> yarn add @coinbase\/cds-web@\^9\.26\.1/);
+});
+
+test(
+  'invokes the fake pnpm executable (not npm) in the app directory, resolved via PATH (POSIX only)',
+  { skip: process.platform === 'win32' },
+  (t) => {
+    const { root, pluginSource } = fixture(t);
+    withStarterManifest(pluginSource, '^9.26.1');
+    const workspaceRoot = join(root, 'posix-workspace');
+    const portalDir = join(workspaceRoot, 'apps', 'portal');
+    mkdirSync(portalDir, { recursive: true });
+    writeFileSync(join(workspaceRoot, 'package.json'), JSON.stringify({ packageManager: 'pnpm@9.0.0' }));
+    writeFileSync(join(workspaceRoot, 'pnpm-lock.yaml'), '');
+    writeFileSync(join(portalDir, 'package.json'), JSON.stringify({ dependencies: {} }));
+
+    // Private fake-executable bin dir, used only by this one test's
+    // subprocess — the shared fixture()'s run() always sets PATH: '' so no
+    // other test can ever invoke a real package manager.
+    const binDir = join(root, 'fake-bin');
+    mkdirSync(binDir, { recursive: true });
+    const logFile = join(root, 'invocation.log');
+    const makeFakeScript = (name) => {
+      const scriptPath = join(binDir, name);
+      writeFileSync(
+        scriptPath,
+        `#!/bin/sh\n{ echo "exe:${name}"; echo "argv:$@"; echo "pwd:$(pwd -P)"; } >> ${JSON.stringify(logFile)}\nexit 0\n`
+      );
+      chmodSync(scriptPath, 0o755);
+    };
+    makeFakeScript('npm');
+    makeFakeScript('pnpm');
+
+    const result = spawnSync(process.execPath, [join(pluginSource, 'scripts/install.mjs'), portalDir], {
+      encoding: 'utf8',
+      timeout: 5000,
+      env: { ...process.env, PATH: `${binDir}:${process.env.PATH ?? ''}` },
+    });
+    assert.equal(result.status, 0, result.stderr);
+
+    const log = readFileSync(logFile, 'utf8');
+    assert.match(log, /exe:pnpm/);
+    assert.doesNotMatch(log, /exe:npm/);
+    assert.match(log, /argv:add @coinbase\/cds-web@\^9\.26\.1/);
+    const cwdLine = log.split('\n').find((line) => line.startsWith('pwd:'));
+    assert.equal(cwdLine, `pwd:${realpathSync(portalDir)}`);
+
+    assert.equal(existsSync(join(portalDir, 'package-lock.json')), false);
+    assert.equal(existsSync(join(portalDir, 'pnpm-lock.yaml')), false);
+    assert.equal(existsSync(join(workspaceRoot, 'package-lock.json')), false);
+  }
+);
 
 test('rejects conflicting lockfile evidence instead of silently picking a package manager', (t) => {
   const { root, pluginSource, run } = fixture(t);
