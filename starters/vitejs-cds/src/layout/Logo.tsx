@@ -1,20 +1,31 @@
-/**
- * Finnomena wordmark. This is a text-based recreation using the theme's
- * brand font (applied globally by ThemeProvider) and the "fg" color token —
- * NOT an extraction of the real production logo asset. The live app's logo
- * is a bundled image with no public/hotlinkable URL (confirmed via network
- * inspection of trade.finnomena.com), so there's nothing to link to or copy
- * directly. Swap for an official logo file if one becomes available.
- */
-import { Box } from "@coinbase/cds-web/layout";
-import { Text } from "@coinbase/cds-web/typography";
+import iconDark from "../assets/logo/logo-finnomena-icon-dark.svg";
+import iconLight from "../assets/logo/logo-finnomena-icon-light.svg";
+import textDark from "../assets/logo/logo-finnomena-text-dark.svg";
+import textLight from "../assets/logo/logo-finnomena-text-light.svg";
 
-export function Logo() {
+type LogoProps = {
+  variant?: "full" | "icon";
+  tone?: "light" | "dark";
+};
+
+const assets = {
+  full: { light: textLight, dark: textDark },
+  icon: { light: iconLight, dark: iconDark },
+};
+
+/** Canonical Finnomena wordmark and compact mark. */
+export function Logo({ variant = "full", tone = "light" }: LogoProps) {
+  const isFull = variant === "full";
+
   return (
-    <Box as="a" href="https://www.finnomena.com" target="_blank" rel="noopener noreferrer" textDecoration="none">
-      <Text color="fg" fontSize="title3" fontWeight="title3">
-        Finnomena
-      </Text>
-    </Box>
+    <a href="https://www.finnomena.com" target="_blank" rel="noopener noreferrer">
+      <img
+        src={assets[variant][tone]}
+        alt="Finnomena"
+        width={isFull ? 136 : 32}
+        height={32}
+        style={{ display: "block" }}
+      />
+    </a>
   );
 }

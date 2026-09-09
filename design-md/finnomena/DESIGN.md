@@ -301,7 +301,14 @@ Except for `ImmersiveLayout`, layouts receive one `NavItem[]` for both `Sidebar`
 
 ### Logo requirement
 
-Every screen uses the real Finnomena logo: full wordmark in a header or full sidebar, compact mark in an icon rail. Reference [FINNOMENA Trade](https://trade.finnomena.com) and use an approved vector asset, never recreated text.
+Every screen uses an approved Finnomena SVG, never recreated text. Use the full wordmark in a header or full sidebar and the compact mark in an icon rail.
+
+| Surface | Full wordmark | Compact mark |
+| --- | --- | --- |
+| Light surface | `logo-finnomena-text-light.svg` | `logo-finnomena-icon-light.svg` |
+| Dark surface | `logo-finnomena-text-dark.svg` | `logo-finnomena-icon-dark.svg` |
+
+Canonical source: `notes/resources/logo/`; starter copy: `src/assets/logo/`.
 
 ### Responsive behavior
 

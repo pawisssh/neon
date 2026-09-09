@@ -49,7 +49,7 @@ export function Sidebar({
         justifyContent={isRail ? "center" : "flex-start"}
         paddingStart={isRail ? 0 : 2}
       >
-        {!isRail && <Logo />}
+        <Logo variant={isRail ? "icon" : "full"} />
       </Box>
       <div style={{ flex: 1, overflowY: "auto" }}>
         <SidebarNav items={navigation} isRail={isRail} />
