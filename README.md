@@ -167,7 +167,7 @@ you hit this, point Claude at the full cloned repo path
    Either way you get Finnomena's brand tokens for spacing, radius,
    typography (IBM Plex Sans Thai), and color — no hardcoded hex/pixel
    values. **Color is a provisional, first-pass mapping** (see
-   `theme/finnomena/color-overrides.ts`) — real Finnomena colors,
+   `theme/cds/color-overrides.ts`) — real Finnomena colors,
    but the exact Finnomena-role → CDS-slug assignment hasn't had design
    sign-off yet, so treat it as a strong draft, not a final answer. If you
    later outgrow a lighter tier, upgrading doesn't mean starting over — see
@@ -272,30 +272,38 @@ neon/
 │   ├── design_tokens.json             # same tokens as DTCG JSON, for Figma/Style Dictionary/design.md CLI
 │   ├── tailwind.config.js             # derived Tailwind v3 theme.extend config
 │   └── README.md
-├── starters/vitejs-cds/               # committed Vite + React + TS project, copied in by neon-create
+├── starters/vitejs-cds/               # starter source: application wiring + layouts only
 │   ├── package.json
 │   └── src/
 │       ├── app/                       # AppRoot (providers) + example App
 │       ├── layout/                    # 5 responsive page-layout patterns (see neon-create/SKILL.md)
-│       └── theme/                     # theme.config.ts/color-overrides.ts/createTheme.ts/breakpoints.config.ts
-│                                       #   pre-wired here, kept in sync via install.mjs --sync-starter
-├── theme/finnomena/                   # all Finnomena theme assets — CDS-tier + CSS-tier, one source of truth
-│   ├── theme.config.ts                # generated: neonTheme overrides (space/radius/typography)
-│   ├── color-overrides.ts             # hand-written: provisional Finnomena color mapping
-│   ├── createTheme.ts                 # createNeonTheme(): merges neonTheme + color-overrides onto CDS's defaultTheme
-│   ├── color-mapping.todo.md          # generated: reference dump used to build color-overrides.ts
-│   ├── breakpoints.config.ts          # generated: 7-tier breakpoint/grid data
-│   ├── theme.css                      # hand-written: real CDS createThemeCssVars() output (CSS-variable tier)
+│       └── (src/theme/ has no tracked files here — scripts/assemble-starter.mjs
+│           supplies it from theme/cds/ at assembly time; see Maintainer notes)
+├── theme/                             # all Finnomena theme assets — CDS-tier + CSS-tier, one source of truth
 │   ├── tokens/                        # raw Figma Variables export (source of truth)
 │   ├── tokens.resolved.json           # generated: flattened + alias-resolved
 │   ├── tokens.report.json             # generated: what resolved / what's still blocked
-│   ├── scripts/
-│   │   ├── sync-tokens.mjs                    # resolves tokens/*.json → tokens.resolved.json
-│   │   ├── generate-theme-config.mjs          # resolved tokens → theme.config.ts + color-mapping.todo.md
-│   │   ├── generate-breakpoints-config.mjs    # resolved tokens → breakpoints.config.ts
-│   │   └── install.mjs                        # deploys the theme: new project / existing project / CSS-only / sync starter
-│   └── examples/
-│       └── app-entry.tsx              # correct provider setup + font loading (existing-project branch)
+│   ├── cds/
+│   │   ├── theme.config.ts                # generated: neonTheme overrides (space/radius/typography)
+│   │   ├── color-overrides.ts             # hand-written: provisional Finnomena color mapping
+│   │   ├── createTheme.ts                 # createNeonTheme(): merges neonTheme + color-overrides onto CDS's defaultTheme
+│   │   ├── color-mapping.todo.md          # generated: reference dump used to build color-overrides.ts
+│   │   └── breakpoints.config.ts          # generated: 7-tier breakpoint/grid data
+│   ├── css/theme.css                  # hand-written: real CDS createThemeCssVars() output (CSS-variable tier)
+│   ├── examples/
+│   │   └── app-entry.tsx              # correct provider setup + font loading (existing-project branch)
+│   └── scripts/
+│       ├── sync-tokens.mjs                    # resolves tokens/*.json → tokens.resolved.json
+│       ├── generate-theme-config.mjs          # resolved tokens → theme/cds/theme.config.ts + color-mapping.todo.md
+│       └── generate-breakpoints-config.mjs    # resolved tokens → theme/cds/breakpoints.config.ts
+├── scripts/
+│   ├── install.mjs                    # deploys the theme: new project / existing project / CSS-only
+│   ├── assemble-starter.mjs           # maintainer CLI: starter source + canonical theme -> a runnable app, no install
+│   ├── package-plugin.mjs             # packages a complete, self-contained plugin artifact
+│   └── lib/
+│       ├── assets.mjs                 # canonical CDS_FILES / CSS_FILE ownership list
+│       ├── assemble-starter.mjs       # shared assembly function (used by install.mjs --new and the CLI above)
+│       └── project-config.mjs         # package-manager detection/command helpers
 ├── skills/neon-audit/                 # entry point: checks an existing project, recommends a theming depth
 │   └── SKILL.md
 ├── skills/neon-redesign/              # restyles existing UI — colors / colors+typography via plain CSS variables, no CDS
@@ -315,6 +323,35 @@ maintainer's internal `notes/` directory — deliberately excluded from the
 distributed repo (see `.gitignore`), so a clone of this repo won't have it.
 Not needed for everyday UI-building usage above; ask a maintainer directly
 if you need it.
+
+### Previewing the starter after editing canonical theme assets
+
+`starters/vitejs-cds/` has no tracked `src/theme/` files of its own — it's
+starter *source*, not a runnable app by itself. To see it as a real,
+buildable project, assemble it into a disposable directory:
+
+```bash
+node scripts/assemble-starter.mjs /tmp/neon-preview
+cd /tmp/neon-preview && npm install && npm run dev
+```
+
+This never touches a package manager itself — it's a pure filesystem copy
+combining the starter source with the 4 canonical files in `theme/cds/`.
+After editing anything in `theme/tokens/*.json` or hand-maintained files
+under `theme/cds/`, re-run the token pipeline (if token-driven) and
+re-assemble fresh into a new disposable directory — never hand-copy a
+customized assembled app back into `starters/vitejs-cds/`, and never edit
+files inside an assembled preview expecting them to persist.
+
+`node scripts/install.mjs <target-dir> --new` does the same assembly, then
+also installs the assembled app's dependencies — that's the path a real
+consuming project uses; `assemble-starter.mjs` is the maintainer-facing,
+install-free equivalent for quick previews.
+
+`theme/finnomena/scripts/install.mjs` still exists as a deprecated
+forwarding shim to `scripts/install.mjs` for one more release — update any
+remaining callers to the new path; it will be removed in a later,
+announced compatibility change.
 
 ## Packaging and distribution
 

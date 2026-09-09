@@ -32,7 +32,7 @@ used by all three neon skills. The steps below assume it.
 1. **Run the installer:**
 
    ```
-   node ${CLAUDE_PLUGIN_ROOT}/theme/finnomena/scripts/install.mjs <target-dir> --css-only
+   node ${CLAUDE_PLUGIN_ROOT}/scripts/install.mjs <target-dir> --css-only
    ```
 
    This copies `theme.css` into `<target-dir>/src/theme/`. Pass
@@ -108,7 +108,7 @@ used by all three neon skills. The steps below assume it.
 5. **Color is a provisional, first-pass mapping** — every value traces to
    a real Finnomena token, but the mapping involves judgment calls (see
    `${CLAUDE_PLUGIN_ROOT}/design-md/finnomena/DESIGN.md`'s Colors section
-   and `${CLAUDE_PLUGIN_ROOT}/theme/finnomena/color-overrides.ts`). Flag to
+   and `${CLAUDE_PLUGIN_ROOT}/theme/cds/color-overrides.ts`). Flag to
    the user that colors may need design review before treating as final.
 
 ## Upgrading

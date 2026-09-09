@@ -52,8 +52,8 @@ used by all three neon skills. The steps below assume it.
 2. **Run the installer** from this repo's root:
 
    ```
-   node ${CLAUDE_PLUGIN_ROOT}/theme/finnomena/scripts/install.mjs <target-dir> --new   # brand-new project
-   node ${CLAUDE_PLUGIN_ROOT}/theme/finnomena/scripts/install.mjs <target-dir>         # existing project
+   node ${CLAUDE_PLUGIN_ROOT}/scripts/install.mjs <target-dir> --new   # brand-new project
+   node ${CLAUDE_PLUGIN_ROOT}/scripts/install.mjs <target-dir>         # existing project
    ```
 
    Also accepts `--theme-dir <project-relative-dir>` (default `src/theme`;
@@ -104,7 +104,7 @@ used by all three neon skills. The steps below assume it.
    `${CLAUDE_PLUGIN_ROOT}/skills/neon-audit/references/theme-integration.md`
    §2. It merges Finnomena's overrides (`theme.config.ts`'s `neonTheme`,
    `color-overrides.ts`'s `colorOverrides`) onto CDS's own `defaultTheme`.
-   See `${CLAUDE_PLUGIN_ROOT}/theme/finnomena/examples/app-entry.tsx`
+   See `${CLAUDE_PLUGIN_ROOT}/theme/examples/app-entry.tsx`
    (existing project) or the copied `src/app/AppRoot.tsx` (new project,
    already wired) for the exact pattern.
 
@@ -194,9 +194,10 @@ used by all three neon skills. The steps below assume it.
    §1.
 
 For the token-regeneration pipeline and known limitations, read
-`${CLAUDE_PLUGIN_ROOT}/theme/finnomena/theme.config.ts`,
-`color-overrides.ts`, and `scripts/generate-theme-config.mjs`'s own header
-comments directly — that's the source of truth, not a second copy here.
+`${CLAUDE_PLUGIN_ROOT}/theme/cds/theme.config.ts`,
+`color-overrides.ts`, and `theme/scripts/generate-theme-config.mjs`'s own
+header comments directly — that's the source of truth, not a second copy
+here.
 
 ## Roadmap context
 
