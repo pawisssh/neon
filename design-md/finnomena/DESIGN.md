@@ -249,22 +249,15 @@ components:
 
 ## Brand & Style
 
-Finnomena Neon is a disciplined black-on-white transit kiosk: every screen is a white canvas, including the header and footer, with solid black controls providing the primary structural contrast. Header and footer boundaries use subtle hairline borders rather than navy bands. All color in the system lives exclusively inside flat editorial illustrations—such as a packed suitcase, two riders in a car, or a bowl of food—that float beside the form rather than within it.
+Finnomena Neon is a black-on-white system: white surfaces, hairline boundaries, dark controls, and color reserved for semantic states, charts, links, and illustrations.
 
 ## Colors
 
-Color is treated as a highly functional, scarce resource. The palette embraces the semantic roles defined in the original theme but strictly enforces their new, high-contrast structural discipline.
-
-- **Primary Canvas:** A stark white background (\`#ffffff\`) that acts as the default surface for all screens.
-- **Header & Footer Surface:** \`background-primary\` (\`#ffffff\`) is used for the top navigation bar and footer. A subtle border separates each from adjacent content while preserving the uninterrupted white canvas.
-- **Structural Contrast:** Pure Jet Black (\`#01172b\`, mapped from \`button-primary\`) is reserved for solid controls and high-emphasis elements, not for full-width header or footer bands.
-- **Surface Fills:** Mist Gray (\`#f2f3f4\`) provides subtle differentiation for suggestion cards and input fields without introducing chromatic color.
-- **Interactive Tints:** Transparent washes (e.g., \`Navy.5A\`) are used for secondary button backgrounds and subtle interactive fills, providing layered depth without shadows.
-- **Accents:** The Indigo Interactive (\`#1817e7\`) is used purely for links and focus states, mapped to a single low-frequency accent role.
+Use \`background-primary\` for page, header, and footer surfaces; \`border-subtle\` for separation; \`button-primary\` for high-emphasis actions; and \`background-secondary\` for quiet differentiation. Links and focus use indigo. Do not use dark full-width structural bands or decorative UI color.
 
 ### Data Visualization Colors (Multi-asset)
 
-While the UI remains purely achromatic, multi-asset data visualization (charts, tags, holding breakdowns) utilizes a distinct, consistent color mapping extracted directly from `chart.json`. These colors provide functional classification across financial products without muddying the core brand identity:
+Use these colors only for multi-asset visualization:
 
 - **Cryptocurrency:** Dark Red (`#8f0606`)
 - **Crowdfunding:** Red (`#d60808`)
@@ -279,98 +272,68 @@ While the UI remains purely achromatic, multi-asset data visualization (charts, 
 
 ## Typography
 
-The typography strategy uses a single family, **IBM Plex Sans Thai**, across the entire scale to deliver a confident and calm brand voice.
-
-- **Hierarchy:** \`display\` and \`largeTitle\` (34px+) are reserved for hero numbers and page titles.
-- **Treatment:** A single weight (400) does the work that other systems spread across three. Weight 500 is used sparingly for emphasis in navigation or button labels.
-- **Scale:** The workhorse \`body\` copy sits at 15–20px, ensuring high legibility against the stark white canvas.
+Use **IBM Plex Sans Thai** throughout. Reserve display and large-title styles for page titles or hero figures; use body styles for normal copy and heavier weights only for navigation, labels, or emphasis.
 
 ## Layout Patterns
 
-This section is self-contained: it defines the layout choices and responsive behavior for a new design screen without requiring any other file. When the supplied starter is used, `App.tsx` initially renders the Detailed `AppShell`, but that is a safe starting point rather than a universal default. Select the layout whose pane structure matches the requested screen before building its content. `design_tokens.json` may be used as an optional machine-readable companion, but it does not replace these rules.
+This section is self-contained; `design_tokens.json` is optional implementation support. Choose the layout from the screen’s task.
 
 | Component | Panes | Use for |
 | --- | --- | --- |
-| `DetailedLayout` | Sidebar + Content + Inspector; inspector-weighted | General product screens where the detail or working area needs the most space. |
-| `ContentLayout` | Sidebar + Content + Inspector; content-weighted | Screens where the primary content should dominate and the inspector is supporting context. |
-| `SimpleLayout` | Sidebar + Content | Screens that do not need a third pane. |
-| `MultiColumnLayout` | Sidebar + N horizontally scrolling fixed-width columns | Board, pipeline, comparison, or other multi-column workflows. |
-| `ImmersiveLayout` | Content only; full-bleed with a logo-only header | Focused, distraction-free flows such as a walkthrough, editor, or single task. |
+| `DetailedLayout` | Sidebar + Content + Inspector; inspector-weighted | List-and-detail workspaces, inboxes, orders, holdings |
+| `ContentLayout` | Sidebar + Content + Inspector; content-weighted | Content-led reports, dashboards, articles, editors |
+| `SimpleLayout` | Sidebar + Content | Single-pane utilities |
+| `MultiColumnLayout` | Sidebar + scrolling fixed-width columns | Kanban, pipelines, comparisons |
+| `ImmersiveLayout` | Full-bleed content + logo header | Landing pages and focused flows |
 
-### Layout selection rule
-
-Infer the layout from the requested screen; do not ask the user to choose unless two patterns are equally suitable.
-
-| Screen | Layout |
-| --- | --- |
-| Landing, campaign, onboarding, checkout, or focused flow | `ImmersiveLayout` |
-| List-and-detail workspace, inbox, orders, or holdings | Detailed layout |
-| Content-led report, dashboard, article, or editor | `ContentLayout` |
-| Kanban, pipeline, comparison, or peer-column board | `MultiColumnLayout` |
-| Sidebar utility with one working pane | `SimpleLayout` |
-
-When a focused flow later needs persistent navigation, choose the simplest pane layout that preserves its task—not Detailed layout by default.
+If a focused flow later needs navigation, choose the simplest pane layout that preserves its task.
 
 ### Shared pane primitives
 
-- **`Sidebar`:** Supplies the desktop navigation shell. Its header carries the logo, its scrollable body renders navigation followed by optional app-specific sidebar content, and its footer is reserved. It is hidden on phones, becomes an icon rail at compact widths, and expands to a full sidebar at wider widths.
-- **`ContentView`:** A fixed-width pane with a toolbar and a scrollable body. Detailed Layout uses it for Content; Content Layout uses the same primitive for the fixed-width Inspector; Multi-column Layout reuses it for every column.
-- **`InspectorView`:** The flexible fill pane with a toolbar and scrollable body. Detailed Layout uses it for Inspector; Content Layout uses it for primary Content; Simple and Immersive layouts reuse it as their sole content region.
-- **`BottomNav`:** The phone replacement for the hidden Sidebar. It renders the same navigation list only when that list is non-empty; do not render an empty mobile bar.
+- **`Sidebar`:** Desktop logo, navigation, and optional app content; hidden → icon rail → full sidebar.
+- **`ContentView`:** Fixed-width toolbar-and-scroll pane.
+- **`InspectorView`:** Flexible toolbar-and-scroll pane.
+- **`BottomNav`:** Phone replacement for Sidebar; omit when navigation is empty.
 
 ### Navigation and sidebar contract
 
-Every layout except `ImmersiveLayout` accepts a `navigation` prop of type `NavItem[]`. It defaults to an empty list, which prevents a fresh project from shipping dead links. That one list drives both `Sidebar` and `BottomNav`, keeping desktop and mobile destinations in sync. The `sidebar` prop is not the navigation model: it is reserved for additional app-specific content below the navigation and should be `null` when no such content is needed.
+Except for `ImmersiveLayout`, layouts receive one `NavItem[]` for both `Sidebar` and `BottomNav`; default it to empty. `sidebar` is only extra content below navigation.
 
 ### Logo requirement
 
-Every new design screen using this system must place the real Finnomena logo in its shell: use the full wordmark in a full sidebar or header and the compact mark in the icon-rail state. The canonical production reference is [FINNOMENA Trade](https://trade.finnomena.com). Use an approved Finnomena vector asset rather than recreating the wordmark as text or substituting another icon. Production currently serves the mark inline, so it is not a stable external image URL to copy into an `img` tag.
+Every screen uses the real Finnomena logo: full wordmark in a header or full sidebar, compact mark in an icon rail. Reference [FINNOMENA Trade](https://trade.finnomena.com) and use an approved vector asset, never recreated text.
 
 ### Responsive behavior
 
-Preserve the selected pattern's hierarchy as space narrows. Non-essential fixed panes are hidden before the flexible working pane; the Sidebar transitions through hidden, icon-rail, and full-sidebar states; and phone navigation, when provided, moves to `BottomNav`. `ImmersiveLayout` is the exception: it stays content-only with its logo header at every size.
-
-- **Phone tier:** Hide `Sidebar`. Render `BottomNav` only when `navigation` contains real items. Detailed and Content layouts reduce to their flexible pane so the working surface remains usable; do not stack a second fixed pane below it.
-- **Compact tier:** Restore the Sidebar as an icon rail. Keep the flexible pane primary and continue to hide a non-essential fixed companion pane until the viewport has room for it.
-- **Wide tiers:** Expand the Sidebar to its full width and restore fixed panes according to the selected layout's pane specification. Detailed Layout keeps Inspector flexible; Content Layout keeps Content flexible.
-- **Multi-column workflows:** Preserve fixed column widths and allow horizontal scrolling rather than compressing columns until their content becomes unreadable.
-- **Immersive flows:** Keep the logo-only header and one full-bleed content pane at every tier; do not introduce Sidebar or BottomNav chrome.
-- **Implementation rule:** Choose breakpoint values appropriate to the product, but preserve the states defined here: hidden Sidebar on phones, icon rail at compact widths, full Sidebar at wide widths, and only the flexible pane when space cannot support a companion pane. Do not create a separate mobile layout that changes the selected pattern's information hierarchy.
+Hide fixed companion panes before the flexible working pane. On phones, hide `Sidebar` and show `BottomNav` only when navigation exists; at compact widths use an icon rail; at wide widths restore the full sidebar and relevant fixed pane. Keep board columns fixed and horizontally scrollable. `ImmersiveLayout` stays logo-header plus one full-bleed pane. Do not create a mobile layout that changes the chosen hierarchy.
 
 ## Elevation & Depth
 
-**No drop shadows anywhere.** Depth comes entirely from flat color-and-opacity steps and 1px hairline borders (\`Black.5A\`).
-
-- **Surface Progression:** Depth is created exclusively through surface color steps (\`#ffffff\` page, header, and footer → \`#f2f3f4\` card or field), with solid black reserved for controls rather than layout bands.
-- **Edge Definition:** 1px hairline grays (\`#8d97a0\`) are used for input fields and dividers instead of box-shadows.
+No shadows. Create depth with white-to-secondary surfaces and 1px subtle borders; reserve dark fills for controls.
 
 ## Shapes
 
-Radius is used deliberately per component role, borrowing a binary radius concept mapped to Finnomena's scale.
-
-- **Standard Components (8px / \`sm\`):** Applied to standard buttons, cards, and input fields.
-- **Navigation & Toggles (9999px / \`full\`):** Applied exclusively to navigation CTAs, mode toggles, and tags to create soft, pill-shaped interactions.
-- **Icons:** Minimal solid black glyphs with no multicolor or outlined alternatives.
+Use \`sm\` (8px) for standard controls and cards; use \`full\` only for navigation CTAs, toggles, and tags. Icons are minimal and monochrome.
 
 ## Components
 
 ### Black Filled Button
-Solid \`#01172b\` background, \`#ffffff\` text in IBM Plex Sans Thai 16px weight 400. 8px border-radius, 12px vertical padding × 16px horizontal padding. No shadow, no border, no hover state variation visible.
+\`button-primary\` fill, white text, \`sm\` radius, 12px × 16px padding, and no shadow.
 
 ### White Pill Button
-\`#ffffff\` background, \`#01172b\` text in IBM Plex Sans Thai 14px weight 400. 9999px border-radius (full pill), 6px vertical × 16px horizontal padding. Use only where a light, low-emphasis action is appropriate; it is not required to invert header or footer chrome.
+White, dark text, \`full\` radius, 6px × 16px padding; use only for low-emphasis actions.
 
 ### Location Input Field
-\`#ffffff\` background with a 1px \`#8d97a0\` border, 8px radius. 16px vertical padding. Left side has a vertical timeline track. Placeholder text in IBM Plex Sans Thai 16px weight 400, \`#01172b\`.
+White fill, 1px border, \`sm\` radius, 16px padding, and dark placeholder text; add a timeline track only when needed.
 
 ### Header
-\`{colors.background-primary}\` background with a bottom \`{colors.border-subtle}\` hairline, not a navy band. Use this treatment for the sidebar header and the Immersive logo header. The header carries the real Finnomena logo according to the Logo requirement; reserve \`{colors.button-primary}\` for a distinct high-emphasis action rather than using it as a full-width structural fill.
+\`background-primary\` with a bottom \`border-subtle\` hairline. Use for sidebar and Immersive headers; reserve \`button-primary\` for a distinct action.
 
 ### Sidebar and Bottom Navigation
-For starter app shells, use `Sidebar` and `BottomNav` rather than inventing a separate horizontal navigation component. Both consume the same caller-supplied `NavItem[]`; Sidebar is the desktop navigation region and BottomNav replaces it only on phones. Keep Sidebar chrome on `background-primary` with `border-subtle` separation and use a solid `button-primary` only for a distinct high-emphasis action. Treat BottomNav as mobile navigation rather than as a page footer.
+Use `Sidebar` on desktop and `BottomNav` on phones. Share one `NavItem[]`; BottomNav is navigation, not a footer.
 
 ### Footer
-\`{colors.background-primary}\` background with a top \`{colors.border-subtle}\` hairline, not a navy or black band. Apply this treatment to the sidebar footer and any page footer. Footer text and links use the standard dark-on-white text and link tokens; reserve \`{colors.button-primary}\` for controls and high-emphasis actions rather than a full-width structural fill.
+\`background-primary\` with a top \`border-subtle\` hairline and dark text. Never use a dark full-width footer band.
 
 ### Illustration Panel
-Contained rectangular panels (~480px wide) holding flat vector illustrations. Illustrations carry all the color in the system; the UI around them stays strictly achromatic.
+Use flat vector illustration panels when needed; surrounding UI remains neutral.
