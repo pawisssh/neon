@@ -1,36 +1,102 @@
 ---
-version: alpha
-name: Finnomena
-description: Navy Ledger — a monochrome financial system where navy ink stands in for black on every surface, broken only by a single yellow signal reserved for the one moment that should stand out.
+name: Finnomena Neon
 colors:
-  primary: "#01172b"
-  primary-hover: "#1a2e40"
-  primary-active: "#344555"
-  on-primary: "#ffffff"
-  secondary: "#1817e7"
-  secondary-hover: "#1414c4"
-  tertiary: "#f2f93c"
-  on-tertiary: "#2b2d01"
-  neutral: "#f2f3f4"
-  outline: "#d9dcdf"
-  background: "#ffffff"
-  on-background: "#000000d9"
-  on-background-variant: "rgba(0, 0, 0, 0.651)"
-  surface: "#ffffff"
-  on-surface: "#000000d9"
-  surface-variant: "#f2f3f4"
-  error: "#d60808"
-  on-error: "#ffffff"
-  error-hover: "#ba0707"
-  error-active: "#9d0606"
-  error-container: "#fff5f5"
-  on-error-container: "#d60808"
-  positive: "#009646"
-  positive-container: "#e6fdf0"
-  on-positive-container: "#009646"
-  warning: "#f26414"
-  warning-container: "#fef7f3"
-  on-warning-container: "#f26414"
+  text-primary: "#000000d9"
+  text-secondary: "#000000a6"
+  text-placeholder: "#000000a6"
+  text-on-color: "#ffffff"
+  text-on-color-disabled: "#ffffff73"
+  text-on-brand: "#000000d9"
+  text-helper: "#000000a6"
+  text-positive: "#009646"
+  text-negative: "#d60808"
+  text-neutral: "#00000073"
+  text-inverse: "#ffffff"
+  text-disabled: "#00000073"
+  field: "#01172b08"
+  field-hover: "#01172b0d"
+  border-subtle: "#0000000d"
+  border-on-color: "#0000000d"
+  border-subtle-selected: "#01172b"
+  border-strong: "#01172b"
+  border-tile: "#01172b0d"
+  border-interactive: "#0000001a"
+  border-inverse: "#ffffff"
+  border-disabled: "#01172b73"
+  support-success: "#00ad50"
+  support-warning: "#f26414"
+  support-error: "#f73232"
+  support-info: "#01172b"
+  support-caution-major: "#01172b"
+  support-caution-minor: "#01172b"
+  support-undefined: "#01172b"
+  focus: "#6968ef"
+  focus-inset: "#ffffff"
+  focus-inverse: "#ffffff"
+  status-primary: "#00ad50"
+  status-success: "#f26414"
+  status-warning: "#f73232"
+  status-error: "#01172b"
+  status-info: "#01172b"
+  status-caution-major: "#01172b"
+  status-caution-minor: "#ffffff"
+  skeleton-element: "#d9dcdf"
+  skeleton-background: "#e6e8ea"
+  highlight: "#1817e71a"
+  interactive: "#5251ed"
+  overlay: "#00000033"
+  toggle-off: "#01172b1a"
+  notification-success-background: "#e6fdf0"
+  notification-warning-background: "#fef7f3"
+  notification-error-background: "#fff5f5"
+  notification-info-background: "#f2f3f4"
+  notification-caution-major-background: "#ebecee"
+  notification-caution-minor-background: "#f7f8f9"
+  link-primary: "#1817e7"
+  link-primary-hover: "#1414c4"
+  link-inverse: "#1817e7"
+  link-secondary: "#000000d9"
+  link-visted: "#6b46c3"
+  button-primary: "#01172b"
+  button-primary-hover: "#1a2e40"
+  button-primary-active: "#344555"
+  button-secondary: "#01172b0d"
+  button-secondary-hover: "#01172b14"
+  button-secondary-active: "#01172b1a"
+  button-tertiary: "#01172b00"
+  button-tertiary-hover: "#01172b14"
+  button-tertiary-active: "#01172b1a"
+  button-highlight: "#f2f93c"
+  button-highlight-hover: "#f4fa59"
+  button-highlight-active: "#f5fb6d"
+  button-danger: "#d60808"
+  button-danger-hover: "#ba0707"
+  button-danger-active: "#9d0606"
+  button-disabled: "#01172b1a"
+  layer-01: "#ffffff"
+  layer-02: "#ffffff"
+  layer-03: "#01172b0d"
+  layer-hover-01: "#01172b14"
+  layer-hover-02: "#01172b14"
+  layer-hover-03: "#01172b14"
+  layer-active-01: "#01172b1f"
+  layer-active-02: "#01172b1f"
+  layer-active-03: "#01172b1f"
+  background-primary: "#ffffff"
+  background-secondary: "#f2f2f2"
+  background-tertiary: "#ffffff"
+  background-inverse: "#000000"
+  background-brand: "#f2f93c"
+  multi-asset-cryptocurrency: "#8f0606"
+  multi-asset-crowdfunding: "#d60808"
+  multi-asset-p2p-lending: "#ba4a0a"
+  multi-asset-thai-equity: "#1211ad"
+  multi-asset-equity: "#aa46c3"
+  multi-asset-mutual-fund: "#01172b"
+  multi-asset-gold: "#f1f92d"
+  multi-asset-tax-saving: "#50cfff"
+  multi-asset-esavings: "#40ed90"
+  multi-asset-cash: "#007435"
 typography:
   display1:
     fontFamily: IBM Plex Sans Thai
@@ -159,165 +225,139 @@ spacing:
   5xl: 128px
 components:
   button-primary:
-    backgroundColor: "{colors.primary}"
-    textColor: "{colors.on-primary}"
-  button-primary-hover:
-    backgroundColor: "{colors.primary-hover}"
-  button-primary-active:
-    backgroundColor: "{colors.primary-active}"
-  button-highlight:
-    backgroundColor: "{colors.tertiary}"
-    textColor: "{colors.on-tertiary}"
-  button-danger:
-    backgroundColor: "{colors.error}"
-    textColor: "{colors.on-error}"
-  button-danger-hover:
-    backgroundColor: "{colors.error-hover}"
-  button-danger-active:
-    backgroundColor: "{colors.error-active}"
-  tag-neutral:
-    backgroundColor: "{colors.neutral}"
-    textColor: "{colors.primary}"
-    borderColor: "{colors.outline}"
-  link-primary:
-    textColor: "{colors.secondary}"
-  link-primary-hover:
-    textColor: "{colors.secondary-hover}"
-  input-field:
-    backgroundColor: "rgba(1, 23, 43, 0.031)"
-    textColor: "{colors.on-background}"
+    backgroundColor: "{colors.button-primary}"
+    textColor: "{colors.text-on-color}"
     typography: "{typography.body}"
-  input-field-hover:
-    backgroundColor: "rgba(1, 23, 43, 0.051)"
-  banner-success:
-    backgroundColor: "{colors.positive-container}"
-    textColor: "{colors.on-positive-container}"
-  banner-warning:
-    backgroundColor: "{colors.warning-container}"
-    textColor: "{colors.on-warning-container}"
-  banner-error:
-    backgroundColor: "{colors.error-container}"
-    textColor: "{colors.on-error-container}"
+    rounded: "{rounded.sm}"
+    height: 48px
+    padding: 12px 16px
+  button-secondary:
+    backgroundColor: "{colors.button-secondary}"
+    textColor: "{colors.text-primary}"
+    typography: "{typography.body}"
+    rounded: "{rounded.sm}"
+  input-field:
+    backgroundColor: "{colors.background-primary}"
+    textColor: "{colors.text-primary}"
+    typography: "{typography.body}"
+    rounded: "{rounded.sm}"
+    padding: 16px
+  suggestion-card:
+    backgroundColor: "{colors.background-secondary}"
+    rounded: "{rounded.sm}"
 ---
 
-## Overview
+## Brand & Style
 
-Navy Ledger. A monochrome financial system where navy ink stands in for black on every surface — primary buttons, strong borders, headings — broken only by a single yellow signal reserved for the one moment that should stand out.
-
-Finnomena's system is built on restraint — one dominant "ink" color doing almost all the structural work, chromatic color kept rare and rule-bound — using a deep navy (`#01172b`) in place of black. Every neutral step in the interface, from the darkest button to the faintest field wash, is a tint of that same navy hue rather than a separate gray family, giving the system a tonal, financial-ledger consistency instead of true black-and-white starkness. Two colors are permitted outside that navy scale, each confined to a single job: a saturated yellow (`#f2f93c`) for the brand-highlight moment, and an indigo (`#1817e7`) for links, focus rings, and the interactive-highlight state. Neither is a general-purpose accent — using either outside its one role breaks the discipline the whole system depends on.
-
-The brand reads as calm, trustworthy, and precise — closer to a ledger or a bank statement than a consumer fintech app. Density is comfortable, not dense: an 8px spacing rhythm and generous navy-tinted washes keep the interface legible without feeling sparse. Depth comes from flat color and opacity steps, never shadows.
-
-Key characteristics:
-- One "ink" color (Navy Ink, `#01172b`) plays the role black plays in most systems — buttons, borders, strong text.
-- Every neutral in the UI is a tint of that same navy, not a separate gray family.
-- Exactly two colors escape the navy scale, each locked to one job: Yellow Signal (brand highlight) and Indigo Interactive (links/focus).
-- No drop shadows anywhere — elevation is flat color-and-opacity layering.
-- A single type family (IBM Plex Sans Thai) covers the entire 17-role scale, from `caption2` to `display1`.
-- An 8px-aligned spacing scale throughout, no off-grid values.
-- Full light and dark themes, both human-verified (not auto-inverted).
-- Radius scales from sharp (`4px`) to fully rounded pills, used deliberately per component role rather than uniformly.
+Finnomena Neon is a disciplined black-on-white transit kiosk: every screen is a white canvas, including the header and footer, with solid black controls providing the primary structural contrast. Header and footer boundaries use subtle hairline borders rather than navy bands. All color in the system lives exclusively inside flat editorial illustrations—such as a packed suitcase, two riders in a car, or a bowl of food—that float beside the form rather than within it.
 
 ## Colors
 
-The palette is rooted in a single dominant "ink" and two single-purpose exceptions — there is no secondary brand color competing for attention.
+Color is treated as a highly functional, scarce resource. The palette embraces the semantic roles defined in the original theme but strictly enforces their new, high-contrast structural discipline.
 
-- **Primary (`#01172b`, "Navy Ink"):** The system's stand-in for black. Used for primary buttons, strong borders, and the dark end of every surface. Hover steps to `#1a2e40`, active to `#344555`.
-- **Secondary (`#1817e7`, "Indigo Interactive"):** The only other non-navy color permitted in UI. Reserved exclusively for links, focus rings, and the interactive-highlight state — never a fill, never a general accent.
-- **Tertiary (`#f2f93c`, "Yellow Signal"):** The one chromatic accent — brand mark, the highlight button or tag. Single-purpose: one emphasized element per screen, never repeated across a page. Text against it uses a dark ink (`#2b2d01`), not Navy Ink itself, for contrast.
-- **Neutral (`#f2f3f4`, "Navy Fog"):** Field fills, subtle section washes, neutral tag backgrounds — the lightest tint of the navy ramp.
-- **Background (`#ffffff`, "Paper White"):** Page background. Text over it ("Ink on Paper") is 85%-opacity black (`#000000d9`), not pure black and not Navy Ink itself.
-- **Positive (`#009646`) / Warning (`#f26414`) / Error (`#d60808`):** Status colors, each with a pastel container wash (`#e6fdf0` / `#fef7f3` / `#fff5f5`) for banners and notifications. Reserved for success/warning/error states only.
+- **Primary Canvas:** A stark white background (\`#ffffff\`) that acts as the default surface for all screens.
+- **Header & Footer Surface:** \`background-primary\` (\`#ffffff\`) is used for the top navigation bar and footer. A subtle border separates each from adjacent content while preserving the uninterrupted white canvas.
+- **Structural Contrast:** Pure Jet Black (\`#01172b\`, mapped from \`button-primary\`) is reserved for solid controls and high-emphasis elements, not for full-width header or footer bands.
+- **Surface Fills:** Mist Gray (\`#f2f3f4\`) provides subtle differentiation for suggestion cards and input fields without introducing chromatic color.
+- **Interactive Tints:** Transparent washes (e.g., \`Navy.5A\`) are used for secondary button backgrounds and subtle interactive fills, providing layered depth without shadows.
+- **Accents:** The Indigo Interactive (\`#1817e7\`) is used purely for links and focus states, mapped to a single low-frequency accent role.
 
-**Dark mode** is fully defined and human-verified, not auto-inverted — the navy ramp itself doesn't re-tint for dark mode, but its role holders do:
+### Data Visualization Colors (Multi-asset)
 
-| Role | Light | Dark |
-|---|---|---|
-| Navy Ink (primary) | `#01172b` | `#415160` |
-| Navy Ink Hover | `#1a2e40` | `#5a6875` |
-| Navy Ink Active | `#344555` | `#808b95` |
-| Navy Pale (outline) | `#d9dcdf` | `#404040` |
-| Navy Fog (neutral) | `#f2f3f4` | `#1a1a1a` |
-| Paper White (background) | `#ffffff` | `#000000` |
-| Ink on Paper (on-background) | `#000000d9` | `#ffffff` |
-| Positive text | `#009646` | `#00c45b` |
-| Negative | `#d60808` | `#f30909` |
+While the UI remains purely achromatic, multi-asset data visualization (charts, tags, holding breakdowns) utilizes a distinct, consistent color mapping extracted directly from `chart.json`. These colors provide functional classification across financial products without muddying the core brand identity:
 
-Yellow Signal (`#f2f93c`) and Indigo Interactive (`#1817e7`) are identical in both modes. Dark-mode `Navy Pale`/`Navy Fog` step through solid grays rather than navy tints — a genuine asymmetry in Finnomena's own token export, not a simplification made here.
+- **Cryptocurrency:** Dark Red (`#8f0606`)
+- **Crowdfunding:** Red (`#d60808`)
+- **P2P Lending:** Orange (`#ba4a0a`)
+- **Thai Equity:** Indigo (`#1211ad`)
+- **Equity (Global):** Purple (`#aa46c3`)
+- **Mutual Fund:** Navy (`#01172b`)
+- **Gold:** Yellow (`#f1f92d`)
+- **Tax Saving:** Sky Blue (`#50cfff`)
+- **E-Savings:** Light Green (`#40ed90`)
+- **Cash:** Forest Green (`#007435`)
 
 ## Typography
 
-The typography strategy uses a single family, **IBM Plex Sans Thai**, across the entire scale — Finnomena doesn't split display/body/label families the way some brands do. The fallback stack is `'IBM Plex Sans Thai', sans-serif`.
+The typography strategy uses a single family, **IBM Plex Sans Thai**, across the entire scale to deliver a confident and calm brand voice.
 
-- **Display roles** (`display1`–`display3`, `largeTitle`, `quotation1`/`2`): reserved for hero numbers, page titles, and pulled quotes. `display3` is the only bold-weight display role.
-- **Title roles** (`title1`–`title3`, `paragraph`): section headings and lead paragraphs.
-- **Headline / Body**: `headline` (Medium, 500) and `body` (Regular, 400) share identical size and line-height (17px/22px) — weight alone carries the hierarchy between them.
-- **Supporting roles** (`callout`, `subheadline`, `footnote`, `caption1`/`2`): metadata, timestamps, helper text, legal copy — always Regular weight.
+- **Hierarchy:** \`display\` and \`largeTitle\` (34px+) are reserved for hero numbers and page titles.
+- **Treatment:** A single weight (400) does the work that other systems spread across three. Weight 500 is used sparingly for emphasis in navigation or button labels.
+- **Scale:** The workhorse \`body\` copy sits at 15–20px, ensuring high legibility against the stark white canvas.
 
-Negative letter-spacing dominates the larger sizes (down to `-0.64px` at `display1`/`display2`); the smallest caption roles use slight positive tracking (`caption2` at `0.06px`) for legibility at size.
+## Layout Patterns
 
-## Layout
+This section is self-contained: it defines the layout choices and responsive behavior for a new design screen without requiring any other file. When the supplied starter is used, `App.tsx` initially renders the Detailed `AppShell`, but that is a safe starting point rather than a universal default. Select the layout whose pane structure matches the requested screen before building its content. `design_tokens.json` may be used as an optional machine-readable companion, but it does not replace these rules.
 
-An 8px base grid governs all spacing — every value in the `spacing` scale is a multiple of 8px, with no off-grid exceptions. Related items are grouped with generous internal padding rather than dense stacking; density is comfortable, not compact.
+| Component | Panes | Use for |
+| --- | --- | --- |
+| `AppShell` (Detailed) | Sidebar + Content + Inspector; inspector-weighted | General product screens where the detail or working area needs the most space. |
+| `ContentLayout` | Sidebar + Content + Inspector; content-weighted | Screens where the primary content should dominate and the inspector is supporting context. |
+| `SimpleLayout` | Sidebar + Content | Screens that do not need a third pane. |
+| `MultiColumnLayout` | Sidebar + N horizontally scrolling fixed-width columns | Board, pipeline, comparison, or other multi-column workflows. |
+| `ImmersiveLayout` | Content only; full-bleed with a logo-only header | Focused, distraction-free flows such as a walkthrough, editor, or single task. |
 
-The responsive grid resolves across 7 breakpoint tiers, each with its own sidebar width, gutter, end margins, and column count:
+### Shared pane primitives
 
-| Tier | Viewport | Sidebar width | Gutter | End margins | Columns |
-|---|---|---|---|---|---|
-| sm | 320–499 | 0 (hidden) | 16 | 16 | 4 |
-| md | 500–987 | 64 (icon-rail) | 16 | 16 | 8 |
-| lg | 988–1079 | 64 (icon-rail) | 16 | 16 | 12 |
-| xl | 1080–1271 | 240 | 16 | 16 | 12 |
-| xxl | 1272–1439 | 320 | 16 | 16 | 12 |
-| xxxl | 1440–1919 | 360 | 24 | 24 | 12 |
-| max | 1920+ | 360 | 24 | 24 | 12 |
+- **`Sidebar`:** Supplies the desktop navigation shell. Its header carries the logo, its scrollable body renders navigation followed by optional app-specific sidebar content, and its footer is reserved. It is hidden on phones, becomes an icon rail at compact widths, and expands to a full sidebar at wider widths.
+- **`ContentView`:** A fixed-width pane with a toolbar and a scrollable body. Detailed Layout uses it for Content; Content Layout uses the same primitive for the fixed-width Inspector; Multi-column Layout reuses it for every column.
+- **`InspectorView`:** The flexible fill pane with a toolbar and scrollable body. Detailed Layout uses it for Inspector; Content Layout uses it for primary Content; Simple and Immersive layouts reuse it as their sole content region.
+- **`BottomNav`:** The phone replacement for the hidden Sidebar. It renders the same navigation list only when that list is non-empty; do not render an empty mobile bar.
 
-Use the gutter/end-margin/column values above for grid rhythm at each breakpoint rather than inventing a fixed max-width.
+### Navigation and sidebar contract
+
+Every layout except `ImmersiveLayout` accepts a `navigation` prop of type `NavItem[]`. It defaults to an empty list, which prevents a fresh project from shipping dead links. That one list drives both `Sidebar` and `BottomNav`, keeping desktop and mobile destinations in sync. The `sidebar` prop is not the navigation model: it is reserved for additional app-specific content below the navigation and should be `null` when no such content is needed.
+
+### Logo requirement
+
+Every new design screen using this system must place the real Finnomena logo in its shell: use the full wordmark in a full sidebar or header and the compact mark in the icon-rail state. The canonical production reference is [FINNOMENA Trade](https://trade.finnomena.com). Use an approved Finnomena vector asset rather than recreating the wordmark as text or substituting another icon. Production currently serves the mark inline, so it is not a stable external image URL to copy into an `img` tag.
+
+### Responsive behavior
+
+Preserve the selected pattern's hierarchy as space narrows. Non-essential fixed panes are hidden before the flexible working pane; the Sidebar transitions through hidden, icon-rail, and full-sidebar states; and phone navigation, when provided, moves to `BottomNav`. `ImmersiveLayout` is the exception: it stays content-only with its logo header at every size.
+
+- **Phone tier:** Hide `Sidebar`. Render `BottomNav` only when `navigation` contains real items. Detailed and Content layouts reduce to their flexible pane so the working surface remains usable; do not stack a second fixed pane below it.
+- **Compact tier:** Restore the Sidebar as an icon rail. Keep the flexible pane primary and continue to hide a non-essential fixed companion pane until the viewport has room for it.
+- **Wide tiers:** Expand the Sidebar to its full width and restore fixed panes according to the selected layout's pane specification. Detailed Layout keeps Inspector flexible; Content Layout keeps Content flexible.
+- **Multi-column workflows:** Preserve fixed column widths and allow horizontal scrolling rather than compressing columns until their content becomes unreadable.
+- **Immersive flows:** Keep the logo-only header and one full-bleed content pane at every tier; do not introduce Sidebar or BottomNav chrome.
+- **Implementation rule:** Choose breakpoint values appropriate to the product, but preserve the states defined here: hidden Sidebar on phones, icon rail at compact widths, full Sidebar at wide widths, and only the flexible pane when space cannot support a companion pane. Do not create a separate mobile layout that changes the selected pattern's information hierarchy.
+
+### Shared chrome
+
+Header and footer surfaces use `background-primary` (`#ffffff`) with subtle hairline borders instead of navy bands. In the pane layouts, apply that rule to visible chrome such as the sidebar header/footer and the Immersive logo header. Reserve `button-primary` for controls and high-emphasis actions, not full-width structural bands.
 
 ## Elevation & Depth
 
-No drop shadows anywhere — depth comes entirely from flat color-and-opacity steps, the same principle Coinbase's own design system uses.
+**No drop shadows anywhere.** Depth comes entirely from flat color-and-opacity steps and 1px hairline borders (\`Black.5A\`).
 
-In light mode, surfaces step from Paper White through increasingly visible navy washes: `layer-01`/`layer-02` stay at white, `layer-03` steps to a 5%-opacity navy wash (`#01172b0d`). In dark mode the steps go through solid grays instead of navy tints (`#1a1a1a` → `#333333` → `#404040`) — a genuine asymmetry in Finnomena's export, not a simplification made here. Modal and overlay scrims use `rgba(0,0,0,0.2)` light / `rgba(0,0,0,0.502)` dark.
+- **Surface Progression:** Depth is created exclusively through surface color steps (\`#ffffff\` page, header, and footer → \`#f2f3f4\` card or field), with solid black reserved for controls rather than layout bands.
+- **Edge Definition:** 1px hairline grays (\`#8d97a0\`) are used for input fields and dividers instead of box-shadows.
 
 ## Shapes
 
-Radius is used deliberately per component role, not uniformly across the interface — from sharp (`4px`) on small controls up to a fully rounded pill for tags and highlight chips.
+Radius is used deliberately per component role, borrowing a binary radius concept mapped to Finnomena's scale.
 
-| Name | Value |
-|---|---|
-| none | 0px |
-| xs | 4px |
-| sm | 8px |
-| md | 12px |
-| lg | 16px |
-| xl | 24px |
-| 2xl | 32px |
-| 3xl | 40px |
-| 4xl | 48px |
-| full | 9999px (a full pill at any realistic component height) |
+- **Standard Components (8px / \`sm\`):** Applied to standard buttons, cards, and input fields.
+- **Navigation & Toggles (9999px / \`full\`):** Applied exclusively to navigation CTAs, mode toggles, and tags to create soft, pill-shaped interactions.
+- **Icons:** Minimal solid black glyphs with no multicolor or outlined alternatives.
 
 ## Components
 
-- **Primary Button** — the default call-to-action across the product. Background Navy Ink (`#01172b` / `#415160` dark), text white. Hover steps to `#1a2e40`, active to `#344555`.
-- **Highlight Button / Tag** — the one place Yellow Signal is allowed. Background `#f2f93c`, text `#2b2d01` (dark ink for contrast, not Navy Ink itself). Reserve for a single emphasized action or label per screen, never repeated.
-- **Danger Button** — destructive actions. Background `#d60808` in both themes, hover `#ba0707`, active `#9d0606`.
-- **Neutral Tag** — the default categorical label when a tag doesn't need highlight treatment. Background Navy Fog (`#f2f3f4`), border Navy Pale (`#d9dcdf`), text Navy Ink.
-- **Link** — the only place Indigo Interactive appears as solid text color. Text `#1817e7`, hover `#1414c4` — identical in light and dark mode.
-- **Input Field** — form field surfaces. Fill is a near-invisible navy/white wash (`rgba(1,23,43,0.031)` light / equivalent white wash dark), not a solid background; hover deepens slightly to `rgba(1,23,43,0.051)`.
-- **Banner / Notification** — inline success/warning/error messaging, using each status color's pastel container wash as background and the solid status color as text.
+### Black Filled Button
+Solid \`#01172b\` background, \`#ffffff\` text in IBM Plex Sans Thai 16px weight 400. 8px border-radius, 12px vertical padding × 16px horizontal padding. No shadow, no border, no hover state variation visible.
 
-## Do's and Don'ts
+### White Pill Button
+\`#ffffff\` background, \`#01172b\` text in IBM Plex Sans Thai 14px weight 400. 9999px border-radius (full pill), 6px vertical × 16px horizontal padding. Use only where a light, low-emphasis action is appropriate; it is not required to invert header or footer chrome.
 
-- Do use Navy Ink (`#01172b` light / `#415160` dark) everywhere black would appear in a typical monochrome system — primary buttons, strong borders, the dark end of every surface.
-- Do build every neutral step from Navy's own tonal ramp rather than mixing in a separate true-gray family.
-- Do reserve Yellow Signal for the brand-highlight button/tag only — one per screen, not a general accent.
-- Do reserve Indigo Interactive for links, focus rings, and the interactive-highlight state only.
-- Do maintain WCAG AA contrast ratios (4.5:1 for normal text) — text over Yellow Signal must use the dark ink pairing, never Navy Ink or white directly.
-- Do keep the 8px-aligned spacing scale — flag a design that seems to need an off-grid value rather than rounding it silently.
-- Don't use pure black (`#000000`) anywhere Navy Ink should be used instead — navy is this system's "black."
-- Don't use Yellow Signal as a general UI color (nav highlights, arbitrary buttons, backgrounds) — it's a single-purpose signal.
-- Don't use Indigo Interactive outside link/focus/interactive-highlight roles.
-- Don't invent a second gray family — reuse Navy's own tints for every neutral step.
-- Don't add drop shadows to fake depth — elevation is flat color-and-opacity layering only.
-- Don't ship dark-mode banners/notifications without confirming container-wash values with design first — Finnomena's own export has historically had gaps in this area.
+### Location Input Field
+\`#ffffff\` background with a 1px \`#8d97a0\` border, 8px radius. 16px vertical padding. Left side has a vertical timeline track. Placeholder text in IBM Plex Sans Thai 16px weight 400, \`#01172b\`.
+
+### Sidebar and Bottom Navigation
+For starter app shells, use `Sidebar` and `BottomNav` rather than inventing a separate horizontal navigation component. Both consume the same caller-supplied `NavItem[]`; Sidebar is the desktop navigation region and BottomNav replaces it only on phones. Keep Sidebar chrome on `background-primary` with `border-subtle` separation and use a solid `button-primary` only for a distinct high-emphasis action. Treat BottomNav as mobile navigation rather than as a page footer.
+
+### Footer
+\`{colors.background-primary}\` background with a top \`{colors.border-subtle}\` hairline. Footer text and links use the standard dark-on-white text and link tokens; it does not invert into a navy or black band.
+
+### Illustration Panel
+Contained rectangular panels (~480px wide) holding flat vector illustrations. Illustrations carry all the color in the system; the UI around them stays strictly achromatic.

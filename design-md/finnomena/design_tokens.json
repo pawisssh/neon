@@ -22,27 +22,59 @@
     },
     "secondary": {
       "$type": "color",
-      "$value": { "colorSpace": "srgb", "components": [0.094, 0.090, 0.906], "hex": "#1817e7" }
+      "$value": { "colorSpace": "srgb", "components": [0.004, 0.090, 0.169], "alpha": 0.05, "hex": "#01172b0d" }
     },
     "secondary-hover": {
       "$type": "color",
-      "$value": { "colorSpace": "srgb", "components": [0.078, 0.078, 0.769], "hex": "#1414c4" }
+      "$value": { "colorSpace": "srgb", "components": [0.004, 0.090, 0.169], "alpha": 0.08, "hex": "#01172b14" }
+    },
+    "secondary-active": {
+      "$type": "color",
+      "$value": { "colorSpace": "srgb", "components": [0.004, 0.090, 0.169], "alpha": 0.1, "hex": "#01172b1a" }
     },
     "tertiary": {
       "$type": "color",
-      "$value": { "colorSpace": "srgb", "components": [0.949, 0.976, 0.235], "hex": "#f2f93c" }
+      "$value": { "colorSpace": "srgb", "components": [0.004, 0.090, 0.169], "alpha": 0.0, "hex": "#01172b00" }
+    },
+    "tertiary-hover": {
+      "$type": "color",
+      "$value": { "colorSpace": "srgb", "components": [0.004, 0.090, 0.169], "alpha": 0.08, "hex": "#01172b14" }
+    },
+    "tertiary-active": {
+      "$type": "color",
+      "$value": { "colorSpace": "srgb", "components": [0.004, 0.090, 0.169], "alpha": 0.1, "hex": "#01172b1a" }
     },
     "on-tertiary": {
       "$type": "color",
       "$value": { "colorSpace": "srgb", "components": [0.169, 0.176, 0.004], "hex": "#2b2d01" }
     },
+    "black-primary": {
+      "$type": "color",
+      "$value": { "colorSpace": "srgb", "components": [0.0, 0.0, 0.0], "alpha": 0.851, "hex": "#000000" }
+    },
+    "black-secondary": {
+      "$type": "color",
+      "$value": { "colorSpace": "srgb", "components": [0.0, 0.0, 0.0], "alpha": 0.651, "hex": "#000000" }
+    },
     "neutral": {
       "$type": "color",
       "$value": { "colorSpace": "srgb", "components": [0.949, 0.953, 0.957], "hex": "#f2f3f4" }
     },
+    "neutral-transparent": {
+      "$type": "color",
+      "$value": { "colorSpace": "srgb", "components": [0.004, 0.090, 0.169], "alpha": 0.05, "hex": "#01172b0d" }
+    },
+    "neutral-transparent-hover": {
+      "$type": "color",
+      "$value": { "colorSpace": "srgb", "components": [0.004, 0.090, 0.169], "alpha": 0.08, "hex": "#01172b14" }
+    },
+    "neutral-transparent-active": {
+      "$type": "color",
+      "$value": { "colorSpace": "srgb", "components": [0.004, 0.090, 0.169], "alpha": 0.1, "hex": "#01172b1a" }
+    },
     "outline": {
       "$type": "color",
-      "$value": { "colorSpace": "srgb", "components": [0.851, 0.863, 0.875], "hex": "#d9dcdf" }
+      "$value": { "colorSpace": "srgb", "components": [0.0, 0.0, 0.0], "alpha": 0.051, "hex": "#000000" }
     },
     "background": {
       "$type": "color",
@@ -325,6 +357,16 @@
     "button-primary-active": {
       "backgroundColor": "{colors.primary-active}"
     },
+    "button-secondary": {
+      "backgroundColor": "{colors.neutral-transparent}",
+      "textColor": "{colors.black-primary}"
+    },
+    "button-secondary-hover": {
+      "backgroundColor": "{colors.neutral-transparent-hover}"
+    },
+    "button-secondary-active": {
+      "backgroundColor": "{colors.neutral-transparent-active}"
+    },
     "button-highlight": {
       "backgroundColor": "{colors.tertiary}",
       "textColor": "{colors.on-tertiary}"
@@ -341,7 +383,7 @@
     },
     "tag-neutral": {
       "backgroundColor": "{colors.neutral}",
-      "textColor": "{colors.primary}",
+      "textColor": "{colors.black-primary}",
       "borderColor": "{colors.outline}"
     },
     "link-primary": {
@@ -353,15 +395,15 @@
     "input-field": {
       "backgroundColor": {
         "$type": "color",
-        "$value": { "colorSpace": "srgb", "components": [0.004, 0.090, 0.169], "alpha": 0.031, "hex": "#01172b" }
+        "$value": { "colorSpace": "srgb", "components": [0.0, 0.0, 0.0], "alpha": 0.031, "hex": "#000000" }
       },
-      "textColor": "{colors.on-background}",
+      "textColor": "{colors.black-primary}",
       "typography": "{typography.body}"
     },
     "input-field-hover": {
       "backgroundColor": {
         "$type": "color",
-        "$value": { "colorSpace": "srgb", "components": [0.004, 0.090, 0.169], "alpha": 0.051, "hex": "#01172b" }
+        "$value": { "colorSpace": "srgb", "components": [0.0, 0.0, 0.0], "alpha": 0.051, "hex": "#000000" }
       }
     },
     "banner-success": {
