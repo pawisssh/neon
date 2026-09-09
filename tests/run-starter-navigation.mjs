@@ -38,9 +38,11 @@
  * Prereq: npm install --prefix starters/vitejs-cds (installs only what
  * that package.json already declares — nothing added by this script).
  */
-import { existsSync, mkdtempSync, mkdirSync, rmSync } from "node:fs";
+import { existsSync, mkdtempSync, rmSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { tmpdir } from "node:os";
+import { assembleStarter } from "../scripts/lib/assemble-starter.mjs";
 
 const repoRoot = join(dirname(fileURLToPath(import.meta.url)), "..");
 const starterDir = join(repoRoot, "starters/vitejs-cds");
@@ -56,21 +58,28 @@ if (!existsSync(esbuildEntry)) {
   process.exit(1);
 }
 
-// Lives under the starter's own node_modules/ so the repo's existing
-// `node_modules/` .gitignore rule covers it — no extra .gitignore entry.
-const cacheRoot = join(starterNodeModules, ".neon-test-cache");
-if (existsSync(cacheRoot)) rmSync(cacheRoot, { recursive: true, force: true });
-mkdirSync(cacheRoot, { recursive: true }); // mkdtempSync needs an existing parent
-const buildDir = mkdtempSync(join(cacheRoot, "run-"));
-const outfile = join(buildDir, "bundle.mjs");
+const scratch = mkdtempSync(join(tmpdir(), 'neon-navigation-'));
+const assembled = join(scratch, 'app');
+const buildDir = mkdtempSync(join(starterNodeModules, '.neon-navigation-'));
+const outfile = join(buildDir, 'bundle.mjs');
 
-process.on("exit", () => {
-  try {
-    rmSync(cacheRoot, { recursive: true, force: true });
-  } catch {
-    // best-effort cleanup only
-  }
+process.on('exit', () => {
+  rmSync(buildDir, { recursive: true, force: true });
+  rmSync(scratch, { recursive: true, force: true });
 });
+
+await assembleStarter({ sourceRoot: repoRoot, destination: assembled });
+const assembledImports = {
+  name: 'assembled-test-app',
+  setup(build) {
+    build.onResolve({ filter: /^@neon-test-app\// }, (args) =>
+      build.resolve(join(assembled, 'src', args.path.slice('@neon-test-app/'.length)), {
+        kind: args.kind,
+        resolveDir: assembled,
+      })
+    );
+  },
+};
 
 const { build } = await import(pathToFileURL(esbuildEntry).href);
 
@@ -83,6 +92,7 @@ await build({
   target: "node18",
   outfile,
   external: ["react", "react-dom", "react-dom/server"],
+  plugins: [assembledImports],
   // Resolve bare imports (e.g. @coinbase/cds-web/system) as if this file
   // lived inside starters/vitejs-cds — that's where its real dependencies
   // are installed, not anywhere under the repo root.
