@@ -253,7 +253,7 @@ Light theme. Use this file alone to design a screen: the frontmatter defines tok
 
 ## Brand & Style
 
-Finnomena Neon is a black-on-white system: white surfaces, hairline boundaries, dark controls, and color reserved for semantic states, charts, links, and illustrations.
+Finnomena Neon is a black-on-white system: white surfaces, hairline boundaries, dark controls, and color reserved for semantic states, charts, links, and illustrations. Start with the audience, their task, and the information needed to act. Choose the appropriate Neon layout and give the primary task clear visual priority. Create character through typography, proportion, spacing, and useful content. Keep familiar interactions predictable. Every panel, label, image, and animation should help understanding or action.
 
 ## Colors
 
@@ -294,6 +294,14 @@ Use the frontmatter weights and tracking; larger display tokens are optional for
 Use the 8px spacing unit: 8px within small groups, 16px between related elements, 24px card/pane padding, 32px between workspace sections, and 64px between landing-page sections. Reduce outer padding to 16px on phones; workspace layout grids use 16px end margins/gutters below 1440px and 24px from 1440px up (see Responsive behavior). These are defaults; let content determine height.
 
 Use 8px radii for controls and cards; reserve full pills for tags, toggles, and occasional navigation CTAs. Create depth with white/secondary surfaces and 1px subtle separators, without shadows. Keep reading columns around 60–75 characters; wide workspaces may fill the viewport.
+
+## Design Decisions
+
+- Infer the screen type, audience, primary action, and content needs from the brief. Briefly state the chosen direction; ask only when ambiguity would materially change the result.
+- In workspaces, prioritize scanning, comparison, and stable alignment. Adjust spacing before reducing text size; retain useful tables and repeated rows.
+- On landing pages, organize a clear message, supporting evidence, and a prominent next action. Vary composition when the content warrants it.
+- Group with whitespace and separators. Use cards when content represents a distinct object or interaction.
+- When redesigning, preserve meaningful content, navigation, and familiar workflows unless their change is requested.
 
 ## Layout Patterns
 
@@ -391,7 +399,7 @@ Use a visible label, white fill, `border-interactive` edge, 8px radius, and 16px
 
 ### Cards, Lists & Tables
 
-Use white or `background-secondary` surfaces, 8px radii where bounded, 24px padding, and subtle row separators. Keep primary identifiers left-aligned and comparable amounts right-aligned. Make selection visible with `highlight` and an additional edge or indicator. On small screens retain essential fields and expose secondary details on selection; wide tables may scroll in a labeled region.
+Use white or `background-secondary` surfaces, 8px radii where bounded, 24px padding, and subtle row separators. Keep primary identifiers left-aligned and comparable amounts right-aligned. Make selection visible with `highlight` and an additional edge or indicator. On small screens retain essential fields and expose secondary details on selection; wide tables may scroll in a labeled region. Avoid automatic three-card sections, redundant labels, empty panels, and decorative status indicators. Equal grids and repeated patterns are appropriate when they help compare information.
 
 ### Tabs & Filters
 
@@ -399,18 +407,25 @@ Use quiet neutral surfaces, clear selected labels, and an underline or border in
 
 ### Illustration Panel
 
-Use contained flat illustrations or relevant product visuals beside explanatory copy. Scale within the content width; preserve space around text. Illustrations may use color alongside semantic UI and charts. Avoid decorative visuals in dense task areas.
+Use real brand assets and relevant flat illustrations or product visuals when they aid understanding. Keep them contained and clear of text; color may appear alongside semantic UI and charts. Dense task screens need no decorative image. Do not present an invented preview as an existing product; identify illustrative mockups as examples.
 
 ## Interaction & Accessibility
 
 - Support default, hover, pressed, focus, selected, disabled, and loading states where relevant. Use a visible 2px `focus` outline with offset; never rely on hover alone.
-- Keep controls keyboard-operable, icon buttons named, form labels associated, and reading/focus order logical. Use approximately 44px minimum touch targets and respect reduced-motion preferences.
+- Keep controls keyboard-operable, icon buttons named, form labels associated, and reading/focus order logical. Use approximately 44px minimum touch targets.
+- Default to still content with clear interaction feedback. Use motion to explain state changes or preserve orientation; avoid effects that delay reading or operating the screen. Respect reduced-motion preferences.
 - Check text and essential control contrast on the rendered surface; subtle separators are not sufficient as the only control boundary. Pair status colors with words or symbols.
 - Loading: preserve layout with skeletons or a labeled progress indicator. Empty: explain the absence and offer a relevant next action. Error: state what failed and offer recovery. Success: confirm the result without disrupting the task.
-- Use clear Thai or English matching the request. Show currency, dates, units, and precision consistently; identify sample data in prototypes.
+- Use concrete Thai or English matching the request, with consistent currency, dates, units, and precision. Do not invent testimonials, customer endorsements, performance claims, or financial results. Clearly identify sample data.
 
 ## Screen Recipe & Review
 
 Choose a layout → place the real logo → apply the tokens → build the primary task → adapt companion panes → verify states and keyboard access. For example, orders use Detailed with a selectable list and details; a report uses Content with supporting filters; a landing page uses Immersive with stacked sections on phones.
 
-Before delivery, check that the screen has the correct layout, a visible logo at every width, white header/footer surfaces, consistent typography and spacing, functional navigation, and usable loading/empty/error states. Avoid recreated logos, navy structural bands, decorative asset colors, clipped Thai text, and hidden mobile detail content.
+Before delivery, verify:
+
+- The primary task is clear; layout, hierarchy, and density support it.
+- The real logo is visible at every width; white chrome, typography, spacing, and semantic colors remain consistent.
+- Content and claims are supported or clearly labeled as examples; every visual serves a purpose.
+- Motion explains feedback or change, respects reduced motion, and does not obstruct use.
+- Navigation, mobile details, keyboard access, and loading/empty/error states are usable; Thai text is not clipped.
