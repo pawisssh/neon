@@ -291,11 +291,25 @@ This section is self-contained: it defines the layout choices and responsive beh
 
 | Component | Panes | Use for |
 | --- | --- | --- |
-| `AppShell` (Detailed) | Sidebar + Content + Inspector; inspector-weighted | General product screens where the detail or working area needs the most space. |
+| `DetailedLayout` | Sidebar + Content + Inspector; inspector-weighted | General product screens where the detail or working area needs the most space. |
 | `ContentLayout` | Sidebar + Content + Inspector; content-weighted | Screens where the primary content should dominate and the inspector is supporting context. |
 | `SimpleLayout` | Sidebar + Content | Screens that do not need a third pane. |
 | `MultiColumnLayout` | Sidebar + N horizontally scrolling fixed-width columns | Board, pipeline, comparison, or other multi-column workflows. |
 | `ImmersiveLayout` | Content only; full-bleed with a logo-only header | Focused, distraction-free flows such as a walkthrough, editor, or single task. |
+
+### Layout selection rule
+
+Infer the layout from the requested screen; do not ask the user to choose unless two patterns are equally suitable.
+
+| Screen | Layout |
+| --- | --- |
+| Landing, campaign, onboarding, checkout, or focused flow | `ImmersiveLayout` |
+| List-and-detail workspace, inbox, orders, or holdings | Detailed layout |
+| Content-led report, dashboard, article, or editor | `ContentLayout` |
+| Kanban, pipeline, comparison, or peer-column board | `MultiColumnLayout` |
+| Sidebar utility with one working pane | `SimpleLayout` |
+
+When a focused flow later needs persistent navigation, choose the simplest pane layout that preserves its task—not Detailed layout by default.
 
 ### Shared pane primitives
 
@@ -323,10 +337,6 @@ Preserve the selected pattern's hierarchy as space narrows. Non-essential fixed 
 - **Immersive flows:** Keep the logo-only header and one full-bleed content pane at every tier; do not introduce Sidebar or BottomNav chrome.
 - **Implementation rule:** Choose breakpoint values appropriate to the product, but preserve the states defined here: hidden Sidebar on phones, icon rail at compact widths, full Sidebar at wide widths, and only the flexible pane when space cannot support a companion pane. Do not create a separate mobile layout that changes the selected pattern's information hierarchy.
 
-### Shared chrome
-
-Header and footer surfaces use `background-primary` (`#ffffff`) with subtle hairline borders instead of navy bands. In the pane layouts, apply that rule to visible chrome such as the sidebar header/footer and the Immersive logo header. Reserve `button-primary` for controls and high-emphasis actions, not full-width structural bands.
-
 ## Elevation & Depth
 
 **No drop shadows anywhere.** Depth comes entirely from flat color-and-opacity steps and 1px hairline borders (\`Black.5A\`).
@@ -353,11 +363,14 @@ Solid \`#01172b\` background, \`#ffffff\` text in IBM Plex Sans Thai 16px weight
 ### Location Input Field
 \`#ffffff\` background with a 1px \`#8d97a0\` border, 8px radius. 16px vertical padding. Left side has a vertical timeline track. Placeholder text in IBM Plex Sans Thai 16px weight 400, \`#01172b\`.
 
+### Header
+\`{colors.background-primary}\` background with a bottom \`{colors.border-subtle}\` hairline, not a navy band. Use this treatment for the sidebar header and the Immersive logo header. The header carries the real Finnomena logo according to the Logo requirement; reserve \`{colors.button-primary}\` for a distinct high-emphasis action rather than using it as a full-width structural fill.
+
 ### Sidebar and Bottom Navigation
 For starter app shells, use `Sidebar` and `BottomNav` rather than inventing a separate horizontal navigation component. Both consume the same caller-supplied `NavItem[]`; Sidebar is the desktop navigation region and BottomNav replaces it only on phones. Keep Sidebar chrome on `background-primary` with `border-subtle` separation and use a solid `button-primary` only for a distinct high-emphasis action. Treat BottomNav as mobile navigation rather than as a page footer.
 
 ### Footer
-\`{colors.background-primary}\` background with a top \`{colors.border-subtle}\` hairline. Footer text and links use the standard dark-on-white text and link tokens; it does not invert into a navy or black band.
+\`{colors.background-primary}\` background with a top \`{colors.border-subtle}\` hairline, not a navy or black band. Apply this treatment to the sidebar footer and any page footer. Footer text and links use the standard dark-on-white text and link tokens; reserve \`{colors.button-primary}\` for controls and high-emphasis actions rather than a full-width structural fill.
 
 ### Illustration Panel
 Contained rectangular panels (~480px wide) holding flat vector illustrations. Illustrations carry all the color in the system; the UI around them stays strictly achromatic.
