@@ -173,3 +173,8 @@ test('CLI wrapper: usage error when no destination is given', () => {
   assert.notEqual(result.status, 0);
   assert.match(result.stderr, /usage/i);
 });
+
+test('the real source template carries no independently maintained src/theme files', () => {
+  const starterThemeDir = fileURLToPath(new URL('../starters/vitejs-cds/src/theme', import.meta.url));
+  assert.equal(existsSync(starterThemeDir), false, 'src/theme should not exist in tracked starter source — assembleStarter supplies it from theme/cds/ at assembly time');
+});
