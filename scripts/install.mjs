@@ -110,15 +110,15 @@ export function buildSpawnOptions(cwd, platform) {
  */
 export function resolveThemeDir(baseTargetDir, themeDirRelative) {
   if (isAbsolute(themeDirRelative)) {
-    throw new Error(`--theme-dir must be a project-relative path, got an absolute path: ${themeDirRelative}`);
+    throw new Error(`Theme destination path must be project-relative, got an absolute path: ${themeDirRelative}`);
   }
   const resolved = resolve(baseTargetDir, themeDirRelative);
   const rel = relative(baseTargetDir, resolved);
   if (rel === "") {
-    throw new Error(`--theme-dir must not resolve to the target directory itself: ${themeDirRelative}`);
+    throw new Error(`Theme destination must not resolve to the target directory itself: ${themeDirRelative}`);
   }
   if (rel.startsWith("..") || isAbsolute(rel)) {
-    throw new Error(`--theme-dir escapes the target directory: ${themeDirRelative}`);
+    throw new Error(`Theme destination escapes the target directory: ${themeDirRelative}`);
   }
 
   // Walk up from the resolved path to find the deepest ancestor that
@@ -137,7 +137,7 @@ export function resolveThemeDir(baseTargetDir, themeDirRelative) {
     const realRel = relative(realTarget, realAncestor);
     if (realRel.startsWith("..") || isAbsolute(realRel)) {
       throw new Error(
-        `--theme-dir resolves outside the target directory via a symlinked ancestor: ${themeDirRelative}`
+        `Theme destination resolves outside the target directory via a symlinked ancestor: ${themeDirRelative}`
       );
     }
   }
@@ -351,7 +351,7 @@ async function main() {
 
   if (isCssOnly) {
     // CSS-only mode: copy just theme.css, no CDS install
-    const destThemeDir = resolveThemeDir(targetDir, themeDirOverride ?? "src/theme");
+    const destThemeDir = resolveThemeDirOrExit(targetDir, themeDirOverride ?? "src/theme");
     copyThemeFiles(CSS_DIR, destThemeDir, ["theme.css"]);
     console.log(
       `\nDone. Import it once (e.g. \`import "./theme/theme.css"\`) and use var(--color-fg), var(--space-2), etc.`
@@ -405,7 +405,7 @@ async function main() {
     }
     const pkg = JSON.parse(readFileSync(pkgPath, "utf8"));
     const hasCds = Boolean(pkg.dependencies?.["@coinbase/cds-web"] || pkg.devDependencies?.["@coinbase/cds-web"]);
-    const destThemeDir = resolveThemeDir(targetDir, themeDirOverride ?? "src/theme");
+    const destThemeDir = resolveThemeDirOrExit(targetDir, themeDirOverride ?? "src/theme");
     // Resolve manager evidence — and, when an install will actually run,
     // the dependency command too — BEFORE copyThemeFiles, even when CDS is
     // already a dependency or --skip-install is set. This intentionally
@@ -437,6 +437,22 @@ async function main() {
 async function assembleStarterOrExit(targetDir) {
   try {
     return await assembleStarter({ sourceRoot: REPO_ROOT, destination: targetDir });
+  } catch (err) {
+    console.error(err.message);
+    process.exit(1);
+  }
+}
+
+/**
+ * Calls resolveThemeDir, exiting with a clean console.error message (no
+ * stack trace) on any validation failure, matching assembleStarterOrExit's
+ * pattern above and every other user-facing refusal in main(). resolveThemeDir
+ * itself keeps throwing (tests call it directly and expect that) — only this
+ * caller converts the throw into a clean exit.
+ */
+function resolveThemeDirOrExit(baseTargetDir, themeDirRelative) {
+  try {
+    return resolveThemeDir(baseTargetDir, themeDirRelative);
   } catch (err) {
     console.error(err.message);
     process.exit(1);

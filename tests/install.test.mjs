@@ -145,6 +145,12 @@ for (const css of [false, true]) {
     assert.notEqual(result.status, 0);
     assert.deepEqual(readdirSync(outside), []);
     assert.equal(existsSync(join(target, 'src/theme')), false);
+    // No --theme-dir flag was passed for this default-destination case, so
+    // the error must not blame that flag, and must be a clean console.error
+    // message rather than an uncaught throw's Node stack trace.
+    assert.doesNotMatch(result.stderr, /--theme-dir/);
+    assert.doesNotMatch(result.stderr, /at resolveThemeDir/);
+    assert.doesNotMatch(result.stderr, /at main/);
   });
 }
 
