@@ -2,8 +2,8 @@
 /**
  * generate-theme-config.mjs
  *
- * Mechanically emits ../theme.config.ts (the `neonTheme` overrides
- * object) and ../color-mapping.todo.md (a human handoff doc) from
+ * Mechanically emits theme/cds/theme.config.ts (the `neonTheme` overrides
+ * object) and theme/cds/color-mapping.todo.md (a human handoff doc) from
  * ../tokens.resolved.json and the raw ../tokens/*.json export.
  * Run `node sync-tokens.mjs` first to (re)produce tokens.resolved.json from
  * whatever is currently in ../tokens/.
@@ -16,29 +16,32 @@
  * scratch install — the package isn't installed in this repo). Only fields
  * Finnomena's export has real, unambiguous data for are populated; anything
  * else is left absent so `@coinbase/cds-web`'s own `defaultTheme` values
- * flow through at runtime (see ../createTheme.ts). Color specifically
+ * flow through at runtime (see ../cds/createTheme.ts). Color specifically
  * is NEVER guessed here — Finnomena's semantic token names (`text-primary`,
  * `icon-on-brand`, ...) share no vocabulary with CDS's semantic slugs (`fg`,
  * `bgPrimary`, `accentBoldBlue`, ...), so mapping one onto the other is a
  * real design decision. color-mapping.todo.md exists so a human can make
  * that call instead.
  *
- * Usage (full regeneration pipeline — run all four in order after changing
+ * Usage (full regeneration pipeline — run all three in order after changing
  * anything in tokens/*.json):
- *   node scripts/sync-tokens.mjs && node scripts/generate-theme-config.mjs && node scripts/generate-breakpoints-config.mjs && node scripts/install.mjs --sync-starter
+ *   node theme/scripts/sync-tokens.mjs && node theme/scripts/generate-theme-config.mjs && node theme/scripts/generate-breakpoints-config.mjs
  *
- * The 4th step syncs the regenerated theme files into
- * starters/vitejs-cds/src/theme/ — see sync-tokens.mjs's header for why.
+ * Nothing needs to sync a starter copy afterward — see sync-tokens.mjs's
+ * header for why.
  */
-import { readFileSync, writeFileSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const THEME_DIR = join(__dirname, "..");
 const TOKENS_DIR = join(THEME_DIR, "tokens");
-const OUT_THEME_FILE = join(THEME_DIR, "theme.config.ts");
-const OUT_COLOR_TODO_FILE = join(THEME_DIR, "color-mapping.todo.md");
+const CDS_DIR = join(THEME_DIR, "cds");
+const OUT_THEME_FILE = join(CDS_DIR, "theme.config.ts");
+const OUT_COLOR_TODO_FILE = join(CDS_DIR, "color-mapping.todo.md");
+
+mkdirSync(CDS_DIR, { recursive: true });
 
 const resolved = JSON.parse(readFileSync(join(THEME_DIR, "tokens.resolved.json"), "utf8"));
 const report = JSON.parse(readFileSync(join(THEME_DIR, "tokens.report.json"), "utf8"));
@@ -310,10 +313,10 @@ const header = `/**
  * ThemeConfig, and neonTheme here is deliberately partial).
  *
  * GENERATED FILE — do not hand-edit. Regenerate with:
- *   node scripts/sync-tokens.mjs && node scripts/generate-theme-config.mjs
+ *   node theme/scripts/sync-tokens.mjs && node theme/scripts/generate-theme-config.mjs
  *
- * Source of truth: the raw Figma Token Studio export in ./tokens/*.json,
- * resolved by ./scripts/sync-tokens.mjs into ./tokens.resolved.json.
+ * Source of truth: the raw Figma Token Studio export in ../tokens/*.json,
+ * resolved by ../scripts/sync-tokens.mjs into ../tokens.resolved.json.
  *
  * STATUS (regenerated ${report.generatedAt}):
  *
@@ -521,7 +524,7 @@ ${renderColorReferenceSection("dark")}
 Once a human has decided the mapping, it needs a real place to live and a
 generator update to consume it — neither exists yet (deliberately, to avoid
 building a mechanism for a decision nobody's made). Options to consider at
-that point: a small hand-written \`theme/color-overrides.ts\` merged in by
+that point: a small hand-written \`theme/cds/color-overrides.ts\` merged in by
 \`createTheme.ts\` alongside \`theme.config.ts\`'s \`neonTheme\`, or a new
 \`tokens/color-mapping.json\` input this script learns to read. Don't build
 either speculatively before the mapping itself exists.

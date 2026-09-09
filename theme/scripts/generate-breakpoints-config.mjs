@@ -2,9 +2,10 @@
 /**
  * generate-breakpoints-config.mjs
  *
- * Mechanically emits ../breakpoints.config.ts from ../tokens.resolved.json's
- * "<tier>.Detailed Layout.*" entries (sourced from ../tokens/breakpoint.json).
- * Run `node sync-tokens.mjs` first to (re)produce tokens.resolved.json.
+ * Mechanically emits theme/cds/breakpoints.config.ts from
+ * ../tokens.resolved.json's "<tier>.Detailed Layout.*" entries (sourced
+ * from ../tokens/breakpoint.json). Run `node sync-tokens.mjs` first to
+ * (re)produce tokens.resolved.json.
  *
  * Only the fields corroborated against the Figma app-shell frame (file
  * C9Usn2yP1dRpE9iTxyW3B2, node 732:842) are projected here: viewport
@@ -20,20 +21,23 @@
  * breakpoints.config.ts is a generated file — do not hand-edit it. Change
  * ../tokens/breakpoint.json and re-run this pipeline instead.
  *
- * Usage (full regeneration pipeline — run all four in order after changing
+ * Usage (full regeneration pipeline — run all three in order after changing
  * anything in tokens/*.json):
- *   node scripts/sync-tokens.mjs && node scripts/generate-theme-config.mjs && node scripts/generate-breakpoints-config.mjs && node scripts/install.mjs --sync-starter
+ *   node theme/scripts/sync-tokens.mjs && node theme/scripts/generate-theme-config.mjs && node theme/scripts/generate-breakpoints-config.mjs
  *
- * The 4th step syncs the regenerated theme files into
- * starters/vitejs-cds/src/theme/ — see sync-tokens.mjs's header for why.
+ * Nothing needs to sync a starter copy afterward — see sync-tokens.mjs's
+ * header for why.
  */
-import { readFileSync, writeFileSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const THEME_DIR = join(__dirname, "..");
-const OUT_FILE = join(THEME_DIR, "breakpoints.config.ts");
+const CDS_DIR = join(THEME_DIR, "cds");
+const OUT_FILE = join(CDS_DIR, "breakpoints.config.ts");
+
+mkdirSync(CDS_DIR, { recursive: true });
 
 const resolved = JSON.parse(readFileSync(join(THEME_DIR, "tokens.resolved.json"), "utf8"));
 
@@ -71,7 +75,7 @@ const output = `/**
  * tokens/breakpoint.json's "Detailed Layout" variant.
  *
  * GENERATED FILE — do not hand-edit. Regenerate with:
- *   node scripts/sync-tokens.mjs && node scripts/generate-breakpoints-config.mjs
+ *   node theme/scripts/sync-tokens.mjs && node theme/scripts/generate-breakpoints-config.mjs
  *
  * This file covers viewport ranges, sidebar rail/full width, and grid
  * rhythm (gutter/end-margins/columns) only. It does NOT cover Content/

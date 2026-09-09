@@ -3,7 +3,7 @@
  * tokens/breakpoint.json's "Detailed Layout" variant.
  *
  * GENERATED FILE — do not hand-edit. Regenerate with:
- *   node scripts/sync-tokens.mjs && node scripts/generate-breakpoints-config.mjs
+ *   node theme/scripts/sync-tokens.mjs && node theme/scripts/generate-breakpoints-config.mjs
  *
  * This file covers viewport ranges, sidebar rail/full width, and grid
  * rhythm (gutter/end-margins/columns) only. It does NOT cover Content/

@@ -18,7 +18,7 @@ test('review skill and its required review resources ship together', () => {
     'skills/neon-review/SKILL.md',
     'skills/neon-review/references/review-checks.md',
     'design-md/finnomena/DESIGN.md',
-    'theme/finnomena/color-overrides.ts',
+    'theme/cds/color-overrides.ts',
   ]) {
     assert.ok(existsSync(new URL(path, root)), path);
   }
