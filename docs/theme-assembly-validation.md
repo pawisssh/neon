@@ -118,10 +118,12 @@ fixes discovered by review of the work above. Commits, in order:
   written destination.
 - `theme/css/theme.css`'s header comment corrected: it referenced the
   pre-migration path `theme/finnomena/theme.config.ts` /
-  `theme/finnomena/color-overrides.ts`, which no longer exists (that
-  directory now holds only the deprecated `scripts/install.mjs` forwarding
-  shim, referenced separately in the same header and correctly left
-  untouched). All 4 occurrences now read `theme/cds/theme.config.ts` /
+  `theme/finnomena/color-overrides.ts`, which no longer exists. (The
+  `theme/finnomena/` directory now holds only the deprecated
+  `scripts/install.mjs` forwarding shim — an intentionally-preserved path
+  elsewhere in the repo, not referenced anywhere in `theme/css/theme.css`
+  itself, and correctly left untouched by this fix.) All 4 occurrences now
+  read `theme/cds/theme.config.ts` /
   `theme/cds/color-overrides.ts`, matching where those files actually live
   since commit `f83df06`. No CSS declaration or custom property changed —
   comment text only, confirmed via `git diff -- theme/css/theme.css`
