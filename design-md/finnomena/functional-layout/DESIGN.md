@@ -146,6 +146,12 @@ Keep structural surfaces white; reserve navy for controls and emphasis. Yellow `
 
 Use the `multi-asset-*` tokens only for their named asset categories. Keep category colors consistent across charts; add labels, values, and legends so color is never the sole identifier. Use dark labels beside light yellow/green marks. Label units, periods, and unavailable data; never imply that missing values are zero.
 
+### Extended Palette: Tint, Shade & Opacity
+
+Beyond the semantic roles above, each core brand hue — Yellow, Navy, Grey, Green, Blue, Purple, Red, Orange, Indigo — extends into a tint/shade/opacity scale for charts, decorative accents, and illustration fields the semantic tokens don't cover. `100` is a hue's pure/base tone (several semantic tokens already sit at this step, e.g. Navy 100 backs `button-primary`, Yellow 100 backs `background-brand`). Steps below 100 — 75, 50, 25, 0 — tint the hue toward white; steps above — 125, 150, 175 — shade it toward black. Grey has no shade tier past 100, since 100 is already pure black; shade neutrals with Navy instead. Each hue (other than Grey) also carries opacity variants at 25/50/75% of its 100 tone, for overlays, scrims, and fades — never as a substitute for a solid tint/shade fill.
+
+This is a naming and usage pattern, not a literal value table: pull exact hex for a given hue/step from the design system's color foundations when implementing, rather than approximating. Keep one hue and one step consistent within a single chart series, illustration, or accent block. Multi-asset categories keep their dedicated `multi-asset-*` tokens rather than an ad hoc palette pick.
+
 ## Typography
 
 Use **IBM Plex Sans Thai** for Thai and Latin text, with `sans-serif` as the loading fallback. Load weights 400, 500, and 700 when available; preserve Thai marks and wrapping without clipping.

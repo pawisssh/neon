@@ -165,6 +165,8 @@ The YAML `palette` provides the permitted 25/50/75/100 levels for landing-page a
 | Navy | `#C0C5CA` | `#808B95` | `#415160` | `#01172B` |
 | Light Grey | `#E9EFF2` | `#D3DFE6` | `#BCCFD9` | `#A6BFCC` |
 
+Each of these hues — and the wider brand set (Grey, Green, Blue, Purple, Red, Orange, Indigo) — also has a `0` white-tint ceiling and `125`/`150`/`175` shade steps beyond 100, plus opacity variants of the 100 tone, in the design system's color foundations, for cases this file's documented 25–100 range doesn't cover: a deep shaded illustration background, or a scrim over a media frame. Tier colorways stay limited to White, Yellow 100, Navy 100, and Light Grey 100 as documented above; the wider hue set and its shade/opacity extensions are for Multi-asset colors visuals only, never page backgrounds, CTAs, or tier fields.
+
 ### Essential UI colors
 
 | Token | Hex | Use |
