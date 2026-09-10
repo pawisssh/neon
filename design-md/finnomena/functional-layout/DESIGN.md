@@ -1,5 +1,5 @@
 ---
-name: Finnomena Neon
+name: Finnomena Neon - Functional layout
 colors:
   text-primary: "#000000d9"
   text-secondary: "#000000a6"
@@ -282,7 +282,6 @@ Use **IBM Plex Sans Thai** for Thai and Latin text, with `sans-serif` as the loa
 
 | Role | Token | Size / line height |
 | --- | --- | --- |
-| Hero | `display2` | 60 / 70px; step down to `largeTitle` on phones |
 | Page title | `largeTitle` or `title1` | 34 / 41px or 28 / 34px |
 | Section title | `title2` | 22 / 28px |
 | Emphasized label | `headline` | 17 / 22px, weight 500 |
@@ -306,6 +305,16 @@ Use 8px radii for controls and cards; reserve full pills for tags, toggles, and 
 - Group with whitespace and separators. Use cards when content represents a distinct object or interaction.
 - When redesigning, preserve meaningful content, navigation, and familiar workflows unless their change is requested.
 
+## Visual Hierarchy: Hero & Primary Action
+
+Every page and self-contained component commits to one focal point and no more than one dominant action; nothing else competes with them.
+
+**Hero object.** Lead with a single focal element sized to be the first thing the eye lands on: the page's core number, chart, or subject, rendered at the largest type or visual scale in view (`display1`–`largeTitle` for numerals, a full-width chart, or a dominant illustration). Place it near the top of the content area, isolated from supporting detail by whitespace, with context (date, status, ticker, account) set in `footnote`/`caption1` immediately below or beside it — never at competing size. A buy amount, a net-worth figure, an order total: one number or image per view is the anchor; everything else is supporting detail rendered smaller and quieter.
+
+**One primary button.** Give each page — and each self-contained component within it (a card, sheet, or modal with its own task) — no more than one `button-primary`. Every other action on that surface drops to `button-secondary`, `button-tertiary`, or a plain `link-primary`, even when it is common or frequently used (quick-amount chips, icon-only utilities, "View all" rows). When a page has a persistent primary action (a sticky footer button, a hero CTA), inline or nested components must not introduce a second filled-navy button in the same view — demote their action to secondary/tertiary or a link so the page-level primary stays the one dominant control. Purely informational or status screens may carry no primary button at all. Reserve `button-highlight` (yellow) for the rare moment that should out-rank even the primary, never as a routine CTA color.
+
+**Applying it:** Identify the hero — the number, chart, or message the task is actually about — before laying out anything else, and size/position it to read before any label, tag, or metadata. Then identify the one action (if any) that completes the task and render it as the sole primary, with every other affordance a tier below. This applies inside any Layout Pattern — Detailed's Inspector, Content's report pane, an Immersive hero section — each still resolves to one hero and at most one primary per view.
+
 ## Layout Patterns
 
 Choose the layout from the screen’s task without asking the user to select a component. These names describe visual patterns, not required imports.
@@ -315,7 +324,6 @@ Choose the layout from the screen’s task without asking the user to select a c
 | `DetailedLayout` | Sidebar + Content + Inspector; inspector-weighted | List-and-detail workspaces, inboxes, orders, holdings |
 | `ContentLayout` | Sidebar + Content + Inspector; content-weighted | Content-led reports, dashboards, articles, editors |
 | `SimpleLayout` | Sidebar + Content | Single-pane utilities |
-| `ImmersiveLayout` | Full-bleed content + logo header | Landing pages and focused flows |
 
 Use the simplest pattern that supports the task. Do not add an inspector without detail content. An immersive landing page may contain several sections; “immersive” means no persistent sidebar.
 
@@ -328,7 +336,6 @@ At a 1440px viewport, use the dimensions below. Fixed panes retain their tier wi
 | Detailed | 360px | Fixed 400px | Flexible 680px |
 | Simple | 360px | Flexible 1080px | Hidden |
 | Content | 320px | Flexible 720px | Fixed 400px |
-| Immersive | Hidden | Full viewport width | Hidden |
 
 These figures match the reference frames; Simple's 360px sidebar follows Figma over the token export's 320px value at this tier. Keep workspace panes full-height, with 64px toolbars and independently scrolling content areas; sidebar header/footer slots are 64px when present. Apply padding inside panes. Immersive keeps a real-logo header and may scroll as a normal page for landing content. Diagram colors indicate structure only; use Neon's white surface tokens in the UI.
 
@@ -392,7 +399,7 @@ White `background-primary` with a top `border-subtle` hairline, secondary text, 
 
 ### Buttons
 
-Primary: `button-primary` fill, `text-on-color`, `body` typography, 8px radius, minimum 48px height, and 12px × 16px padding. Let height grow for wrapping labels. Secondary and tertiary actions use their corresponding token families. Use hover/active variants, `button-disabled` for unavailable actions, and `button-danger` for destructive actions. Keep one visually dominant action per task region.
+Primary: `button-primary` fill, `text-on-color`, `body` typography, 8px radius, minimum 48px height, and 12px × 16px padding. Let height grow for wrapping labels. Secondary and tertiary actions use their corresponding token families. Use hover/active variants, `button-disabled` for unavailable actions, and `button-danger` for destructive actions. See Visual Hierarchy for the one-primary-per-page/component rule.
 
 ### Form Fields
 

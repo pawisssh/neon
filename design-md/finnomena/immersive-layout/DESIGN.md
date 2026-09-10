@@ -193,19 +193,6 @@ The reference color proportions are illustrative, not fixed layout ratios. On ge
 
 Use `multi-assets` only for the named investment category in a labeled allocation, comparison, or educational visual. Pair each color with its category name and value; color must never be the only identifier. Use dark labels beside Gold and E-savings. Do not use multi-asset colors as decorative page fields, CTAs, or tier colorways.
 
-| Category | Hex |
-| --- | --- |
-| Cryptocurrency | `#8F0606` |
-| Crowdfunding | `#D60808` |
-| P2P lending | `#BA4A0A` |
-| Thai equity | `#1211AD` |
-| Equity | `#AA46C3` |
-| Mutual fund | `#01172B` |
-| Gold | `#F1F92D` |
-| Tax saving | `#50CFFF` |
-| E-savings | `#40ED90` |
-| Cash | `#007435` |
-
 ## Typography
 
 Use IBM Plex Sans Thai for Thai and Latin content, with `sans-serif` as the loading fallback. Use `display2` for desktop headlines and `largeTitle` below 500px. Keep display headlines concise enough to read in two or three lines; create hierarchy through line breaks, weight, and color rather than extra words. Keep body copy left-aligned, concrete, and within a readable measure of about 65 characters. Use `headline` for CTA text and `footnote` only for supporting information.
