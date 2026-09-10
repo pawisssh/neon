@@ -1,23 +1,37 @@
 ---
 name: neon-create
-description: Use when building Finnomena or neon features, screens, components, or new React apps with Coinbase Design System. Applies to established Finnomena branding context and explicit invocation. For CSS-only restyling use neon-redesign; for uncertain integration in an existing app use neon-audit.
+description: Use when building Finnomena or neon features, screens, components or new React apps with Coinbase Design System, or integrating its theme into React. Applies to established Finnomena intent. Use neon-redesign for CSS-only styling and neon-review for review-only requests.
 ---
 
 # Build Finnomena features with CDS
 
-Deliver the requested feature using real `@coinbase/cds-web` components, Finnomena tokens, and the right visual mode: functional screens use restrained navy/white with indigo interaction highlights; immersive pages may use colorful Finnomena surfaces and illustrations. Uber informs composition; CDS supplies implementation.
+## Purpose
 
-## Find the resources
+Deliver the requested content and interactions with real `@coinbase/cds-web` components and Finnomena tokens. Functional screens use restrained navy/white and indigo highlights; immersive pages can be colorful.
 
-Resolve this skill's real directory (follow symlinks). The Neon root is two directories above it and contains `theme/`, `templates/`, `design/`, and `scripts/`. In these documents, `${CLAUDE_PLUGIN_ROOT}` means that resolved root when the host does not supply it. Never resolve it from the employee app's working directory. If sibling assets are missing, identify the incomplete installation before running setup.
+## When to use
 
-## Work from the task
+Use for React/CDS implementation. Preserve an explicitly requested non-React framework and use its normal feature workflow plus Neon's CSS styling path. A request to review does not authorize implementation.
 
-1. Read [workflow-contract.md](../neon-audit/references/workflow-contract.md) for scope, existing project evidence and routing. Reuse established branding intent. New apps default to React/CDS; an existing app keeps its framework, providers, routes and customized theme.
-2. Read [the design contract](../../design/FINNOMENA.md) before making visual decisions. Identify the audience, main task, primary action and relevant states. Infer routine choices from the brief; ask only for missing information that materially changes the result. Keep this short direction in conversation, not a new file in the employee app.
-3. Choose **new project**, **new screen/component**, or **theme integration**. For installation or changes to providers/tokens, read [cds-integration.md](references/cds-integration.md). Reuse an already working installation. Never scaffold over an existing app or overwrite customized theme files.
-4. For feature implementation, read [new-ui-workflow.md](references/new-ui-workflow.md). Reuse the app's components and service contracts. Choose CDS components from official tooling if available, otherwise inspect installed exports and prop types. Do not guess imports or emulate available CDS controls with generic HTML merely for styling convenience.
-5. Build the requested content and interactions. Use semantic tokens with real CDS keys. Preserve the app's theme-mode source of truth; use a stable `createNeonTheme()` result and the documented provider setup. Component-specific changes belong in supported component configuration or scoped wrappers, not global token hacks.
-6. Run the app's relevant build/typecheck and behavior checks. Inspect narrow/wide layouts, long Thai/English text, keyboard focus and relevant states when a preview is available. Follow [verification.md](../neon-redesign/references/verification.md) for delivery and evidence limits. A copied starter alone is not completion.
+## Fast path
 
-Report what was built, where to view it, checks actually performed and material limitations. Distinguish provisional token mappings, mock services and unverified runtime checks from confirmed behavior.
+If the app already has a working Finnomena CDS theme, start with the requested component, service and interaction. Reuse its shell, providers, routes and customized theme; skip scaffold, installer and provider setup. Reuse established scope without another tier question.
+
+## Workflow
+
+1. Identify the target, main task and relevant states. Inspect only missing app evidence. Use the [shared contract](../neon-audit/references/workflow-contract.md) if scope/routing is unresolved; conflicting preserve/change instructions require clarification. Resolve Neon resources two levels above this skill's real directory.
+2. Read the relevant [design guidance](../../design/FINNOMENA.md#composition) for visual choices. Select functional or immersive independently of framework. In existing UI preserve composition unless change is requested.
+3. Build with existing services and verified CDS exports/prop types. Use semantic color, spacing and radius keys; configure component-specific treatment through supported configuration or scoped wrappers. Do not invent imports, tokens or backend behavior.
+4. Implement task-relevant loading, empty, validation, pending, error/recovery and success states. Label mock behavior visibly in demos. A starter alone is not a feature.
+5. Run the [shared verification](../neon-redesign/references/verification.md), applying only relevant additions. Inspect actual output; report unavailable checks rather than claiming them.
+
+## Conditional references
+
+- New project: [scaffold and layout](references/scaffold.md). Never scaffold over a nonempty app.
+- Theme/provider/dependency changes: [CDS integration](references/cds-integration.md). Preserve customized files and theme-mode ownership.
+- Complex feature states or existing-app integration: [new UI workflow](references/new-ui-workflow.md).
+- Font, mode, migration or installer conflict: the matching section of [theme integration](../neon-audit/references/theme-integration.md).
+
+## Done
+
+Deliver working requested UI, its location/preview, checks performed and material limitations. Keep provisional mapping, mocked services and unverified runtime behavior distinct from confirmed results.

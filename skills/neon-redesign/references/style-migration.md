@@ -8,58 +8,11 @@ For a general "did I actually check the UI I changed" checklist — usable
 here and by other neon skills — see
 `${CLAUDE_PLUGIN_ROOT}/skills/neon-redesign/references/verification.md`.
 
-## The sequence
+## Migration sequence
 
-Always run these five steps in order. Don't skip inventory/map to jump
-straight to editing — that's how a restyle turns into a blind
-find-and-replace that breaks unrelated UI.
+Use the [redesign workflow](../SKILL.md#workflow): inventory affected styles, map semantic roles, update scoped definitions, update remaining component styles, then verify. Read the format section below matching the actual app; do not load all formats for a single edit.
 
-1. **Inventory affected styles.** List every file in `targetPaths` (or, for
-   a whole-app restyle, every file actually touching visual styling —
-   component styles, shared stylesheets, Tailwind config, theme tokens).
-   For each, note what color/typography/spacing values it currently uses
-   and in what format (raw hex, a CSS variable, a Tailwind utility class,
-   a shadcn `hsl(var(--x))` reference). This inventory is what the
-   before/after list required by
-   `${CLAUDE_PLUGIN_ROOT}/skills/neon-redesign/references/verification.md`
-   gets built from — don't discard it once editing starts.
-
-2. **Map by semantic role, not by literal value.** For every color/value
-   found, ask "what job is this doing?" (primary action, page background,
-   muted text, destructive action, success state, arbitrary chart
-   series-N) before deciding what it becomes. Never do a blind
-   hex-string find-and-replace across the codebase — the same `#2563eb`
-   might be a primary button in one file and an unrelated decorative
-   accent in another, and two *different* hex values might both be doing
-   "primary action" and should converge on the same Finnomena token. See
-   **Chart and status colors** below for the one category that needs
-   materially different handling than UI chrome.
-
-3. **Update shared tokens within scope.** Once roles are mapped, edit the
-   *shared* definition point (root CSS variables, `tailwind.config.js`
-   `theme.extend`, a `@theme` block, `globals.css`) — but only the tokens
-   that are actually in scope per `tier` (see **Tier scope** below) and
-   only when the request scope is shared/global to begin with. If
-   `${CLAUDE_PLUGIN_ROOT}/skills/neon-audit/references/project-inspection.md`'s
-   partial-scope rule already flagged a
-   local-vs-shared conflict in `preserve`, honor it here: use a local
-   override instead of touching the shared token. See **Format-specific
-   guidance** below for how to actually write the update in each of the
-   four style systems this skill supports.
-
-4. **Update remaining hardcoded component styles.** After shared tokens
-   are updated, sweep the inventory from step 1 for values that don't
-   route through a token at all — inline styles, one-off hex literals,
-   Tailwind arbitrary values (`bg-[#2563eb]`) — and convert the ones that
-   are actually branded (per step 2's role mapping) to reference the
-   updated token. Leave non-branded structural values alone — see
-   `SKILL.md` step 3 for the rule on what counts as "actually branded."
-
-5. **Verify.** Follow
-   `${CLAUDE_PLUGIN_ROOT}/skills/neon-redesign/references/verification.md`.
-   Don't claim the restyle is done because files were edited — render the
-   affected screens and confirm the visual change actually landed and
-   nothing else broke.
+Local scope means local overrides when a shared token has unrelated consumers. The same hex can represent a primary action, focus or a chart category; map each by meaning before editing. Keep a before/after inventory of changed shared tokens and intentional exceptions for the [verification report](verification.md#restyling-additions).
 
 ## Tier scope
 
@@ -72,11 +25,8 @@ Use `NeonContext.tier` from the contract, not a separate vocabulary:
   also update font, spacing, and radius tokens that are part of the
   brand's visual system per
   `${CLAUDE_PLUGIN_ROOT}/design/FINNOMENA.md`
-  (shared with the immersive guide). Layout geometry
-  (page grid, component internal padding that isn't a themed spacing
-  token, structural dimensions) is still preserved unless the request
-  explicitly asks for a layout redesign — this tier changes *what the
-  tokens resolve to*, not the app's own layout decisions.
+  . Composition remains `preserve` unless explicitly requested as `adapt`;
+  tier alone never grants layout redesign.
 - `tier: 'cds'` doesn't apply here — that's `neon-create`'s job.
 
 ## Chart and status colors
@@ -106,7 +56,7 @@ Before writing any token update, **inspect the target project's actual
 existing files** to determine which of these four families it uses — do
 not assume it matches this repo's own `theme.css` convention (full
 `rgb()`/hex values held directly in the variable, consumed as
-`var(--color-fg)`). Record the detected format so the update in step 3
+`var(--color-fg)`). Record the detected format so the scoped update
 matches it exactly.
 
 ### 1. Plain CSS / CSS Modules
@@ -119,7 +69,7 @@ matches it exactly.
 scope) or on a scoped class/CSS-module root (partial scope — see
 **Partial scope — local vs. shared/global tokens** in
 `${CLAUDE_PLUGIN_ROOT}/skills/neon-audit/references/project-inspection.md`
-and step 3 above). Values usually hold a complete
+and scoped updates above). Values usually hold a complete
 color (`#01172b` or `rgb(1, 23, 43)`) referenced directly as
 `var(--name)` — this is the same convention
 `${CLAUDE_PLUGIN_ROOT}/theme/css/theme.css` itself uses, so its
@@ -137,7 +87,7 @@ like `bg-blue-600` in markup; no `@theme` block in CSS (that's v4).
 config file (e.g. `colors: { primary: '#01172b', ... }`), then replace
 component-level utility classes (`bg-blue-600` → `bg-primary`) and any
 arbitrary-value usages (`bg-[#2563eb]` → `bg-primary`) that map to a
-branded role per step 2's mapping. Config values are typically full hex —
+branded role from semantic mapping. Config values are typically full hex —
 no wrapper-function conversion needed here.
 
 ### 3. Tailwind v4
@@ -290,7 +240,7 @@ button while the request is in flight. `tier: 'colors'`.
 - **Map:** the submit button's `bg-brand` is the primary-action role →
   Navy Ink (`#01172b`). The inputs' `focus:border-brand` is a *different*
   role — interactive-highlight/focus — even though the original app
-  reused the same `--color-brand` token for both; per step 2, don't
+  reused the same `--color-brand` token for both; use semantic mapping: don't
   collapse these back onto one Finnomena color just because the source
   used one token. Focus rings map to Indigo Interactive (`#1817e7`), not
   Navy Ink. The validation error text (`text-red-600`) is a status color,
@@ -320,3 +270,9 @@ button while the request is in flight. `tier: 'colors'`.
   `${CLAUDE_PLUGIN_ROOT}/skills/neon-redesign/references/verification.md`'s
   "unchanged form/route behavior" acceptance criterion is calibrated
   against.
+
+## Composition adaptation
+
+For an explicit layout or hierarchy redesign, record `composition: 'adapt'` separately from styling tier. Identify existing containers and controls; change presentation within the named scope using the current framework and components. Preserve handlers, routes, service/query contracts, data meaning and essential actions. If styles are already Finnomena, keep them while adapting layout; no new token installation is implied.
+
+Example: move a Vue filter toolbar above the results and stack its controls on mobile. Retain the same bindings and filter/reset handlers; preserve selection and navigation. Verify reading/focus order, every control's reachability and the same filter outcomes using [composition checks](verification.md#composition-additions). A colors-only request cannot authorize this change.

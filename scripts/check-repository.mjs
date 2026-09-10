@@ -4,6 +4,7 @@ import { dirname, resolve, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { tmpdir } from 'node:os';
 import { packagePlugin } from './package-plugin.mjs';
+import { checkMarkdownLinks } from './lib/markdown-links.mjs';
 
 const sourceRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 async function markdownFiles(directory) {
@@ -13,7 +14,7 @@ async function markdownFiles(directory) {
     : entry.name.endsWith('.md') ? [join(directory, entry.name)] : []));
   return nested.flat();
 }
-async function check(root) {
+async function check(root, { includeReadme = false } = {}) {
   const manifest = JSON.parse(await readFile(join(root, '.claude-plugin/plugin.json'), 'utf8'));
   for (const skill of manifest.skills) {
     const file = join(root, skill, 'SKILL.md');
@@ -24,19 +25,16 @@ async function check(root) {
     }
   }
   const files = [...await markdownFiles(join(root, 'skills')), join(root, 'design/FINNOMENA.md')];
+  if (includeReadme) files.push(join(root, 'README.md'));
   for (const file of files) {
     const content = await readFile(file, 'utf8');
-    for (const match of content.matchAll(/\[[^\]]*\]\(([^)]+)\)/g)) {
-      const target = match[1].split('#')[0];
-      if (!target || /^[a-z]+:/.test(target)) continue;
-      await access(resolve(dirname(file), target)).catch(() => { throw new Error(`Broken link in ${file}: ${target}`); });
-    }
+    await checkMarkdownLinks(file);
     for (const match of content.matchAll(/\$\{CLAUDE_PLUGIN_ROOT\}\/([\w./-]+)/g)) {
       await access(join(root, match[1])).catch(() => { throw new Error(`Missing plugin resource in ${file}: ${match[1]}`); });
     }
   }
 }
-await check(sourceRoot);
+await check(sourceRoot, { includeReadme: true });
 const destination = await mkdtemp(join(tmpdir(), 'neon-check-'));
 await packagePlugin({ sourceRoot, destination });
 await check(destination);

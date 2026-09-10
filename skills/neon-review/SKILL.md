@@ -1,37 +1,43 @@
 ---
 name: neon-review
-description: Use when reviewing existing Finnomena or neon UI for brand consistency, responsive behavior, accessibility, or interaction states, including screenshots and source-only reviews with limited evidence. Applies to explicit neon-review requests and established branding context; use neon-audit for integration or theming-depth decisions.
+description: Use when reviewing Finnomena or neon UI for task usability, branding, responsiveness or accessibility, including screenshots and source-only evidence. Applies to explicit invocation and established Finnomena context. Use neon-audit for uncertain theme adoption choices.
 ---
 
-# Neon UI Review
+# Review Finnomena UI
 
-Resolve the Neon root from this loaded skill's real directory, two levels up (follow symlinks), not the consuming app's working directory. `${CLAUDE_PLUGIN_ROOT}` in references denotes that root when the host does not supply it. Read [the shared design contract](../../design/FINNOMENA.md) for visual decisions within the requested scope.
+## Purpose
 
+Find actionable UI problems supported by evidence. Prioritize blocked user tasks and inaccessible essential controls before minor visual inconsistencies.
 
-Produce actionable findings about the requested UI, with evidence and coverage limits. This is a read-only review phase, not a theme installer or a general backend/security audit. Review any framework; CDS adoption is not a prerequisite.
+## When to use
 
-## Scope and evidence
+Use for existing UI in any framework. Review-only is read-only; it does not install a theme, edit the app or start an implementation handoff.
 
-1. Reuse the requested target and established brand intent; do not repeat settled questions. Identify the page/component and requested dimensions. Colors-only excludes typography/spacing changes. A header-only review stays within the header and directly affected behavior. Ask only if the missing target prevents useful inspection.
-2. Read the relevant sections of the matching Finnomena design guide — [shared design contract](../../design/FINNOMENA.md), including its functional or immersive composition guidance as applicable. For disputed CDS color mappings, inspect [color-overrides.ts](../../theme/cds/color-overrides.ts). Resolve paths from this loaded skill's real directory, not the working directory. If references are unavailable, report that limitation; do not invent brand rules. The mapping is provisional: distinguish documented mismatches from design judgment.
-3. Record the evidence available: live UI, screenshots, source, or supplied test results. A screenshot establishes only the visible state; source establishes implementation details. Neither alone proves runtime behavior. Use [review-checks.md](references/review-checks.md) for checks relevant to the selected dimensions and evidence.
+## Fast path
 
-## Inspect
+Start from the supplied screenshot, source or URL and known scope. No tier selection or repeated branding question is needed. Ask for a target only when none is inspectable.
 
-Use available read-only browser, DOM, screenshot, and source tools. Inspect the supplied URL or existing local preview first. Starting a local preview is appropriate only after inspecting its command for side effects. Do not install dependencies, alter app configuration, edit application files, or run unknown lifecycle scripts to enable a review. If runtime access is blocked, complete the supported static review and list unavailable checks.
+## Workflow
 
-Exercise navigation, focus, and reversible UI states where safe. Do not submit, approve, purchase, delete, send messages, or change real records to test a live interface. Use an explicitly disposable test environment for such actions, within the user's authorization; otherwise mark them untested. Save evidence artifacts only when useful, within an authorized output location, and avoid exposing sensitive screen content.
+1. Select the evidence path:
 
-Verify suspected defects against available evidence before reporting them. Attribute supplied findings and source locations to their report; do not claim independent reproduction or line verification. For your own findings, cite an observed UI location or an inspected source line; never infer file lines from screenshots. Record viewport/theme/state for visual findings. Do not manufacture issues, compliance claims, numerical scores, or measurements from appearance alone.
+   | Evidence | Inspect | Do not infer |
+   | --- | --- | --- |
+   | Screenshot | Visible hierarchy, clipping, labels, color roles and captured state | Keyboard behavior, other widths, exact font loading or measured contrast |
+   | Source | Verified tokens, markup, handlers and declarations | Computed cascade or successful runtime interactions |
+   | Live UI | Observed layout, focus, navigation and safely reachable states | Untested routes, unavailable states or backend correctness |
 
-## Deliver
+2. Identify the user's main task and inspect obstacles within the requested scope. Colors-only excludes typography/layout; header-only excludes unrelated screens. Combine evidence where available and label supplied versus independently observed results.
+3. For brand judgments, read the relevant [design contract](../../design/FINNOMENA.md) sections. Resolve resources from this skill's real directory, not the app directory. Distinguish documented mismatches from taste; missing references limit brand conclusions.
+4. Verify each suspected issue. Use the existing preview or a reviewed local start command. Do not install dependencies or edit configuration to enable a review. Do not submit, approve, purchase, delete or alter real records to reach a state; use authorized disposable data or mark it untested.
+5. Report evidence with observed location and viewport/theme/state where available. Never invent measurements, source lines, compliance or verification coverage. Missing evidence is not proof of a defect.
 
-Follow the user's requested format; otherwise return:
+## Conditional references
 
-- **Coverage:** target, evidence mode, viewports/themes/states actually inspected.
-- **Findings:** severity, location, observed evidence, user impact, suggested fix, and a concrete recheck. Order by impact; group repeated instances with a shared cause.
-- **Unverified:** relevant checks unavailable or deliberately not exercised.
+Use [review checks](references/review-checks.md) for the requested dimensions, and [color mapping](../../theme/cds/color-overrides.ts) only for disputed CDS assignments. Source-only risks remain hypotheses until reproduced.
 
-Use High for a blocked primary task or inaccessible essential control, Medium for a meaningful usability/brand defect, and Low for a minor inconsistency. Explain the impact rather than escalating by category alone. If none are supported, say “No actionable findings in the inspected scope”; this is not certification of the entire app. When no inspectable UI or source was supplied, state that evidence is insufficient instead of implying a clean review.
+## Done
 
-Stop after a review-only request. If fixes are already authorized, finish the findings first, then continue the authorized work carrying scope and evidence forward. Use neon-redesign for restyling and neon-create for new UI/CDS integration; a small behavior or accessibility fix follows the app's normal repair workflow without installing a theme. Honor any explicit findings-approval gate; never require a new approval solely because this skill was used.
+Return **Coverage**, **Findings**, and **Unverified**. Each finding states severity, location, evidence, who is affected and how, suggested fix and recheck. Group repeated causes. High blocks the main task or an essential control; Medium materially harms usability/brand; Low is a minor inconsistency. No supported findings means none in the inspected scope, not whole-app certification.
+
+Stop for review-only. If fixes are already requested, continue them with preserved scope after reporting findings; honor an explicit approval gate but do not invent one. Routine accessibility fixes use the app's repair workflow without forcing theme adoption.

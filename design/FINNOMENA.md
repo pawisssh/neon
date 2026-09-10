@@ -33,6 +33,20 @@ Start from the employee's main task and the information needed to complete it. U
 
 **Immersive screens:** colorful Finnomena surfaces, expressive illustrations and palette-based gradients are allowed when they support the story. Navy/white need not dominate every section. Use a focused reading sequence, clear proposition, relevant imagery and an identifiable next action. Choose accessible action colors for each surface; indigo is not a mandatory hero or CTA color. Keep status colors semantic when communicating system feedback. `ImmersiveLayout` is a starter option, not a mandatory landing-page recipe. Optional reference designs under `design/immersive-layout/` in a full checkout (not included in the default bundle) supply composition only when selected and available; their source colors and older yellow-led recipes do not supersede this product contract.
 
+## Task-based choices
+
+These are decision aids, not mandatory screen templates or approved visual exemplars. Reuse the app's current components before introducing a new layout abstraction.
+
+| User task | Useful composition | Selection criterion |
+| --- | --- | --- |
+| Compare many records across the same attributes | Table with aligned columns and clear headers | Comparison benefits from shared column alignment; keep key columns/actions reachable on narrow screens |
+| Scan short summaries and open one record | List with selected detail | Add a side panel only if simultaneous context helps the decision; otherwise a detail view with a return path is enough |
+| Enter related information | Labeled form groups with nearby help/errors | Group by meaning; use multiple steps only when the task has a real sequence, not to decorate a short form |
+| Filter a collection | Toolbar near results and a no-match state | Preserve query and selection semantics; let controls wrap/stack without hiding filtering on small screens |
+| Understand a product or campaign | Immersive reading sequence with meaningful imagery and a next action | Expressive surfaces should clarify the story; the action must contrast with its local background |
+
+For existing screens, apply these decisions only within authorized composition changes. Colors-only and an ambiguous “make it Finnomena” request preserve structure. In `composition: 'adapt'`, improve hierarchy, grouping or responsive presentation without changing routes, handlers, services or data meaning.
+
 ## Typography, geometry and assets
 
 Use IBM Plex Sans Thai via the app's font loader, with both Thai and Latin verified. Use the generated CDS typography roles and shipped spacing/radius tokens. Structural widths and responsive geometry may use documented layout dimensions; do not prohibit every numeric CSS value. Preserve geometry during colors-only work.
@@ -45,10 +59,14 @@ Implement the states relevant to the task: loading, empty, error with recovery, 
 
 On narrow screens, retain the main task and a way to reach navigation/details. Stack or progressively reveal panels; do not simply hide essential actions. Allow long Thai/English labels to wrap. Check keyboard focus, control names, dialog focus return and reduced motion when applicable.
 
-## Example: approvals
+## Illustrative example: approvals
 
 Show a scannable pending list and selected request details. Use navy for the main approval action, an indigo selection/focus indicator, and labeled semantic status badges. A reject action uses the appropriate destructive treatment. Include empty, pending, failure/retry and completion states. On a narrow screen, open details with an obvious way back to the list. Preserve the existing router, providers and approval service; a mock must not imply a real approval occurred.
 
-## Example: immersive campaign
+## Illustrative example: immersive campaign
 
 A product landing page may use a substantial yellow or blue-grey hero field, colorful Finnomena illustrations and alternating light/navy sections. Choose a contrasting navy action on a light accent surface. Keep navigation, forms and status feedback legible and familiar. This expressive composition is appropriate for an immersive story; do not carry its decorative panels into a dense approvals workspace by default.
+
+## Illustrative example: responsive request form
+
+Group requester information separately from request details, retain the current field names, validation and submit handler, and put errors near the affected field. Use a navy primary submit action and an indigo focus indicator. A narrow layout stacks existing groups in a meaningful reading order; it does not remove required fields. For colors-only work, change semantic colors while retaining the original groups and spacing. These examples are explanatory, not formal Finnomena design approval.

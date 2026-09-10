@@ -2,7 +2,7 @@
 
 **Build features that feel like Finnomena — describe what you need, and let your AI coding assistant handle the UI.**
 
-Neon is a set of four AI skills, Finnomena theme assets, and a React starter. It helps employees create apps, add features, restyle existing screens, and review UI with a consistent visual direction. For React feature building, it uses real [Coinbase Design System](https://github.com/coinbase/cds) components through `@coinbase/cds-web`.
+Neon is a set of four AI skills, Finnomena theme assets, and a React starter. The main journeys are create, redesign and review. Audit is an optional assessment when the target or integration approach is unclear. For React feature building, it uses real [Coinbase Design System](https://github.com/coinbase/cds) components through `@coinbase/cds-web`.
 
 You can write your requests in Thai or English. You do not need to know component names or design token values to get started.
 
@@ -120,13 +120,13 @@ You can also provide a screenshot. A screenshot review covers the visible state;
 
 ## Choose a skill
 
-Natural-language requests can select the relevant skill through your assistant. To be explicit in Claude Code, use the commands below. You do not need to run all four in sequence.
+Start with the task: create a feature, redesign existing UI, or review the result. Natural-language requests can select the relevant skill through your assistant. To be explicit in Claude Code, use the commands below. You do not need to run all four in sequence.
 
 | Skill / command | When to use it | What it does |
 | --- | --- | --- |
 | [`/neon:neon-create`](skills/neon-create/SKILL.md) | Build a feature, screen, component or new React app | Uses real CDS components and Finnomena tokens; reuses existing setup or prepares a new app |
 | [`/neon:neon-audit`](skills/neon-audit/SKILL.md) | An existing app needs Finnomena branding, but the approach is unclear | Inspects the app without editing it, selects or clarifies the theming depth, then hands off |
-| [`/neon:neon-redesign`](skills/neon-redesign/SKILL.md) | Change existing UI colors or visual styling without adopting CDS | Applies CSS variables within the requested scope and preserves existing behavior |
+| [`/neon:neon-redesign`](skills/neon-redesign/SKILL.md) | Change existing UI styling or explicitly requested composition without adopting CDS | Applies scoped CSS changes, supports requested layout/hierarchy adaptation, and preserves product behavior |
 | [`/neon:neon-review`](skills/neon-review/SKILL.md) | Check existing UI or screenshots | Reports findings, evidence, suggested fixes and unavailable checks; review-only requests do not edit the app |
 
 **Typical paths**
@@ -146,6 +146,14 @@ When an existing app needs theming, Neon supports three levels:
 | Colors only | Semantic color variables | No |
 | Visual system | Colors, typography, spacing and radius within the agreed scope | No |
 | Full CDS | Finnomena theme plus real CDS components | Yes; React |
+
+Layout is a separate choice from these tiers. Existing composition is preserved by default. Ask explicitly to reorganize layout or hierarchy when you want that changed; an ambiguous “make it Finnomena” request changes styling. Even a composition redesign preserves framework, routes, handlers, services and data meaning.
+
+```text
+Reorganize this Finnomena Vue request page: place filters above results and
+stack the controls on mobile. Keep the current theme, routes, filter handlers
+and service contracts. Do not adopt CDS or add new product behavior.
+```
 
 Your explicit request takes priority. “Change only the colors” stays colors-only even if the app already has CDS installed. Vue, Svelte and other non-React apps use the CSS path; Neon does not silently convert them to React.
 

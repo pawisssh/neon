@@ -1,161 +1,38 @@
 ---
 name: neon-redesign
-description: Use when restyling existing Finnomena or neon UI with CSS colors or visual tokens without adopting CDS. Applies to established Finnomena context and explicit invocation, including partial-scope and non-React work. Use neon-create for real CDS components.
+description: Use when restyling existing Finnomena or neon UI through CSS tokens without adopting CDS, including non-React apps, partial changes and explicitly requested layout or hierarchy redesign. Applies to established Finnomena intent. Use neon-create for CDS adoption.
 ---
 
-# Finnomena Redesign (CSS variables only)
+# Restyle Finnomena UI
 
-Resolve the Neon root from this loaded skill's real directory, two levels up (follow symlinks), not the consuming app's working directory. `${CLAUDE_PLUGIN_ROOT}` in references denotes that root when the host does not supply it. Read [the shared design contract](../../design/FINNOMENA.md) for visual decisions within the requested scope.
+## Purpose
 
+Apply Finnomena visual roles to existing UI while preserving its framework and product behavior. Support requested composition changes separately from color/typography scope.
 
-Restyles existing UI to Finnomena's brand via CSS custom properties — for
-projects not built on CDS, or that don't want to adopt CDS just for a
-redesign. If the user wants real CDS components (`Button`, `Box`, etc.) with
-`ThemeProvider`, use `${CLAUDE_PLUGIN_ROOT}/skills/neon-create` instead.
+## When to use
 
-Normally reached via `${CLAUDE_PLUGIN_ROOT}/skills/neon-audit`; invoke
-directly only if the user already said they want colors (and optionally
-typography) without CDS.
+Use for CSS styling or presentation redesign. Full CDS adoption belongs to [neon-create](../neon-create/SKILL.md). Review-only requests belong to [neon-review](../neon-review/SKILL.md).
 
-## What this skill does, every time
+## Fast path
 
-Before starting, read
-`${CLAUDE_PLUGIN_ROOT}/skills/neon-audit/references/workflow-contract.md` —
-the shared `NeonContext` handoff record, routing rules, and intent policy
-used by all three neon skills. The steps below assume it.
+When target, scope and theme variables are known, begin with the affected styles. Reuse available tokens; skip installation and audit. A header-only request stays local, including variable declarations.
 
-0. **Use established Finnomena branding intent; don't repeat it.** Per the
-   contract's intent policy: if branding intent is already established —
-   the request itself says "Finnomena"/"neon", or it was confirmed earlier
-   in this conversation, including via `neon-audit`'s handoff — treat
-   `brandConfirmed` as true and move on without asking again. Ask a direct
-   brand question only when it's genuinely missing: "Do you want to use
-   Finnomena's neon brand theme for this?" If the answer is no, stop here.
+## Workflow
 
-1. **Reuse existing theme variables first.** For a partial restyle, inspect existing variable consumers before importing anything globally. If Neon variables are absent, scope the required declarations to the requested container and match the app's theme selectors; do not introduce a root theme that changes unrelated UI. For a whole-app integration that needs the CSS asset, run the installer:
+1. Establish scope from the request and existing context. `colors` changes only colors; `visual-system` also covers brand typography, spacing and radius. Existing composition defaults to `preserve`; set `adapt` only for an explicit layout/hierarchy request. Conflicting instructions require clarification. Read the [shared contract](../neon-audit/references/workflow-contract.md) only if these decisions remain unresolved.
+2. Inventory the affected styles and shared consumers. Record existing behavior and a before view. Resolve Neon resources two levels above this skill's real directory; use the [design contract](../../design/FINNOMENA.md) for the relevant visual roles.
+3. Map by meaning: primary action, selection, status and chart category are different jobs even if they share a hex value. Reuse matching tokens; preserve domain color meaning. Do not use a global replacement for a local request.
+4. Update scoped tokens, then remaining component styles. For `adapt`, reorganize presentation within the named scope while retaining routes, handlers, service contracts, data meaning and access to essential actions. Do not adopt a new framework or component library to rearrange a page.
+5. Verify with the [shared checklist](references/verification.md), including before/after appearance, preserved behavior and unrelated consumers for partial changes.
 
-   ```
-   node ${CLAUDE_PLUGIN_ROOT}/scripts/install.mjs <target-dir> --css-only
-   ```
+## Conditional references
 
-   This copies `theme.css` into `<target-dir>/src/theme/`. Pass
-   `--theme-dir <project-relative-dir>` to put it somewhere else instead
-   (e.g. `styles/neon` for a plain-HTML project) — validated to stay inside
-   `<target-dir>` before anything is written. For a whole-app integration, **import it once** in the
-   project's root CSS or entry file (e.g. `import "./theme/theme.css";`).
-   **If the target already has a customized `theme.css`, the installer
-   refuses to overwrite it and exits nonzero before touching anything** —
-   diff, merge, and retain the customization rather than deleting the
-   file or bypassing the check; see
-   `${CLAUDE_PLUGIN_ROOT}/skills/neon-audit/references/theme-integration.md`
-   §4 (§5 for what a partial multi-file-copy failure does and doesn't
-   guarantee).
+- CSS/Tailwind formats or mapping examples: relevant sections of [style migration](references/style-migration.md).
+- Missing CSS asset: [CSS setup](references/css-integration.md#css-setup); whole-app installation differs from a local override.
+- Typography expansion: [fonts](../neon-audit/references/theme-integration.md#font-loading). Reusing the asset still requires font loading and layout checks.
+- Mode selectors, CSS-to-CDS upgrade or customized-file conflict: relevant sections of [theme integration](../neon-audit/references/theme-integration.md).
+- CSS adapter gaps or regeneration: [adapter limits](references/css-integration.md#adapter-limits).
 
-2. **Scope which variables you use to the tier the user chose**:
-   - **Colors only**: reference only `--color-*` variables (`var(--color-fg)`,
-     `var(--color-bgPrimary)`, etc.). Never touch font loading at this tier.
-   - **Colors + typography**: also use `--fontFamily-*`, `--fontSize-*`,
-     `--fontWeight-*`, `--lineHeight-*`, `--space-*`, and `--borderRadius-*`.
-     Defining `--fontFamily-body: 'IBM Plex Sans Thai', sans-serif` doesn't
-     make the font render — it still needs to actually be loaded (a
-     `<link>`, a self-hosted `@font-face`/`@fontsource` import, or a
-     framework font loader), or text silently falls back to `sans-serif`.
-     Inspect the app's existing font-loading mechanism, prefer it, load
-     only the weights in use, and verify with real Thai *and* Latin sample
-     text — full procedure in
-     `${CLAUDE_PLUGIN_ROOT}/skills/neon-audit/references/theme-integration.md`
-     §1.
+## Done
 
-   See `${CLAUDE_PLUGIN_ROOT}/design/FINNOMENA.md`'s
-   typography policy and `theme.css` for the actual variable values.
-
-3. **Don't hardcode a value when a matching token is in scope — but don't
-   forcibly retheme the app's own layout geometry either.** Don't write a
-   raw hex/color literal where a `--color-*` token maps to it (any tier).
-   At `tier: 'visual-system'`, the same applies to `--space-*`,
-   `--borderRadius-*`, and `--font*-*` values that are actually part of
-   Finnomena's brand system. But a structural/layout pixel value that
-   isn't part of the brand system — a specific component's internal grid
-   gap, an unrelated one-off dimension with no Finnomena equivalent — is
-   the app's own design decision to preserve, not something to forcibly
-   convert to a token just because it's a pixel value. If a mockup needs
-   a branded value with no matching variable, flag it rather than
-   inventing one. Keep these roles distinct:
-   `--color-accentBoldYellow` (optional supporting accent; never a required per-screen highlight)
-   and `--color-bgLinePrimary` (reserved for links/focus rings/interactive
-   highlight only).
-
-   For the full inventory → map → update-shared → update-remaining →
-   verify migration procedure — including how to detect and update plain
-   CSS/CSS Modules, Tailwind v3, Tailwind v4, and shadcn-style projects
-   without breaking their existing variable-value format, and how to
-   handle chart/status colors separately from brand colors — see
-   `${CLAUDE_PLUGIN_ROOT}/skills/neon-redesign/references/style-migration.md`.
-   Before claiming a restyle is done, verify per
-   `${CLAUDE_PLUGIN_ROOT}/skills/neon-redesign/references/verification.md`.
-
-4. **Dark mode: keep the app's existing source of truth.** `theme.css`
-   ships wired via `prefers-color-scheme: dark` with a
-   `[data-theme="dark"]`/`[data-theme="light"]` override (see `theme.css`'s
-   header), but that's a default assumption, not the target project's
-   actual mechanism. Before wiring anything, find out how the app already
-   controls dark/light — an explicit toggle (a switch, a stored
-   preference, a class/attribute a hook or context controls) or OS-only
-   `prefers-color-scheme` — and match `theme.css`'s selectors to it. If
-   the app has its own explicit toggle, that toggle stays authoritative;
-   don't let `theme.css`'s shipped default silently override a user's
-   explicit "light" choice with the OS's dark preference. See
-   `${CLAUDE_PLUGIN_ROOT}/skills/neon-audit/references/theme-integration.md`
-   §2 for the full procedure and worked example.
-
-5. **Color is a provisional, first-pass mapping** — every value traces to
-   a real Finnomena token, but the mapping involves judgment calls (see
-   `${CLAUDE_PLUGIN_ROOT}/design/FINNOMENA.md`'s
-   color-role guidance and `${CLAUDE_PLUGIN_ROOT}/theme/cds/color-overrides.ts`).
-   Flag to the user that colors may need design review before treating as final.
-
-## Upgrading
-
-**Colors → Colors+Typography** is free — `theme.css` contains every
-section regardless of tier. Moving up just means using more variables.
-
-**Colors+Typography → Full CDS** doesn't require a CSS rewrite, but isn't
-a free pass either — `theme.css`'s variable names are byte-identical to
-what CDS's `ThemeProvider` emits (verified — see `theme.css`'s header),
-**but identical names don't guarantee `var(--color-fg)` markup keeps
-working unchanged.** Before adopting
-`${CLAUDE_PLUGIN_ROOT}/skills/neon-create` and removing `theme.css`, run
-the integration check in
-`${CLAUDE_PLUGIN_ROOT}/skills/neon-audit/references/theme-integration.md`
-§3: inspect variable *scope* (CDS may inject its custom properties at a
-different DOM node than `theme.css`'s `:root`), *cascade* (both can be
-present simultaneously during migration — load order decides which
-wins), *portal behavior* (does themed content still reach overlays
-rendered by CDS's `PortalProvider`?), and *theme-state ownership* (§2
-above). Verify both light and dark render correctly before removing the
-old declarations. Migrate to real CDS components incrementally.
-
-## Known limitations
-
-- Dark-mode selectors are a default assumption — match them to the
-  target project's actual mechanism per step 4 above (see
-  `${CLAUDE_PLUGIN_ROOT}/skills/neon-audit/references/theme-integration.md`
-  §2) rather than assuming the shipped `prefers-color-scheme` default is
-  already correct.
-- Spectrum primitives (`--blue60` etc.), illustration colors, and
-  `iconSize`/`avatarSize`/`shadow`/`fontFamilyMono` are deliberately
-  omitted — see `theme.css`'s header.
-- No shadow tokens — depth uses `--color-bgElevation1`/`bgElevation2`
-  flat-surface steps per
-  `${CLAUDE_PLUGIN_ROOT}/design/FINNOMENA.md`'s
-  composition guidance. Prefer flat surfaces and dividers; preserve existing
-  shadows during colors-only work.
-- `theme.css` regeneration: it's hand-written (not auto-generated). If
-  `theme.config.ts` or `color-overrides.ts` change, regenerate by calling
-  `createNeonTheme()` → `createThemeCssVars()` in a scratch CDS project.
-  See `theme.css`'s own header for the full method.
-- Installer writes are only preflighted against a *known* conflict (a
-  customized destination file) — an arbitrary disk/I/O failure mid-copy
-  isn't automatically rolled back. If `install.mjs` errors after it
-  starts reporting progress, check which theme file(s) actually landed
-  before retrying; don't assume a clean state.
+Report changed scope/tokens, observed visual and behavior checks, and exceptions or unavailable checks. Color mapping is provisional; identify relevant discrepancies without inventing replacement brand values. Read-only review is a separate task, not a mandatory extra gate.
