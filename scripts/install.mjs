@@ -11,7 +11,7 @@
  *   node install.mjs <target-dir> --css-only     # copy theme.css only
  *                                                # (no CDS install)
  *
- * --new:          assembles starters/vitejs-cds/ + the 4 canonical CDS
+ * --new:          assembles templates/vitejs-cds/ + the 4 canonical CDS
  *                 files (theme/cds/) into <target-dir> via
  *                 scripts/lib/assemble-starter.mjs, then installs the
  *                 assembled app's declared dependencies. Refuses to run
@@ -20,7 +20,7 @@
  * (default):      copies the 4 canonical CDS files (theme/cds/) into
  *                 <target-dir>/src/theme/ (or --theme-dir, if given),
  *                 installs @coinbase/cds-web (pinned to the version range
- *                 declared in starters/vitejs-cds/package.json) if not
+ *                 declared in templates/vitejs-cds/package.json) if not
  *                 already a dependency. Never touches provider wiring or
  *                 component code.
  *
@@ -29,7 +29,7 @@
  *                 styles). No @coinbase/cds-web install, no React provider
  *                 needed — just CSS custom properties.
  *
- * --sync-starter: RETIRED. starters/vitejs-cds/ has no tracked theme files
+ * --sync-starter: RETIRED. templates/vitejs-cds/ has no tracked theme files
  *                 of its own to sync — assemble-starter.mjs supplies them
  *                 fresh at assembly time from theme/cds/. Exits nonzero
  *                 without touching the filesystem.
@@ -86,7 +86,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = join(__dirname, "..");
 const CDS_DIR = join(REPO_ROOT, "theme", "cds");
 const CSS_DIR = join(REPO_ROOT, "theme", "css");
-const STARTER_DIR = join(REPO_ROOT, "starters", "vitejs-cds");
+const STARTER_DIR = join(REPO_ROOT, "templates", "vitejs-cds");
 
 const LOCKFILE_NAMES = ["package-lock.json", "npm-shrinkwrap.json", "pnpm-lock.yaml", "yarn.lock", "bun.lockb", "bun.lock"];
 
@@ -195,7 +195,7 @@ function declaredCdsVersion() {
   const starterPkg = JSON.parse(readFileSync(join(STARTER_DIR, "package.json"), "utf8"));
   const version = starterPkg.dependencies?.["@coinbase/cds-web"];
   if (!version) {
-    throw new Error(`starters/vitejs-cds/package.json does not declare a @coinbase/cds-web version.`);
+    throw new Error(`templates/vitejs-cds/package.json does not declare a @coinbase/cds-web version.`);
   }
   return version;
 }

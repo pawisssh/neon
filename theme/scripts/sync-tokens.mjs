@@ -20,7 +20,7 @@
  * anything in theme/tokens/*.json):
  *   node theme/scripts/sync-tokens.mjs && node theme/scripts/generate-theme-config.mjs && node theme/scripts/generate-breakpoints-config.mjs
  *
- * Nothing needs to sync a starter copy afterward — starters/vitejs-cds/ has
+ * Nothing needs to sync a starter copy afterward — templates/vitejs-cds/ has
  * no tracked theme files of its own. scripts/assemble-starter.mjs (or
  * scripts/install.mjs --new) pulls the regenerated theme/cds/*.ts files in
  * fresh at assembly time.

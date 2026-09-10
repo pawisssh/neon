@@ -10,7 +10,7 @@ const PAYLOAD_ENTRIES = [
   ".claude-plugin",
   "skills",
   "theme",
-  "starters/vitejs-cds",
+  "templates/vitejs-cds",
   "design-md/finnomena",
   "scripts/install.mjs",
   "scripts/assemble-starter.mjs",

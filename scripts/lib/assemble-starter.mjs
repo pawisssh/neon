@@ -64,7 +64,7 @@ async function validateDestination(sourceRoot, destination) {
 }
 
 function validateCanonicalSource(sourceRoot) {
-  const starterDir = join(sourceRoot, "starters", "vitejs-cds");
+  const starterDir = join(sourceRoot, "templates", "vitejs-cds");
   if (!existsSync(join(starterDir, "package.json"))) {
     throw new Error(`assembleStarter: no starter manifest found at ${join(starterDir, "package.json")}`);
   }

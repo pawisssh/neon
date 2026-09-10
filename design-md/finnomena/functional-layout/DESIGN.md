@@ -256,10 +256,10 @@ Every screen uses an approved Finnomena SVG, never recreated text. Render the ma
 
 | Surface | Full wordmark | Compact mark |
 | --- | --- | --- |
-| Light surface | `https://raw.githubusercontent.com/pawisssh/neon/main/starters/vitejs-cds/src/assets/logo/logo-finnomena-text-light.svg` | `https://raw.githubusercontent.com/pawisssh/neon/main/starters/vitejs-cds/src/assets/logo/logo-finnomena-icon-light.svg` |
-| Dark surface | `https://raw.githubusercontent.com/pawisssh/neon/main/starters/vitejs-cds/src/assets/logo/logo-finnomena-text-dark.svg` | `https://raw.githubusercontent.com/pawisssh/neon/main/starters/vitejs-cds/src/assets/logo/logo-finnomena-icon-dark.svg` |
+| Light surface | `https://raw.githubusercontent.com/pawisssh/neon/main/templates/vitejs-cds/src/assets/logo/logo-finnomena-text-light.svg` | `https://raw.githubusercontent.com/pawisssh/neon/main/templates/vitejs-cds/src/assets/logo/logo-finnomena-icon-light.svg` |
+| Dark surface | `https://raw.githubusercontent.com/pawisssh/neon/main/templates/vitejs-cds/src/assets/logo/logo-finnomena-text-dark.svg` | `https://raw.githubusercontent.com/pawisssh/neon/main/templates/vitejs-cds/src/assets/logo/logo-finnomena-icon-dark.svg` |
 
-Example: `<img src="https://raw.githubusercontent.com/pawisssh/neon/main/starters/vitejs-cds/src/assets/logo/logo-finnomena-text-light.svg" alt="Finnomena" width="136" height="32">`. Preserve its intrinsic 136×32 or 32×32 dimensions; do not recolor or redraw the mark.
+Example: `<img src="https://raw.githubusercontent.com/pawisssh/neon/main/templates/vitejs-cds/src/assets/logo/logo-finnomena-text-light.svg" alt="Finnomena" width="136" height="32">`. Preserve its intrinsic 136×32 or 32×32 dimensions; do not recolor or redraw the mark.
 
 ### Header
 

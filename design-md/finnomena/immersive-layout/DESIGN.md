@@ -213,8 +213,8 @@ Use the approved full Finnomena wordmark, never recreated text. Keep it in the l
 
 | Header surface | Full wordmark |
 | --- | --- |
-| Light | `https://raw.githubusercontent.com/pawisssh/neon/main/starters/vitejs-cds/src/assets/logo/logo-finnomena-text-light.svg` |
-| Dark tier field | `https://raw.githubusercontent.com/pawisssh/neon/main/starters/vitejs-cds/src/assets/logo/logo-finnomena-text-dark.svg` |
+| Light | `https://raw.githubusercontent.com/pawisssh/neon/main/templates/vitejs-cds/src/assets/logo/logo-finnomena-text-light.svg` |
+| Dark tier field | `https://raw.githubusercontent.com/pawisssh/neon/main/templates/vitejs-cds/src/assets/logo/logo-finnomena-text-dark.svg` |
 
 ### Primary and highlight CTA
 

@@ -14,7 +14,7 @@
  * (its own Content View width / Inspector View width are never both
  * nonzero at once) and is NOT the same thing as the simultaneous
  * Sidebar+Content+Inspector app shell — that lives in
- * ${CLAUDE_PLUGIN_ROOT}/starters/vitejs-cds/src/layout/layoutPanes.ts as a
+ * ${CLAUDE_PLUGIN_ROOT}/templates/vitejs-cds/src/layout/layoutPanes.ts as a
  * separately hand-maintained, Figma-session-sourced constant. Do not merge
  * the two.
  *
@@ -81,7 +81,7 @@ const output = `/**
  * rhythm (gutter/end-margins/columns) only. It does NOT cover Content/
  * Inspector pane widths for the 3-pane app shell — those come from a
  * separate Figma frame read, not this token export (see
- * starters/vitejs-cds/src/layout/layoutPanes.ts for that data
+ * templates/vitejs-cds/src/layout/layoutPanes.ts for that data
  * and why it's kept separate).
  */
 export interface BreakpointTier {

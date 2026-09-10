@@ -9,7 +9,7 @@
  * rhythm (gutter/end-margins/columns) only. It does NOT cover Content/
  * Inspector pane widths for the 3-pane app shell — those come from a
  * separate Figma frame read, not this token export (see
- * starters/vitejs-cds/src/layout/layoutPanes.ts for that data
+ * templates/vitejs-cds/src/layout/layoutPanes.ts for that data
  * and why it's kept separate).
  */
 export interface BreakpointTier {

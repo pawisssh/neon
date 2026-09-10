@@ -84,7 +84,7 @@ startup.
 
 **Unverified for this path:** every cross-reference between these skill
 docs and their sibling assets (reference docs, `theme/`, `design-md/`,
-`starters/`) uses `${CLAUDE_PLUGIN_ROOT}/...` — a Claude Code plugin-loader
+`templates/`) uses `${CLAUDE_PLUGIN_ROOT}/...` — a Claude Code plugin-loader
 variable. This repo has not verified whether Codex CLI populates it for a
 manual symlink install above; if it doesn't, those paths won't resolve. If
 you hit this, point Claude at the full cloned repo path
@@ -253,7 +253,7 @@ UI-building request — be explicit the first time, e.g. "build this as a
 React component using our design system."
 
 For a brand-new project scaffolded by `neon-create`, check instead that: a
-`starters/vitejs-cds/` copy landed in your target directory (`package.json`,
+`templates/vitejs-cds/` copy landed in your target directory (`package.json`,
 `src/app/`, `src/layout/`), `src/theme/` got populated (not empty — it's
 copied in from `neon-create`), and `npm run dev` actually boots without
 console/import errors.
@@ -272,7 +272,7 @@ neon/
 │   ├── design_tokens.json             # same tokens as DTCG JSON, for Figma/Style Dictionary/design.md CLI
 │   ├── tailwind.config.js             # derived Tailwind v3 theme.extend config
 │   └── README.md
-├── starters/vitejs-cds/               # starter source: application wiring + layouts only
+├── templates/vitejs-cds/              # starter source: application wiring + layouts only
 │   ├── package.json
 │   └── src/
 │       ├── app/                       # AppRoot (providers) + example App
@@ -326,7 +326,7 @@ if you need it.
 
 ### Previewing the starter after editing canonical theme assets
 
-`starters/vitejs-cds/` has no tracked `src/theme/` files of its own — it's
+`templates/vitejs-cds/` has no tracked `src/theme/` files of its own — it's
 starter *source*, not a runnable app by itself. To see it as a real,
 buildable project, assemble it into a disposable directory:
 
@@ -340,7 +340,7 @@ combining the starter source with the 4 canonical files in `theme/cds/`.
 After editing anything in `theme/tokens/*.json` or hand-maintained files
 under `theme/cds/`, re-run the token pipeline (if token-driven) and
 re-assemble fresh into a new disposable directory — never hand-copy a
-customized assembled app back into `starters/vitejs-cds/`, and never edit
+customized assembled app back into `templates/vitejs-cds/`, and never edit
 files inside an assembled preview expecting them to persist.
 
 `node scripts/install.mjs <target-dir> --new` does the same assembly, then
@@ -361,7 +361,7 @@ To package a complete, self-contained plugin artifact:
 node scripts/package-plugin.mjs <destination-dir>
 ```
 
-This creates a full distribution bundle containing the plugin manifest, skills, canonical theme assets, starters, design specs, and license at `<destination-dir>`. Development-only files (`node_modules`, `.git`, `dist`, intermediate token reports, and internal `notes/`) are excluded.
+This creates a full distribution bundle containing the plugin manifest, skills, canonical theme assets, templates, design specs, and license at `<destination-dir>`. Development-only files (`node_modules`, `.git`, `dist`, intermediate token reports, and internal `notes/`) are excluded.
 
 ## License
 

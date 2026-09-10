@@ -187,7 +187,7 @@ used by all three neon skills. The steps below assume it.
    in an icon rail. See `design-md/finnomena/DESIGN.md` for the asset mapping.
 
 9. **Font loading — new-project branch reuses the shipped pattern**
-   (`starters/vitejs-cds/src/main.tsx` loads IBM Plex Sans Thai);
+   (`templates/vitejs-cds/src/main.tsx` loads IBM Plex Sans Thai);
    **existing-project branch inspects and integrates, never invents a
    new mechanism.** Never touch font loading at `tier: 'colors'`. At
    `'visual-system'`/`'cds'`, inspect how the app loads fonts, prefer

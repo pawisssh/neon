@@ -13,7 +13,7 @@ them.
 
 ## 1. Template boundary: non-React requests
 
-The shipped starter (`starters/vitejs-cds/`) is Vite + React + TypeScript.
+The shipped starter (`templates/vitejs-cds/`) is Vite + React + TypeScript.
 Use it whenever the request doesn't name a different framework — React is
 the default, not an assumption to double-check every time.
 
@@ -37,7 +37,7 @@ These are different jobs, not the same job at two scales:
 
 - **New project** (`operation: 'new-project'`) — there's nothing to
   preserve. Run the installer's `--new` branch, get a fresh
-  `starters/vitejs-cds/` copy, wire it up per `SKILL.md`.
+  `templates/vitejs-cds/` copy, wire it up per `SKILL.md`.
 - **New screen** (`operation: 'new-screen'`) — an app already exists.
   Reuse its existing routes/router, layout/shell components, and any
   already-configured providers (routing, state, auth context,
