@@ -10,19 +10,13 @@ colors:
   text-helper: "#000000a6"
   text-positive: "#009646"
   text-negative: "#d60808"
-  text-neutral: "#00000073"
   text-inverse: "#ffffff"
   text-disabled: "#00000073"
   field: "#01172b08"
   field-hover: "#01172b0d"
   border-subtle: "#0000000d"
   border-on-color: "#0000000d"
-  border-subtle-selected: "#01172b"
   border-strong: "#01172b"
-  border-tile: "#01172b0d"
-  border-interactive: "#0000001a"
-  border-inverse: "#ffffff"
-  border-disabled: "#01172b73"
   support-success: "#00ad50"
   support-warning: "#f26414"
   support-error: "#f73232"
@@ -30,23 +24,8 @@ colors:
   support-caution-major: "#01172b"
   support-caution-minor: "#01172b"
   support-undefined: "#01172b"
-  focus: "#6968ef"
-  focus-inset: "#ffffff"
-  focus-inverse: "#ffffff"
-  # Legacy status-* values: compatibility only. Use support-* for new semantic feedback.
-  status-primary: "#00ad50"
-  status-success: "#f26414"
-  status-warning: "#f73232"
-  status-error: "#01172b"
-  status-info: "#01172b"
-  status-caution-major: "#01172b"
-  status-caution-minor: "#ffffff"
-  skeleton-element: "#d9dcdf"
-  skeleton-background: "#e6e8ea"
-  highlight: "#1817e71a"
   interactive: "#5251ed"
   overlay: "#00000033"
-  toggle-off: "#01172b1a"
   notification-success-background: "#e6fdf0"
   notification-warning-background: "#fef7f3"
   notification-error-background: "#fff5f5"
@@ -54,10 +33,6 @@ colors:
   notification-caution-major-background: "#ebecee"
   notification-caution-minor-background: "#f7f8f9"
   link-primary: "#1817e7"
-  link-primary-hover: "#1414c4"
-  link-inverse: "#1817e7"
-  link-secondary: "#000000d9"
-  link-visted: "#6b46c3"
   button-primary: "#01172b"
   button-primary-hover: "#1a2e40"
   button-primary-active: "#344555"
@@ -99,54 +74,18 @@ colors:
   multi-asset-esavings: "#40ed90"
   multi-asset-cash: "#007435"
 typography:
-  display1:
-    fontFamily: IBM Plex Sans Thai
-    fontSize: 92px
-    fontWeight: 400
-    lineHeight: 102px
-    letterSpacing: -0.64px
-  display2:
-    fontFamily: IBM Plex Sans Thai
-    fontSize: 60px
-    fontWeight: 400
-    lineHeight: 70px
-    letterSpacing: -0.64px
-  display3:
-    fontFamily: IBM Plex Sans Thai
-    fontSize: 54px
-    fontWeight: 700
-    lineHeight: 64px
-    letterSpacing: 0px
   largeTitle:
     fontFamily: IBM Plex Sans Thai
     fontSize: 34px
     fontWeight: 400
     lineHeight: 41px
     letterSpacing: 0.4px
-  quotation1:
-    fontFamily: IBM Plex Sans Thai
-    fontSize: 42px
-    fontWeight: 400
-    lineHeight: 50px
-    letterSpacing: 0px
   title1:
     fontFamily: IBM Plex Sans Thai
     fontSize: 28px
     fontWeight: 400
     lineHeight: 34px
     letterSpacing: 0.38px
-  paragraph:
-    fontFamily: IBM Plex Sans Thai
-    fontSize: 28px
-    fontWeight: 400
-    lineHeight: 36px
-    letterSpacing: 0px
-  quotation2:
-    fontFamily: IBM Plex Sans Thai
-    fontSize: 24px
-    fontWeight: 400
-    lineHeight: 30px
-    letterSpacing: 0px
   title2:
     fontFamily: IBM Plex Sans Thai
     fontSize: 22px
@@ -171,12 +110,6 @@ typography:
     fontWeight: 400
     lineHeight: 22px
     letterSpacing: -0.43px
-  callout:
-    fontFamily: IBM Plex Sans Thai
-    fontSize: 16px
-    fontWeight: 400
-    lineHeight: 21px
-    letterSpacing: -0.31px
   subheadline:
     fontFamily: IBM Plex Sans Thai
     fontSize: 15px
@@ -189,18 +122,6 @@ typography:
     fontWeight: 400
     lineHeight: 18px
     letterSpacing: -0.08px
-  caption1:
-    fontFamily: IBM Plex Sans Thai
-    fontSize: 12px
-    fontWeight: 400
-    lineHeight: 16px
-    letterSpacing: 0px
-  caption2:
-    fontFamily: IBM Plex Sans Thai
-    fontSize: 11px
-    fontWeight: 400
-    lineHeight: 13px
-    letterSpacing: 0.06px
 rounded:
   none: 0px
   xs: 4px
@@ -221,36 +142,31 @@ spacing:
   lg: 32px
   xl: 40px
   2xl: 48px
-  3xl: 64px
-  4xl: 96px
-  5xl: 128px
 components:
   button-primary:
     backgroundColor: "{colors.button-primary}"
     textColor: "{colors.text-on-color}"
     typography: "{typography.body}"
-    rounded: "{rounded.sm}"
+    rounded: "{rounded.md}"
     minHeight: 48px
     padding: 12px 16px
   button-secondary:
     backgroundColor: "{colors.button-secondary}"
     textColor: "{colors.text-primary}"
     typography: "{typography.body}"
-    rounded: "{rounded.sm}"
+    rounded: "{rounded.md}"
   input-field:
     backgroundColor: "{colors.background-primary}"
     textColor: "{colors.text-primary}"
     typography: "{typography.body}"
-    rounded: "{rounded.sm}"
+    rounded: "{rounded.md}"
     padding: 16px
   suggestion-card:
     backgroundColor: "{colors.background-secondary}"
-    rounded: "{rounded.sm}"
+    rounded: "{rounded.md}"
 ---
 
 # Finnomena Neon — Design Guide
-
-Light theme. Use this file alone to design a screen: the frontmatter defines tokens; the sections below define their use. `design_tokens.json` is optional. Token references such as `{colors.button-primary}` resolve to values above; no starter, framework, or local assets are required. Logo images require network access. Explicit user requirements take precedence. Otherwise follow this guide, including its documented exceptions; optional token files supply values only where the guide is silent. Within this file, explicit usage exceptions override legacy token names.
 
 Start here: identify the task → choose a layout → apply typography and spacing → build interactions and states → review at narrow and wide widths.
 
@@ -376,7 +292,7 @@ Adapt panes to fit:
 
 ### Logo requirement
 
-Every screen uses an approved Finnomena SVG, never recreated text. This document is standalone: render the matching raw GitHub URL below directly—do not depend on a local asset path. Use the full wordmark in a header or full sidebar and the compact mark in an icon rail.
+Every screen uses an approved Finnomena SVG, never recreated text. Render the matching raw GitHub URL below directly. Use the full wordmark in a header or full sidebar and the compact mark in an icon rail.
 
 | Surface | Full wordmark | Compact mark |
 | --- | --- | --- |
@@ -432,7 +348,6 @@ Choose a layout → place the real logo → apply the tokens → build the prima
 
 - **Orders:** Detailed at 1440px: 360px sidebar, 400px selectable order list, and 680px details pane. Use `title1` for the page title, `body` for rows, aligned amounts, and one dominant detail action. On narrow screens, open details with Back navigation and preserve list state.
 - **Financial report:** Content at 1440px: 320px sidebar, 720px report, and 400px supporting inspector. Use `title2` section headings, labeled charts/tables, and 24px internal spacing. Keep the report visible when the inspector moves to an on-demand view; identify units, periods, and sample values.
-- **Landing page:** Immersive with a real-logo header, `display2` hero, concise supporting copy, and one primary CTA. Use 64px section spacing and imagery only when useful. At narrow widths use `largeTitle`, stack sections, and retain 16px side margins without clipping Thai text.
 
 Before delivery, verify:
 
