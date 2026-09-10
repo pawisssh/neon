@@ -2,9 +2,6 @@
 name: Finnomena Neon — Immersive Landing Pages
 colors:
   white: "#ffffff"
-  navy-100: "#01172b"
-  yellow-100: "#f2f93c"
-  light-grey-100: "#a6bfcc"
   text-primary: "#000000d9"
   text-secondary: "#000000a6"
   text-on-color: "#ffffff"
@@ -38,9 +35,9 @@ palette:
     "100": "#a6bfcc"
 tiers:
   finno-club: "{colors.white}"
-  finno-exclusive: "{colors.yellow-100}"
-  finno-private: "{colors.light-grey-100}"
-  finno-ultra: "{colors.navy-100}"
+  finno-exclusive: "{palette.yellow.100}"
+  finno-private: "{palette.light-grey.100}"
+  finno-ultra: "{palette.navy.100}"
 typography:
   display2:
     fontFamily: IBM Plex Sans Thai
