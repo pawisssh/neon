@@ -16,6 +16,12 @@ theme/tokens.report.json
 notes/
 docs/
 tests/
+evals/
+docs/
 
 # Subagent-driven-development scratch workspace
 .superpowers/
+
+# Claude CLI and related local state
+.claude/
+.claude-plugin/
