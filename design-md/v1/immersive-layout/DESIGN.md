@@ -45,10 +45,10 @@ multi-assets:
   esavings: "#40ed90"
   cash: "#007435"
 tiers:
-  finno-club: "{colors.white}"
-  finno-exclusive: "{palette.yellow.100}"
-  finno-private: "{palette.light-grey.100}"
-  finno-ultra: "{palette.navy.100}"
+  finnomena-club: "{colors.white}"
+  finnomena-exclusive: "{palette.yellow.100}"
+  finnomena-private: "{palette.light-grey.100}"
+  finnomena-ultra: "{palette.navy.100}"
 typography:
   display2:
     fontFamily: IBM Plex Sans Thai
@@ -143,10 +143,10 @@ Use only the colors defined in this file. Do not add another hue family or load 
 
 | Color | Hex | Landing-page role |
 | --- | --- | --- |
-| White | `#FFFFFF` | Main canvas, FinnoClub colorway, and text on navy |
-| Navy 100 | `#01172B` | Primary text and CTA fill; FinnoUltra colorway |
-| Yellow 100 | `#F2F93C` | Short emphasis, highlight CTA, and FinnoExclusive colorway |
-| Light Grey 100 | `#A6BFCC` | Calm full-bleed field and FinnoPrivate colorway |
+| White | `#FFFFFF` | Main canvas, Finnomena Club colorway, and text on navy |
+| Navy 100 | `#01172B` | Primary text and CTA fill; Finnomena Ultra colorway |
+| Yellow 100 | `#F2F93C` | Short emphasis, highlight CTA, and Finnomena Exclusive colorway |
+| Light Grey 100 | `#A6BFCC` | Calm full-bleed field and Finnomena Private colorway |
 
 ### Palette intensity
 
@@ -165,7 +165,13 @@ The YAML `palette` provides the permitted 25/50/75/100 levels for landing-page a
 | Navy | `#C0C5CA` | `#808B95` | `#415160` | `#01172B` |
 | Light Grey | `#E9EFF2` | `#D3DFE6` | `#BCCFD9` | `#A6BFCC` |
 
-Each of these hues — and the wider brand set (Grey, Green, Blue, Purple, Red, Orange, Indigo) — also has a `0` white-tint ceiling and `125`/`150`/`175` shade steps beyond 100, plus opacity variants of the 100 tone, in the design system's color foundations, for cases this file's documented 25–100 range doesn't cover: a deep shaded illustration background, or a scrim over a media frame. Tier colorways stay limited to White, Yellow 100, Navy 100, and Light Grey 100 as documented above; the wider hue set and its shade/opacity extensions are for Multi-asset colors visuals only, never page backgrounds, CTAs, or tier fields.
+### Extended palette: tint, shade & opacity
+
+The levels tabled above are steps on a larger scale every brand hue shares. `100` is a hue's pure tone — where the Exclusive, Private, and Ultra colorways sit. Steps below 100 tint it toward white, where `0` is white; Club's White colorway is that `0` end of the same scale. Steps above 100 shade the tone toward black. Each hue also carries opacity variants of its `100` tone, written with an `A` suffix: `10A` is that tone at 10% alpha, for a scrim over a media frame or an overlay wash — never as a substitute for a solid tint or shade.
+
+The 25/50/75/100 levels are the ones permitted for landing-page fields, accents, and illustrations, and the table above is their complete value list. The underlying scale is finer — 5-unit increments from 0 to 200, with alpha variants at matching increments — and the wider brand set (Grey, Green, Blue, Purple, Red, Orange, Indigo) carries the same structure. Reach past the permitted range only for a case this file genuinely doesn't cover, such as a deep shaded illustration backing, and pull the exact hex for that step from the design system's color foundations rather than approximating it. Grey is the one exception to the structure: it stops at `100`, which is already pure black, and carries no alpha variants — shade or fade a neutral with Navy instead.
+
+Keep one hue and one step consistent within a single visual object, illustration, or accent block; stepping between levels to fake a gradient is still a gradient. Tier colorways stay limited to White, Yellow 100, Navy 100, and Light Grey 100 as documented above. The wider hue set and its shade/opacity extensions are for Multi-asset colors visuals only — never page backgrounds, CTAs, or tier fields — and multi-asset categories keep their dedicated `multi-assets` tokens rather than an ad hoc palette pick.
 
 ### Essential UI colors
 
@@ -184,12 +190,35 @@ For a page dedicated to a service tier, select its required dominant colorway:
 
 | Tier | Dominant colorway | Use |
 | --- | --- | --- |
-| FinnoClub | White | Open, introductory pages with navy type and controls |
-| FinnoExclusive | Yellow 100 | High-energy tier pages with navy text |
-| FinnoPrivate | Light Grey 100 | Calm, considered tier pages with navy text |
-| FinnoUltra | Navy 100 | Premium tier pages with white text and yellow highlights |
+| Finnomena Club | White | Open, introductory pages with navy type and controls |
+| Finnomena Exclusive | Yellow 100 | High-energy tier pages with navy text |
+| Finnomena Private | Light Grey 100 | Calm, considered tier pages with navy text |
+| Finnomena Ultra | Navy 100 | Premium tier pages with white text and yellow highlights |
 
-The reference color proportions are illustrative, not fixed layout ratios. On general landing pages, use white as the main canvas; use navy, yellow, and light grey only to establish hierarchy, support illustration blocks, or separate sections. Preserve contrast: navy text on white, yellow, and light grey; white text on navy. Use `focus` only for keyboard focus indicators.
+On general landing pages — those not dedicated to a tier — use white as the main canvas; use navy, yellow, and light grey only to establish hierarchy, support illustration blocks, or separate sections. Preserve contrast: navy text on white, yellow, and light grey; white text on navy. Use `focus` only for keyboard focus indicators.
+
+### Tier color proportions
+
+Each tier favours its colorway as a share of the page's visible surface, not merely as a presence somewhere on it. Compose toward the balance below; treat it as a target, not a measured ratio. A tier page whose dominant colour reads as only half its surface has drifted off-tier, and one that uses the colorway as a single band has not adopted it at all.
+
+| Tier | Dominant (~60%) | Supporting | Accent | Ink (~10%) |
+| --- | --- | --- | --- | --- |
+| Finnomena Club | White | Light Grey 100 (~15%) | Yellow 100 (~15%) | Navy 100 |
+| Finnomena Exclusive | Yellow 100 | Light Grey 100 (~30%) | — | Navy 100 |
+| Finnomena Private | Light Grey 100 | Yellow 100 (~30%) | — | Navy 100 |
+| Finnomena Ultra | Navy 100 | Light Grey 100 (~15%) | Yellow 100 (~15%) | White |
+
+- **Dominant** is the page's field: full-bleed section backgrounds, the hero surface, and any large media mask. It should be the first colour a viewer would name.
+- **Supporting** breaks that field into readable sections — a secondary band, a media-frame backing, an illustration plane. Club and Ultra split this share with the accent; Exclusive and Private give the whole share to one hue.
+- **Accent** is a short, deliberate highlight: a marked phrase behind the headline, the tier label, or one emphasis rule. Never a whole section.
+- **Ink** is type, hairlines, and the wordmark. It stays the smallest share even though it appears on every screen.
+
+Two rules follow from the ratios:
+
+- **The accent inverts when it becomes the field.** Yellow marks the headline on Club, Private, and Ultra. On Exclusive, where Yellow is the dominant field, that mark switches to Light Grey or Navy — never yellow on yellow. This governs fields and headline marks only; a highlight CTA still uses `button-highlight` per its component rule.
+- **Ink and field never swap share.** Ultra is Navy-dominant with White ink at the smallest share, and Club is its mirror. Inverting which colour is the field does not license inverting the proportions.
+
+In the reference layouts, photography on every tier is monochrome or tinted toward the tier field rather than full colour, so imagery reinforces the dominant share instead of introducing a fifth hue.
 
 ### Multi-asset colors
 
@@ -222,7 +251,7 @@ Use one dominant CTA per task region. Primary CTAs use `button-primary` with `te
 
 ### Tier label
 
-Use a compact text label such as “FinnoExclusive” above the hero or proof content when the page is tier-specific. Pair it with the tier name in text and the required tier colorway; never communicate tier identity by color alone. Keep it secondary to the page headline and do not turn it into a navigation control.
+Use a compact text label such as “Finnomena Exclusive” above the hero or proof content when the page is tier-specific. Pair it with the tier name in text and the required tier colorway; never communicate tier identity by color alone. Keep it secondary to the page headline and do not turn it into a navigation control.
 
 ### Proof block
 
@@ -258,7 +287,7 @@ Default to still content. When motion clarifies a state change or maintains orie
 
 - The page uses `ImmersiveLayout` only and has a real logo-only header.
 - Every section serves the message, evidence, or primary action; there are no workspace controls or decorative data displays.
-- Tier-specific pages use their required colorway; general pages use the restrained core palette.
+- Tier-specific pages use their required colorway at roughly its documented proportion, with the accent inverted where the tier's own hue is the field; general pages use the restrained core palette.
 - Multi-asset visuals use only their named category colors, visible labels, and values.
 - Hero, CTA, and imagery remain clear at desktop and mobile widths with 16px mobile inline margins.
 - Text contrast, focus visibility, touch targets, keyboard order, and reduced-motion behavior are usable.

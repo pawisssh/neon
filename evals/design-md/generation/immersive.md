@@ -12,7 +12,7 @@ Implement direct-loadable routes `/` and `/immersive`. The index page links to t
 
 ## Immersive screen
 
-Build `/immersive` as a FinnoExclusive focused landing page using the immersive guide. It has a full wordmark logo header and full-bleed, scrollable content; it has no sidebar, inspector, bottom navigation, persistent product navigation, form, or workspace chrome.
+Build `/immersive` as a Finnomena Exclusive focused landing page using the immersive guide. It has a full wordmark logo header and full-bleed, scrollable content; it has no sidebar, inspector, bottom navigation, persistent product navigation, form, or workspace chrome.
 
 Use a concise editorial hierarchy, a single primary in-page CTA, an accessible proof section, and a purposeful product/editorial visual. The CTA scrolls or focuses the proof block; it does not open a form. Include a labeled, educational multi-asset visual with category names and values. Use the ten multi-asset colors only in that labeled visual, not as decorative page colors.
 
@@ -30,7 +30,7 @@ Use these hooks on the visible, real elements. They are identifiers only; the im
 
 - `logo-header`: the logo-only header.
 - `primary-action`: one accessible link or button that targets `#proof-block`.
-- `tier-label`: visible `FinnoExclusive` label.
+- `tier-label`: visible `Finnomena Exclusive` label.
 - `proof-block`: an anchored, source-supported proof statement or clearly labeled illustrative example.
 - `media-frame`: the meaningful editorial/product image frame with useful alt text.
 - `compact-footer`: a compact landing-page footer.

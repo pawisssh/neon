@@ -79,7 +79,7 @@ Immersive screen:
 
 - Confirm the wordmark header and content feel like one full-bleed landing page rather than a workspace.
 - Confirm editorial asymmetry, image crops, and yellow emphasis are purposeful and text stays unobscured.
-- Confirm the FinnoExclusive colorway, proof copy, and labeled multi-asset visual follow the immersive guide.
+- Confirm the Finnomena Exclusive colorway, proof copy, and labeled multi-asset visual follow the immersive guide.
 - Confirm motion is restrained and reduced-motion behavior is usable.
 
 Record visual findings separately in `artifacts/<run-id>/recognition-report.md`, with the reviewing model, both guide hashes, a verdict per item, and the screenshot paths inspected.

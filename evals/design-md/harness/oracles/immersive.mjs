@@ -11,5 +11,5 @@ export const immersivePalette = {
   '--palette-navy-25': '#c0c5ca', '--palette-navy-50': '#808b95', '--palette-navy-75': '#415160', '--palette-navy-100': '#01172b',
   '--palette-light-grey-25': '#e9eff2', '--palette-light-grey-50': '#d3dfe6', '--palette-light-grey-75': '#bccfd9', '--palette-light-grey-100': '#a6bfcc',
   '--asset-cryptocurrency': '#8f0606', '--asset-crowdfunding': '#d60808', '--asset-p2p-lending': '#ba4a0a', '--asset-thai-equity': '#1211ad', '--asset-equity': '#aa46c3', '--asset-mutual-fund': '#01172b', '--asset-gold': '#f1f92d', '--asset-tax-saving': '#50cfff', '--asset-esavings': '#40ed90', '--asset-cash': '#007435',
-  '--tier-finno-club': '#ffffff', '--tier-finno-exclusive': '#f2f93c', '--tier-finno-private': '#a6bfcc', '--tier-finno-ultra': '#01172b',
+  '--tier-finnomena-club': '#ffffff', '--tier-finnomena-exclusive': '#f2f93c', '--tier-finnomena-private': '#a6bfcc', '--tier-finnomena-ultra': '#01172b',
 };

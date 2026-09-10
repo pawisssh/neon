@@ -79,7 +79,7 @@ Do not introduce a fifth skill, a generic block catalog, or a new test runner in
 | ID | Exact request | Setup and expected evidence |
 | --- | --- | --- |
 | S1 | “Start a Finnomena approval dashboard with a pending list and selected-request details.” | Empty target; populated list/detail UI, justified layout, reversible demo interaction, mobile detail/Back flow |
-| S2 | “Create a Finnomena FinnoExclusive landing page with a clear offer and one primary CTA. Use only the supplied product facts.” | Empty target plus fixed facts/assets; immersive guide, logo-only header, restrained motion, no invented proof |
+| S2 | “Create a Finnomena Finnomena Exclusive landing page with a clear offer and one primary CTA. Use only the supplied product facts.” | Empty target plus fixed facts/assets; immersive guide, logo-only header, restrained motion, no invented proof |
 | S3 | “Add a Finnomena saved-funds screen to this existing CDS app.” | Existing React/CDS fixture; routes, shell, provider tree, and theme toggle survive; no scaffold replacement |
 | S4 | “Apply Finnomena colors only to this header. Keep the typography and layout.” | Existing CDS fixture; local color changes only, no dependency/provider/layout changes |
 | S5 | “Apply Finnomena colors and typography to this Vue screen; keep Vue.” | Existing Vue fixture; CSS route, no React/CDS migration, existing behavior preserved |
