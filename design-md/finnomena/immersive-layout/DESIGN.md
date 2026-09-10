@@ -42,13 +42,13 @@ tiers:
   finno-private: "{colors.light-grey-100}"
   finno-ultra: "{colors.navy-100}"
 typography:
-  hero:
+  display2:
     fontFamily: IBM Plex Sans Thai
     fontSize: 60px
     fontWeight: 400
     lineHeight: 70px
     letterSpacing: -0.64px
-  mobile-hero:
+  largeTitle:
     fontFamily: IBM Plex Sans Thai
     fontSize: 34px
     fontWeight: 400
@@ -60,13 +60,13 @@ typography:
     fontWeight: 400
     lineHeight: 22px
     letterSpacing: -0.43px
-  label:
+  headline:
     fontFamily: IBM Plex Sans Thai
     fontSize: 17px
     fontWeight: 500
     lineHeight: 22px
     letterSpacing: -0.43px
-  metadata:
+  footnote:
     fontFamily: IBM Plex Sans Thai
     fontSize: 13px
     fontWeight: 400
@@ -74,26 +74,32 @@ typography:
     letterSpacing: -0.08px
 spacing:
   unit: 8px
-  related: 16px
-  content: 24px
-  section: 64px
-  mobile-inline: 16px
+  xs: 8px
+  sm: 16px
+  md: 24px
+  3xl: 64px
+rounded:
+  sm: 8px
 components:
   button-primary:
     backgroundColor: "{colors.button-primary}"
     textColor: "{colors.text-on-color}"
+    typography: "{typography.body}"
+    rounded: "{rounded.sm}"
     minHeight: 48px
     padding: 12px 16px
   button-highlight:
     backgroundColor: "{colors.button-highlight}"
     textColor: "{colors.text-on-brand}"
+    typography: "{typography.body}"
+    rounded: "{rounded.sm}"
     minHeight: 48px
     padding: 12px 16px
 ---
 
 # Finnomena Neon — Immersive Landing-Page Guide
 
-Use this guide for `ImmersiveLayout` only: campaign landing pages, tier pages, and focused acquisition flows. It is intentionally minimal. Product workspaces, forms, tables, data-heavy views, and persistent navigation are out of scope.
+Light theme. Use this file alone to design an immersive landing page: the frontmatter defines every available token, and its token references resolve within this file. It is for `ImmersiveLayout` only—campaign landing pages, tier pages, and focused acquisition flows. Product workspaces, forms, tables, data-heavy views, and persistent navigation are out of scope.
 
 ## Layout and Header
 
@@ -101,13 +107,13 @@ An immersive page is full-bleed, scrollable content with no Sidebar, Inspector, 
 
 Use the logo-only header. Put the page's primary action in the hero or its relevant section rather than adding header navigation. The header may remain in normal document flow or become sticky only when that preserves orientation without obscuring content.
 
-## Editorial Direction
+## Brand & Style
 
 Make complex financial information feel legible, actionable, and forward-looking. Lead with one clear message, concise supporting copy, and one dominant CTA. Do not copy internal brand-narrative wording into public pages unless that wording is supplied in the page brief.
 
 Compose with intentional asymmetry: large editorial typography, broad color fields, a short highlighted phrase, and cropped product or editorial visuals that clarify the offer. Yellow is a strong highlight, not a default for every element. Avoid generic card grids, decorative charts, invented performance claims, testimonials, or fake product data.
 
-## Color and Tier Colorways
+## Colors
 
 Use only the colors defined in this file. Do not add another hue family or load a separate token file.
 
@@ -161,11 +167,15 @@ For a page dedicated to a service tier, select its required dominant colorway:
 
 The reference color proportions are illustrative, not fixed layout ratios. On general landing pages, use white as the main canvas; use navy, yellow, and light grey only to establish hierarchy, support illustration blocks, or separate sections. Preserve contrast: navy text on white, yellow, and light grey; white text on navy. Use `focus` only for keyboard focus indicators.
 
-## Type, Spacing, and CTA
+## Typography
 
-Use IBM Plex Sans Thai for Thai and Latin content, with `sans-serif` as the loading fallback. Use `hero` for desktop headlines and `mobile-hero` below 500px. Keep body copy short, left-aligned, and readable; use `label` for CTA text and `metadata` only for supporting information.
+Use IBM Plex Sans Thai for Thai and Latin content, with `sans-serif` as the loading fallback. Use `display2` for desktop headlines and `largeTitle` below 500px. Keep body copy short, left-aligned, and readable; use `headline` for CTA text and `footnote` only for supporting information.
 
-Use the 8px spacing unit, 16px between related elements, 24px around local content groups, and 64px between landing-page sections. At mobile widths, retain 16px inline margins and let every section stack vertically.
+## Spacing, Shapes & Depth
+
+Use the 8px spacing unit: `sm` (16px) between related elements, `md` (24px) around local content groups, and `3xl` (64px) between landing-page sections. At mobile widths, retain 16px inline margins and let every section stack vertically. Use the `sm` 8px radius for controls. Create separation with white, light grey, and 1px subtle borders; do not add shadows.
+
+## Components
 
 Use one dominant CTA per task region. Primary CTAs use navy with white text; highlight CTAs use yellow with navy text. Both have a 48px minimum height and retain hover, pressed, disabled, and visible focus states. Do not introduce tertiary action patterns, form fields, filters, tabs, tables, or dashboard controls into this layout.
 
