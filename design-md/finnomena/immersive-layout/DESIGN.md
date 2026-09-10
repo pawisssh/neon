@@ -33,6 +33,17 @@ palette:
     "50": "#d3dfe6"
     "75": "#bccfd9"
     "100": "#a6bfcc"
+multi-assets:
+  cryptocurrency: "#8f0606"
+  crowdfunding: "#d60808"
+  p2p-lending: "#ba4a0a"
+  thai-equity: "#1211ad"
+  equity: "#aa46c3"
+  mutual-fund: "#01172b"
+  gold: "#f1f92d"
+  tax-saving: "#50cfff"
+  esavings: "#40ed90"
+  cash: "#007435"
 tiers:
   finno-club: "{colors.white}"
   finno-exclusive: "{palette.yellow.100}"
@@ -104,11 +115,25 @@ An immersive page is full-bleed, scrollable content with no Sidebar, Inspector, 
 
 Use the logo-only header. Put the page's primary action in the hero or its relevant section rather than adding header navigation. The header may remain in normal document flow or become sticky only when that preserves orientation without obscuring content.
 
+### Approved hero compositions
+
+Choose one composition; do not default to a centered headline above a generic image.
+
+- **Offset split:** Left-aligned copy with a right-side product or editorial visual in a 3:2 or 2:1 grid.
+- **Tier field:** A full-bleed tier colorway with copy anchored to one edge and a product visual contained in its own visual zone.
+- **Asymmetric whitespace:** A large clear text field balanced by one cropped editorial image or illustration at the opposite edge.
+
+Hero copy, CTA, and essential product detail must occupy their own readable zone. Visual layers may overlap inside the dedicated visual zone only; they must never obscure text, controls, focus rings, or one another's essential content.
+
 ## Brand & Style
 
 Make complex financial information feel legible, actionable, and forward-looking. Lead with one clear message, concise supporting copy, and one dominant CTA. Do not copy internal brand-narrative wording into public pages unless that wording is supplied in the page brief.
 
 Compose with intentional asymmetry: large editorial typography, broad color fields, a short highlighted phrase, and cropped product or editorial visuals that clarify the offer. Yellow is a strong highlight, not a default for every element. Avoid generic card grids, decorative charts, invented performance claims, testimonials, or fake product data.
+
+### Creative direction
+
+Use editorial variance **7/10**, airy density **3/10**, and motion intent **2/10**. This means confident scale contrast, composed empty space, and varied visual rhythm—not extra colors, dense interface chrome, or theatrical effects. Between adjacent sections, vary at least two of alignment, field color, visual crop, or column proportion. Use 2:1, 3:2, or offset compositions; never use an equal three-card feature row.
 
 ## Colors
 
@@ -164,9 +189,26 @@ For a page dedicated to a service tier, select its required dominant colorway:
 
 The reference color proportions are illustrative, not fixed layout ratios. On general landing pages, use white as the main canvas; use navy, yellow, and light grey only to establish hierarchy, support illustration blocks, or separate sections. Preserve contrast: navy text on white, yellow, and light grey; white text on navy. Use `focus` only for keyboard focus indicators.
 
+### Multi-asset colors
+
+Use `multi-assets` only for the named investment category in a labeled allocation, comparison, or educational visual. Pair each color with its category name and value; color must never be the only identifier. Use dark labels beside Gold and E-savings. Do not use multi-asset colors as decorative page fields, CTAs, or tier colorways.
+
+| Category | Hex |
+| --- | --- |
+| Cryptocurrency | `#8F0606` |
+| Crowdfunding | `#D60808` |
+| P2P lending | `#BA4A0A` |
+| Thai equity | `#1211AD` |
+| Equity | `#AA46C3` |
+| Mutual fund | `#01172B` |
+| Gold | `#F1F92D` |
+| Tax saving | `#50CFFF` |
+| E-savings | `#40ED90` |
+| Cash | `#007435` |
+
 ## Typography
 
-Use IBM Plex Sans Thai for Thai and Latin content, with `sans-serif` as the loading fallback. Use `display2` for desktop headlines and `largeTitle` below 500px. Keep body copy short, left-aligned, and readable; use `headline` for CTA text and `footnote` only for supporting information.
+Use IBM Plex Sans Thai for Thai and Latin content, with `sans-serif` as the loading fallback. Use `display2` for desktop headlines and `largeTitle` below 500px. Keep display headlines concise enough to read in two or three lines; create hierarchy through line breaks, weight, and color rather than extra words. Keep body copy left-aligned, concrete, and within a readable measure of about 65 characters. Use `headline` for CTA text and `footnote` only for supporting information.
 
 ## Spacing, Shapes & Depth
 
@@ -174,18 +216,62 @@ Use the 8px spacing unit: `sm` (16px) between related elements, `md` (24px) arou
 
 ## Components
 
-Use one dominant CTA per task region. Primary CTAs use navy with white text; highlight CTAs use yellow with navy text. Both have a 48px minimum height and retain hover, pressed, disabled, and visible focus states. Do not introduce tertiary action patterns, form fields, filters, tabs, tables, or dashboard controls into this layout.
+Use only the components below. Forms, filters, tabs, tables, dashboard panels, equal card grids, and persistent navigation are out of scope.
+
+### Logo header
+
+Use the approved full Finnomena wordmark, never recreated text. Keep it in the logo-only header with a white `background-primary` surface and `border-subtle` bottom rule. The wordmark is 136 × 32px, has `alt="Finnomena"`, and remains visible at every width. Do not add sidebar, icon-rail, or persistent navigation behavior.
+
+| Header surface | Full wordmark |
+| --- | --- |
+| Light | `https://raw.githubusercontent.com/pawisssh/neon/main/starters/vitejs-cds/src/assets/logo/logo-finnomena-text-light.svg` |
+| Dark tier field | `https://raw.githubusercontent.com/pawisssh/neon/main/starters/vitejs-cds/src/assets/logo/logo-finnomena-text-dark.svg` |
+
+### Primary and highlight CTA
+
+Use one dominant CTA per task region. Primary CTAs use `button-primary` with `text-on-color`; highlight CTAs use `button-highlight` with `text-on-brand`. Both use `body` typography, `rounded.sm`, 48px minimum height, 12px × 16px padding, and a visible `focus` outline. Use their documented hover and active colors; retain clear disabled labels when unavailable. CTA labels describe the outcome, such as “Open an account,” rather than using generic wording.
+
+### Tier label
+
+Use a compact text label such as “FinnoExclusive” above the hero or proof content when the page is tier-specific. Pair it with the tier name in text and the required tier colorway; never communicate tier identity by color alone. Keep it secondary to the page headline and do not turn it into a navigation control.
+
+### Proof block
+
+Use one to three source-supported facts, benefits, or process steps directly below a relevant message. Separate entries with whitespace or `border-subtle` dividers rather than card containers. Each item has a concise label and supporting detail; identify examples clearly and do not invent testimonials, financial results, or customer claims.
+
+### Media frame
+
+Use a bounded visual zone for approved product screens, editorial imagery, or illustrations. Preserve an intentional crop, provide meaningful alt text, and keep the visual separate from copy and controls. The frame may use the selected tier field or palette levels behind the asset, but must not use multi-asset colors unless the image is a labeled category visual.
+
+### Compact footer
+
+Use an optional white footer with a `border-subtle` top rule for supplied legal, support, or secondary information. Keep links descriptive, keyboard-operable, and visually secondary. Do not repeat primary navigation, add a second dominant CTA, or invent legal links.
 
 ## Visuals and Responsive Behavior
 
-Use approved brand assets, authentic product imagery, or clearly labeled illustrative examples only when they explain the offer. Keep visuals subordinate to readable copy and avoid presenting an invented screen as an existing product. On wide screens, visuals may overlap or occupy an offset portion of a full-bleed section; on narrow screens, stack copy, CTA, and visual in reading order.
+Use approved brand assets, authentic product imagery, or clearly labeled illustrative examples only when they explain the offer. Keep visuals subordinate to readable copy and avoid presenting an invented screen as an existing product. On wide screens, visuals may occupy an offset portion of a full-bleed section; on narrow screens, stack copy, CTA, and visual in reading order.
 
-Keep text and controls within the viewport at every width. Do not clip Thai marks, shrink essential text to force a composition, or rely on color alone to communicate meaning. Maintain logical reading and keyboard-focus order. Motion may explain a transition but must not delay reading or operating the page; respect reduced-motion preferences.
+Keep text and controls within the viewport at every width. At 375px and above, every asymmetric composition becomes a strict single column with 16px inline margins and no horizontal overflow. Do not clip Thai marks, shrink essential text to force a composition, or rely on color alone to communicate meaning. Maintain logical reading and keyboard-focus order.
+
+## Motion & Interaction
+
+Default to still content. When motion clarifies a state change or maintains orientation, use a short opacity or transform transition only. Respect reduced-motion preferences. Do not use perpetual loops, scroll hijacking, parallax, gradient animation, glows, decorative effects, or animation that delays reading or operating the page.
+
+## Anti-Patterns
+
+- No centered, generic hero; no equal three-card feature row; no dashboard-style panels.
+- No gradients, outer glows, shadows, or unlisted colors.
+- No text, CTAs, or focus states obscured by imagery or visual layers.
+- No filler scroll instructions, fake metrics, unsupported performance claims, invented testimonials, or generic campaign clichés.
+- No automatic animation, horizontal mobile overflow, clipped Thai text, or reduced-motion violations.
 
 ## Review Checklist
 
 - The page uses `ImmersiveLayout` only and has a real logo-only header.
 - Every section serves the message, evidence, or primary action; there are no workspace controls or decorative data displays.
 - Tier-specific pages use their required colorway; general pages use the restrained core palette.
+- Multi-asset visuals use only their named category colors, visible labels, and values.
 - Hero, CTA, and imagery remain clear at desktop and mobile widths with 16px mobile inline margins.
 - Text contrast, focus visibility, touch targets, keyboard order, and reduced-motion behavior are usable.
+- Every used component follows its component rule; proof content is supplied, supported, or clearly illustrative.
+- The page follows one approved hero composition, varied section rhythm, and the anti-pattern rules.
