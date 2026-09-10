@@ -17,11 +17,14 @@ project or theming one that already exists. Reached via
 directly for a brand-new one. If the user just wants colors/fonts without
 CDS, use `${CLAUDE_PLUGIN_ROOT}/skills/neon-redesign` instead.
 
-See `${CLAUDE_PLUGIN_ROOT}/design-md/finnomena/DESIGN.md` — the single
-canonical Finnomena design reference shared by every skill in this repo —
-for the full color/typography/spacing/component reference and do's/don'ts.
-Read it before making styling decisions rather than guessing from
-`theme.config.ts` alone.
+See `${CLAUDE_PLUGIN_ROOT}/design-md/finnomena/functional-layout/DESIGN.md`
+for workspace screens and
+`${CLAUDE_PLUGIN_ROOT}/design-md/finnomena/immersive-layout/DESIGN.md` for
+landing pages — the two canonical Finnomena design references shared by
+every skill in this repo — for the full color/typography/spacing/component
+reference and do's/don'ts. Read the guide matching what you're building
+before making styling decisions rather than guessing from `theme.config.ts`
+alone.
 
 ## What this skill does, every time
 
@@ -184,7 +187,7 @@ used by all three neon skills. The steps below assume it.
    **Use the shipped SVG logos.** `src/assets/logo/` contains full and compact
    Finnomena marks for light and dark surfaces. Use `Logo` rather than
    recreating the wordmark as text: full in a header or full sidebar, compact
-   in an icon rail. See `design-md/finnomena/DESIGN.md` for the asset mapping.
+   in an icon rail. See `design-md/finnomena/functional-layout/DESIGN.md` for the asset mapping.
 
 9. **Font loading — new-project branch reuses the shipped pattern**
    (`templates/vitejs-cds/src/main.tsx` loads IBM Plex Sans Thai);

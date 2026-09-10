@@ -194,8 +194,10 @@ you hit this, point Claude at the full cloned repo path
    unrelated project, has no established intent yet, so it's back to
    mentioning Finnomena/neon explicitly once.
 
-6. **Review the result** like any AI-generated UI — check it against
-   [DESIGN.md](design-md/finnomena/DESIGN.md) if something looks off-brand, and flag it if a
+6. **Review the result** like any AI-generated UI — check it against the
+   matching guide, [functional-layout/DESIGN.md](design-md/finnomena/functional-layout/DESIGN.md)
+   for workspace screens or [immersive-layout/DESIGN.md](design-md/finnomena/immersive-layout/DESIGN.md)
+   for landing pages, if something looks off-brand, and flag it if a
    design needs a value that doesn't have a matching token yet.
 
 That's it — no manual setup, no copying theme files by hand for a typical
@@ -267,11 +269,16 @@ neon/
 ├── .claude-plugin/
 │   ├── plugin.json                    # plugin manifest — lists all four skills below
 │   └── marketplace.json               # self-hosted marketplace (source: ".")
-├── design-md/finnomena/               # standalone Finnomena brand spec, Google Stitch DESIGN.md format
-│   ├── DESIGN.md                      # canonical token + component reference — no install required
-│   ├── design_tokens.json             # same tokens as DTCG JSON, for Figma/Style Dictionary/design.md CLI
-│   ├── tailwind.config.js             # derived Tailwind v3 theme.extend config
-│   └── README.md
+├── design-md/                         # standalone Finnomena brand specs, Google Stitch DESIGN.md format
+│   ├── README.md                      # which of the two guides below to use, and why
+│   └── finnomena/
+│       ├── functional-layout/         # workspace/product-screen guide
+│       │   ├── DESIGN.md              # canonical token + component reference — no install required
+│       │   ├── design_tokens.json     # same tokens as DTCG JSON, for Figma/Style Dictionary/design.md CLI
+│       │   ├── tailwind.config.js     # derived Tailwind v3 theme.extend config
+│       │   └── README.md
+│       └── immersive-layout/          # landing-page guide
+│           └── DESIGN.md              # canonical token + component reference — no install required
 ├── templates/vitejs-cds/              # starter source: application wiring + layouts only
 │   ├── package.json
 │   └── src/

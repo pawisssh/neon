@@ -14,14 +14,19 @@ theme/tokens.report.json
 # Internal working notes — project brief and raw Figma token exports,
 # not part of the distributed plugin.
 notes/
-docs/
+
+# Root test suite was removed at the user's request; do not recreate it here.
 tests/
-evals/
-docs/
+
+# Local research, working notes, and generated/run evaluator output — see
+# docs/architecture/repository-structure.md. Maintained evaluator source
+# under evals/design-md/ (outside .local/) is tracked normally; its own
+# node_modules/, playwright-report/, and test-results/ are covered by
+# evals/design-md/.gitignore.
+.local/
 
 # Subagent-driven-development scratch workspace
 .superpowers/
 
 # Claude CLI and related local state
 .claude/
-.claude-plugin/

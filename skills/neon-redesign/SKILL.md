@@ -63,8 +63,9 @@ used by all three neon skills. The steps below assume it.
      `${CLAUDE_PLUGIN_ROOT}/skills/neon-audit/references/theme-integration.md`
      §1.
 
-   See `${CLAUDE_PLUGIN_ROOT}/design-md/finnomena/DESIGN.md` for the full
-   reference, or `theme.css`'s own header for the raw variable list.
+   See `${CLAUDE_PLUGIN_ROOT}/design-md/finnomena/functional-layout/DESIGN.md`'s
+   Typography section for the full reference (shared with the immersive
+   guide), or `theme.css`'s own header for the raw variable list.
 
 3. **Don't hardcode a value when a matching token is in scope — but don't
    forcibly retheme the app's own layout geometry either.** Don't write a
@@ -107,9 +108,9 @@ used by all three neon skills. The steps below assume it.
 
 5. **Color is a provisional, first-pass mapping** — every value traces to
    a real Finnomena token, but the mapping involves judgment calls (see
-   `${CLAUDE_PLUGIN_ROOT}/design-md/finnomena/DESIGN.md`'s Colors section
-   and `${CLAUDE_PLUGIN_ROOT}/theme/cds/color-overrides.ts`). Flag to
-   the user that colors may need design review before treating as final.
+   `${CLAUDE_PLUGIN_ROOT}/design-md/finnomena/functional-layout/DESIGN.md`'s
+   Colors section and `${CLAUDE_PLUGIN_ROOT}/theme/cds/color-overrides.ts`).
+   Flag to the user that colors may need design review before treating as final.
 
 ## Upgrading
 
@@ -144,8 +145,8 @@ old declarations. Migrate to real CDS components incrementally.
   omitted — see `theme.css`'s header.
 - No shadow tokens — depth uses `--color-bgElevation1`/`bgElevation2`
   flat-surface steps per
-  `${CLAUDE_PLUGIN_ROOT}/design-md/finnomena/DESIGN.md`'s Elevation & Depth
-  section. Don't add `box-shadow` to fake depth.
+  `${CLAUDE_PLUGIN_ROOT}/design-md/finnomena/functional-layout/DESIGN.md`'s
+  Spacing, Shapes & Depth section. Don't add `box-shadow` to fake depth.
 - `theme.css` regeneration: it's hand-written (not auto-generated). If
   `theme.config.ts` or `color-overrides.ts` change, regenerate by calling
   `createNeonTheme()` → `createThemeCssVars()` in a scratch CDS project.

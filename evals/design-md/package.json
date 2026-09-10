@@ -1,0 +1,13 @@
+{
+  "name": "neon-design-md-eval",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node run.mjs",
+    "test:functional": "node run.mjs --scene functional",
+    "test:immersive": "node run.mjs --scene immersive",
+    "selftest": "node selftest/selftest.mjs"
+  },
+  "engines": { "node": ">=20" },
+  "devDependencies": { "@playwright/test": "^1.58.2" }
+}

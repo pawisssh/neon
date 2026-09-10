@@ -71,7 +71,8 @@ Use `NeonContext.tier` from the contract, not a separate vocabulary:
 - **`tier: 'visual-system'`** ("Colors + typography/spacing/radius") —
   also update font, spacing, and radius tokens that are part of the
   brand's visual system per
-  `${CLAUDE_PLUGIN_ROOT}/design-md/finnomena/DESIGN.md`. Layout geometry
+  `${CLAUDE_PLUGIN_ROOT}/design-md/finnomena/functional-layout/DESIGN.md`
+  (shared with the immersive guide). Layout geometry
   (page grid, component internal padding that isn't a themed spacing
   token, structural dimensions) is still preserved unless the request
   explicitly asks for a layout redesign — this tier changes *what the
