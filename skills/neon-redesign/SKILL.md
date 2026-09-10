@@ -1,9 +1,12 @@
 ---
 name: neon-redesign
-description: ONLY use this skill if the user's message literally contains the word "Finnomena" or "neon" — do not infer from related terms like "brand colors", "on-brand", or a generic restyle request alone. Redesigns or restyles EXISTING code, components, or an app to match Finnomena's brand — colors, or colors plus typography/spacing/radius — via plain CSS custom properties, no @coinbase/cds-web install, no React provider, works with any framework or styling system. Trigger on "retheme", "restyle", "make this look like Finnomena", "apply Finnomena design/theme/color palette", migrating an app's visual identity, changing the look and feel, applying a new skin to existing UI, or partial redesigns (e.g. "make just the header look like Finnomena"). Normally reached via neon-audit's recommendation; invoke directly only if the user has already said they want "just colors"/CSS-only or similar without CDS components. Do NOT use this if the user wants real CDS components — use neon-create for that instead.
+description: Use when restyling existing Finnomena or neon UI with CSS colors or visual tokens without adopting CDS. Applies to established Finnomena context and explicit invocation, including partial-scope and non-React work. Use neon-create for real CDS components.
 ---
 
 # Finnomena Redesign (CSS variables only)
+
+Resolve the Neon root from this loaded skill's real directory, two levels up (follow symlinks), not the consuming app's working directory. `${CLAUDE_PLUGIN_ROOT}` in references denotes that root when the host does not supply it. Read [the shared design contract](../../design/FINNOMENA.md) for visual decisions within the requested scope.
+
 
 Restyles existing UI to Finnomena's brand via CSS custom properties — for
 projects not built on CDS, or that don't want to adopt CDS just for a
@@ -29,7 +32,7 @@ used by all three neon skills. The steps below assume it.
    brand question only when it's genuinely missing: "Do you want to use
    Finnomena's neon brand theme for this?" If the answer is no, stop here.
 
-1. **Run the installer:**
+1. **Reuse existing theme variables first.** For a partial restyle, inspect existing variable consumers before importing anything globally. If Neon variables are absent, scope the required declarations to the requested container and match the app's theme selectors; do not introduce a root theme that changes unrelated UI. For a whole-app integration that needs the CSS asset, run the installer:
 
    ```
    node ${CLAUDE_PLUGIN_ROOT}/scripts/install.mjs <target-dir> --css-only
@@ -38,7 +41,7 @@ used by all three neon skills. The steps below assume it.
    This copies `theme.css` into `<target-dir>/src/theme/`. Pass
    `--theme-dir <project-relative-dir>` to put it somewhere else instead
    (e.g. `styles/neon` for a plain-HTML project) — validated to stay inside
-   `<target-dir>` before anything is written. Then **import it once** in the
+   `<target-dir>` before anything is written. For a whole-app integration, **import it once** in the
    project's root CSS or entry file (e.g. `import "./theme/theme.css";`).
    **If the target already has a customized `theme.css`, the installer
    refuses to overwrite it and exits nonzero before touching anything** —
@@ -63,9 +66,8 @@ used by all three neon skills. The steps below assume it.
      `${CLAUDE_PLUGIN_ROOT}/skills/neon-audit/references/theme-integration.md`
      §1.
 
-   See `${CLAUDE_PLUGIN_ROOT}/design-md/finnomena/functional-layout/DESIGN.md`'s
-   Typography section for the full reference (shared with the immersive
-   guide), or `theme.css`'s own header for the raw variable list.
+   See `${CLAUDE_PLUGIN_ROOT}/design/FINNOMENA.md`'s
+   typography policy and `theme.css` for the actual variable values.
 
 3. **Don't hardcode a value when a matching token is in scope — but don't
    forcibly retheme the app's own layout geometry either.** Don't write a
@@ -78,8 +80,8 @@ used by all three neon skills. The steps below assume it.
    the app's own design decision to preserve, not something to forcibly
    convert to a token just because it's a pixel value. If a mockup needs
    a branded value with no matching variable, flag it rather than
-   inventing one. Two values are single-purpose:
-   `--color-accentBoldYellow` (reserved for one brand-highlight per screen)
+   inventing one. Keep these roles distinct:
+   `--color-accentBoldYellow` (optional supporting accent; never a required per-screen highlight)
    and `--color-bgLinePrimary` (reserved for links/focus rings/interactive
    highlight only).
 
@@ -108,8 +110,8 @@ used by all three neon skills. The steps below assume it.
 
 5. **Color is a provisional, first-pass mapping** — every value traces to
    a real Finnomena token, but the mapping involves judgment calls (see
-   `${CLAUDE_PLUGIN_ROOT}/design-md/finnomena/functional-layout/DESIGN.md`'s
-   Colors section and `${CLAUDE_PLUGIN_ROOT}/theme/cds/color-overrides.ts`).
+   `${CLAUDE_PLUGIN_ROOT}/design/FINNOMENA.md`'s
+   color-role guidance and `${CLAUDE_PLUGIN_ROOT}/theme/cds/color-overrides.ts`).
    Flag to the user that colors may need design review before treating as final.
 
 ## Upgrading
@@ -145,8 +147,9 @@ old declarations. Migrate to real CDS components incrementally.
   omitted — see `theme.css`'s header.
 - No shadow tokens — depth uses `--color-bgElevation1`/`bgElevation2`
   flat-surface steps per
-  `${CLAUDE_PLUGIN_ROOT}/design-md/finnomena/functional-layout/DESIGN.md`'s
-  Spacing, Shapes & Depth section. Don't add `box-shadow` to fake depth.
+  `${CLAUDE_PLUGIN_ROOT}/design/FINNOMENA.md`'s
+  composition guidance. Prefer flat surfaces and dividers; preserve existing
+  shadows during colors-only work.
 - `theme.css` regeneration: it's hand-written (not auto-generated). If
   `theme.config.ts` or `color-overrides.ts` change, regenerate by calling
   `createNeonTheme()` → `createThemeCssVars()` in a scratch CDS project.

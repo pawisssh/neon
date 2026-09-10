@@ -5,12 +5,15 @@ description: Use when reviewing existing Finnomena or neon UI for brand consiste
 
 # Neon UI Review
 
+Resolve the Neon root from this loaded skill's real directory, two levels up (follow symlinks), not the consuming app's working directory. `${CLAUDE_PLUGIN_ROOT}` in references denotes that root when the host does not supply it. Read [the shared design contract](../../design/FINNOMENA.md) for visual decisions within the requested scope.
+
+
 Produce actionable findings about the requested UI, with evidence and coverage limits. This is a read-only review phase, not a theme installer or a general backend/security audit. Review any framework; CDS adoption is not a prerequisite.
 
 ## Scope and evidence
 
 1. Reuse the requested target and established brand intent; do not repeat settled questions. Identify the page/component and requested dimensions. Colors-only excludes typography/spacing changes. A header-only review stays within the header and directly affected behavior. Ask only if the missing target prevents useful inspection.
-2. Read the relevant sections of the matching Finnomena design guide — [functional-layout/DESIGN.md](../../design-md/finnomena/functional-layout/DESIGN.md) for workspace/product screens, [immersive-layout/DESIGN.md](../../design-md/finnomena/immersive-layout/DESIGN.md) for landing pages. For disputed CDS color mappings, inspect [color-overrides.ts](../../theme/cds/color-overrides.ts). Resolve paths from this loaded skill's real directory, not the working directory. If references are unavailable, report that limitation; do not invent brand rules. The mapping is provisional: distinguish documented mismatches from design judgment.
+2. Read the relevant sections of the matching Finnomena design guide — [shared design contract](../../design/FINNOMENA.md), including its functional or immersive composition guidance as applicable. For disputed CDS color mappings, inspect [color-overrides.ts](../../theme/cds/color-overrides.ts). Resolve paths from this loaded skill's real directory, not the working directory. If references are unavailable, report that limitation; do not invent brand rules. The mapping is provisional: distinguish documented mismatches from design judgment.
 3. Record the evidence available: live UI, screenshots, source, or supplied test results. A screenshot establishes only the visible state; source establishes implementation details. Neither alone proves runtime behavior. Use [review-checks.md](references/review-checks.md) for checks relevant to the selected dimensions and evidence.
 
 ## Inspect

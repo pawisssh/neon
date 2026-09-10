@@ -71,7 +71,7 @@ Use `NeonContext.tier` from the contract, not a separate vocabulary:
 - **`tier: 'visual-system'`** ("Colors + typography/spacing/radius") —
   also update font, spacing, and radius tokens that are part of the
   brand's visual system per
-  `${CLAUDE_PLUGIN_ROOT}/design-md/finnomena/functional-layout/DESIGN.md`
+  `${CLAUDE_PLUGIN_ROOT}/design/FINNOMENA.md`
   (shared with the immersive guide). Layout geometry
   (page grid, component internal padding that isn't a themed spacing
   token, structural dimensions) is still preserved unless the request
@@ -240,9 +240,10 @@ asked to restyle "just the header." `tier: 'colors'`.
   `project-inspection.md`'s partial-scope rule, requiring a local
   override in `Header.module.css` instead of editing `:root`.
 - **Update:** `Header.module.css`'s `.header` background becomes
-  `#01172b` (or, better, a locally-scoped `--header-bg: #01172b;` custom
-  property if the module already uses variables elsewhere). `:root`'s
-  `--brand-color` is left untouched.
+  `var(--color-bgPrimary)` when that existing token is in scope. Otherwise
+  copy the matching canonical declaration from `theme.css` into the header
+  scope and reference it there; retain the app's theme-mode selectors.
+  `:root`'s `--brand-color` is left untouched.
 - **Verify:** header renders Navy Ink; every other component still using
   `--brand-color` is visually unchanged; header's nav links/interactions
   still work.

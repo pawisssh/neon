@@ -1,15 +1,6 @@
 # Building new UI: scaffolding a project vs. adding a screen
 
-`neon-create`'s `SKILL.md` steps 0–9 cover how to wire Finnomena's theme
-correctly (installer, `createNeonTheme()`, provider order, tokens, layout
-picking, fonts). This doc covers the part that comes *after* that's
-wired: what "done" means for the UI the employee actually asked for, for
-both of `neon-create`'s branches — a brand-new project
-(`operation: 'new-project'`) and a screen added to an app that already
-exists (`operation: 'new-screen'`). See
-`${CLAUDE_PLUGIN_ROOT}/skills/neon-audit/references/workflow-contract.md`
-for what these `NeonContext` fields mean and how routing decides between
-them.
+Read [cds-integration.md](cds-integration.md) when setup changes are needed. This reference covers implementing requested content after setup, in a new project or an existing app.
 
 ## 1. Template boundary: non-React requests
 
@@ -23,9 +14,8 @@ hand them a React app anyway. State the template boundary plainly: the
 shipped starter can't scaffold that framework directly, so the path is to
 scaffold with that framework's own normal tooling (`npm create vue@latest`,
 the SvelteKit CLI, etc.) and then adapt Finnomena's theme assets into it by
-hand — `theme.config.ts`/`color-overrides.ts`/`theme.css` are framework-
-agnostic data, but `createTheme.ts` and any CDS component usage are
-React-specific and won't port. Per
+hand using `theme/css/theme.css`. The TypeScript CDS adapters and React
+component/provider wiring are not the portable integration path. Per
 `workflow-contract.md`'s routing rules, a non-React `framework` also can't
 take `tier: 'cds'` — route to
 `${CLAUDE_PLUGIN_ROOT}/skills/neon-redesign` for the colors/typography
@@ -37,7 +27,7 @@ These are different jobs, not the same job at two scales:
 
 - **New project** (`operation: 'new-project'`) — there's nothing to
   preserve. Run the installer's `--new` branch, get a fresh
-  `templates/vitejs-cds/` copy, wire it up per `SKILL.md`.
+  `templates/vitejs-cds/` copy, wire it up per `cds-integration.md`.
 - **New screen** (`operation: 'new-screen'`) — an app already exists.
   Reuse its existing routes/router, layout/shell components, and any
   already-configured providers (routing, state, auth context,
@@ -93,24 +83,7 @@ interactive UI is backed by a real server that doesn't exist:
 
 ## 5. Layout selection
 
-`SKILL.md` step 8 has the authoritative 5-pattern table
-(`AppShell`/`ContentLayout`/`SimpleLayout`/`MultiColumnLayout`/
-`ImmersiveLayout`) — don't duplicate it here. The rule that matters for
-this task: **pick based on what the specific task needs, don't default to
-`AppShell` because it's what `App.tsx` boots into out of the box.** This
-is a **new-project-only** rule, matching `SKILL.md` step 8's own scoping
-("New-project branch only — pick the right layout") — the 5 patterns
-ship as part of the starter copy, and the existing-project installer
-branch (`SKILL.md` step 2) copies only the 4 theme files, never
-provider wiring or component code. Introducing this layout system into
-an app that doesn't already have it has no supported procedure in this
-skill today — porting `layoutPanes.ts`, `breakpoints.config.ts`, and the
-layout components themselves into an arbitrary existing app is a bigger
-structural change than a new-screen request. If a new-screen request
-seems to call for one of these 5 patterns and the app doesn't already
-have them, flag that to the employee as out of scope rather than
-attempting it — reuse whatever layout/shell the app already has instead
-(per §2 above).
+Use [the design contract](../../../design/FINNOMENA.md) to choose the composition. The starter layout table is in [cds-integration.md](cds-integration.md). Existing apps reuse their own shell; adding a screen does not authorize replacing it with the starter's layout system.
 
 Configure the `navigation` prop from destinations that actually exist for
 this app/request — not left empty as a placeholder, and not populated with

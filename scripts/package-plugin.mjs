@@ -11,8 +11,7 @@ const PAYLOAD_ENTRIES = [
   "skills",
   "theme",
   "templates/vitejs-cds",
-  "design-md/README.md",
-  "design-md/finnomena",
+  "design/FINNOMENA.md",
   "scripts/install.mjs",
   "scripts/assemble-starter.mjs",
   "scripts/lib",
@@ -37,6 +36,13 @@ function copyFilter(src) {
 export async function packagePlugin({ sourceRoot = defaultSourceRoot, destination } = {}) {
   if (!destination) {
     throw new Error("packagePlugin: destination is required");
+  }
+
+  // Validate all required assets before creating or populating an output directory.
+  for (const entry of PAYLOAD_ENTRIES) {
+    if (!existsSync(join(sourceRoot, entry))) {
+      throw new Error(`packagePlugin: missing required payload: ${entry}`);
+    }
   }
 
   const resolvedDest = resolve(destination);

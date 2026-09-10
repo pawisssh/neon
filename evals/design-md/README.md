@@ -1,3 +1,5 @@
+> Legacy harness: the original `design-md/finnomena/` guides referenced by these scenarios are absent from the current repository. This harness is not a validated gate for `design/FINNOMENA.md`. Use `evals/skills/README.md` for current skill scenarios; recalibrate visual oracles before claiming current-brand coverage.
+
 # Two-guide layout evaluation
 
 This harness evaluates a disposable React showcase generated from exactly one scene prompt and its matching guide: [generation/functional.md](generation/functional.md) + [functional layout guide](../../design-md/finnomena/functional-layout/DESIGN.md), or [generation/immersive.md](generation/immersive.md) + [immersive layout guide](../../design-md/finnomena/immersive-layout/DESIGN.md). `prompt.md` is an orchestration index only — hand a generation agent exactly one of the two scene prompts above, never `prompt.md` itself and never the other scene's prompt.

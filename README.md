@@ -1,375 +1,247 @@
-# neon
+# Neon
 
-A Claude Code plugin that lets any Finnomena employee vibe-code apps and UI
-mockups (via Claude Code or Cowork) that automatically follow Finnomena's
-branding — with a choice of depth. Ships four skills:
+**Build features that feel like Finnomena — describe what you need, and let your AI coding assistant handle the UI.**
 
-- `neon-audit` — for an *existing* project, checks it and recommends a
-  theming depth, then hands off to one of the two below.
-- `neon-redesign` — restyles existing UI with Finnomena's colors, or colors
-  + typography/spacing/radius, as plain CSS variables. No CDS install,
-  works with any framework.
-- `neon-create` — full theming on top of the Coinbase Design System
-  (`@coinbase/cds-web`): real CDS components, `ThemeProvider`, the works —
-  either scaffolds a brand-new project (Vite + React + full CDS) or themes
-  one that already exists, depending on what you ask for.
-- `neon-review` — reviews existing UI for brand consistency, responsive
-  behavior, accessibility, and interaction states; reports evidence and
-  unverified checks without changing the app.
+Neon is a set of four AI skills, Finnomena theme assets, and a React starter. It helps employees create apps, add features, restyle existing screens, and review UI with a consistent visual direction. For React feature building, it uses real [Coinbase Design System](https://github.com/coinbase/cds) components through `@coinbase/cds-web`.
 
-## Commands
+You can write your requests in Thai or English. You do not need to know component names or design token values to get started.
 
-Claude usually activates the right skill on its own from context (see
-[Usage](#usage-for-finnomena-employees) below) — you don't need to type
-these. Use them when you want to invoke a skill explicitly.
+- **Functional screens:** Uber-inspired simplicity, navy/white foundations, and indigo interaction highlights. Other colors communicate accents, status, support and illustration.
+- **Immersive pages:** colorful Finnomena surfaces, expressive imagery and palette-based gradients are welcome when they support the story.
 
-| Command | What it does |
+[Get started](#get-started) · [Example requests](#example-requests) · [Choose a skill](#choose-a-skill) · [Troubleshooting](#troubleshooting) · [Contributing](#contributing)
+
+## Get started
+
+### 1. Prepare your workspace
+
+Use an AI coding assistant that supports skills and can read and edit your project files. For app creation, it also needs a terminal, Node.js and a package manager. Node.js 22 is the version used by this repository's CI. Browser or preview access lets the assistant inspect the finished UI.
+
+Open the **app you want to work on** in your assistant. For a new app, specify a new, empty destination folder. The Neon repository itself contains the reusable tooling; it is not your employee app.
+
+### 2. Install Neon
+
+**Claude Code**
+
+Run these commands inside Claude Code:
+
+```text
+/plugin marketplace add pawisssh/neon
+/plugin install neon@finnomena-plugins
+```
+
+Open `/plugin` and confirm that `neon` is installed and enabled. If the current session does not pick it up, start a new session. For installation scopes and plugin management, see the [Claude Code installation guide](https://code.claude.com/docs/en/discover-plugins).
+
+**Other skill-capable assistants**
+
+Keep a complete checkout of this repository available:
+
+```sh
+git clone https://github.com/pawisssh/neon.git
+```
+
+Register the four folders under `skills/` using your assistant's supported skill-loading mechanism. Keep the checkout intact: these skills also need sibling `theme/`, `templates/`, `design/` and `scripts/` resources. Copying a `SKILL.md` alone is insufficient.
+
+If your assistant supports reading a skill directly, give it the absolute path to the relevant `SKILL.md` and your app's target directory. Automatic discovery varies by host; the repository checks do not verify host installation.
+
+### 3. Ask for your first feature
+
+Copy this into your assistant, replacing the feature details as needed:
+
+```text
+Build a Finnomena request tracker for our team in a new folder called
+team-requests. Staff should be able to view requests, filter by status,
+and open request details. Use mock data and clearly label the app as a demo.
+Use Thai labels and make it work on mobile and desktop.
+```
+
+Neon guides the assistant to prepare the theme, build the requested content and interactions, and check the result. You should receive a feature you can try, with a summary of what was verified and what remains unfinished or mocked.
+
+### 4. Refine the result
+
+Once Finnomena branding is established for the app in the conversation, you can follow up naturally:
+
+```text
+Make the request list more compact and add an empty state when no results match.
+```
+
+You do not need to repeat “Finnomena” on every follow-up. For a fresh conversation, mention Finnomena or explicitly invoke a Neon skill to establish the intended branding.
+
+## Example requests
+
+### Add a feature to an existing app
+
+```text
+Add a Finnomena approvals screen to this app. Staff need to scan pending
+requests, inspect details, and approve or reject a request. Reuse the existing
+API, navigation, theme and providers. Include loading, empty and error states.
+```
+
+The assistant should add the feature in place and reuse working setup. It should not scaffold a replacement app.
+
+### Build a colorful landing page
+
+```text
+Build a Finnomena landing page for our new employee learning program.
+Use an immersive layout with colorful Finnomena illustrations and surfaces.
+Include the program overview, benefits, schedule and a registration action.
+Use the content provided below and mark any missing registration integration.
+```
+
+Immersive pages can be expressive. Functional controls and status feedback should remain clear and accessible.
+
+### Restyle an existing screen without adopting CDS
+
+```text
+Apply Finnomena colors and typography to this Vue screen. Keep Vue,
+the existing components, layout, routes and behavior. Do not install CDS.
+```
+
+This uses CSS theme variables while preserving the existing framework and component library.
+
+### Change only one part of a page
+
+```text
+เปลี่ยนเฉพาะสี header ให้เป็น Finnomena โดยคงฟอนต์ layout และการทำงานเดิม
+ส่วนอื่นของแอปไม่ต้องเปลี่ยน
+```
+
+A partial change stays local. Shared theme variables should not be changed in a way that unexpectedly restyles unrelated screens.
+
+### Review without editing
+
+```text
+Review this Finnomena dashboard on mobile and desktop for brand consistency,
+readability and keyboard accessibility. Report prioritized findings with
+evidence and suggested fixes. Do not edit the app.
+```
+
+You can also provide a screenshot. A screenshot review covers the visible state; it cannot establish keyboard behavior or other screen sizes.
+
+## Choose a skill
+
+Natural-language requests can select the relevant skill through your assistant. To be explicit in Claude Code, use the commands below. You do not need to run all four in sequence.
+
+| Skill / command | When to use it | What it does |
+| --- | --- | --- |
+| [`/neon:neon-create`](skills/neon-create/SKILL.md) | Build a feature, screen, component or new React app | Uses real CDS components and Finnomena tokens; reuses existing setup or prepares a new app |
+| [`/neon:neon-audit`](skills/neon-audit/SKILL.md) | An existing app needs Finnomena branding, but the approach is unclear | Inspects the app without editing it, selects or clarifies the theming depth, then hands off |
+| [`/neon:neon-redesign`](skills/neon-redesign/SKILL.md) | Change existing UI colors or visual styling without adopting CDS | Applies CSS variables within the requested scope and preserves existing behavior |
+| [`/neon:neon-review`](skills/neon-review/SKILL.md) | Check existing UI or screenshots | Reports findings, evidence, suggested fixes and unavailable checks; review-only requests do not edit the app |
+
+**Typical paths**
+
+- New React app → `neon-create`.
+- New feature in an already themed CDS app → `neon-create`, reusing the current setup.
+- Existing app with unclear theming needs → `neon-audit` → `neon-create` or `neon-redesign`.
+- Colors-only change → `neon-redesign`.
+- UI quality check → `neon-review`.
+
+## Choose how much to change
+
+When an existing app needs theming, Neon supports three levels:
+
+| Level | What changes | CDS required? |
+| --- | --- | --- |
+| Colors only | Semantic color variables | No |
+| Visual system | Colors, typography, spacing and radius within the agreed scope | No |
+| Full CDS | Finnomena theme plus real CDS components | Yes; React |
+
+Your explicit request takes priority. “Change only the colors” stays colors-only even if the app already has CDS installed. Vue, Svelte and other non-React apps use the CSS path; Neon does not silently convert them to React.
+
+New apps default to the included Vite + React + TypeScript starter unless you explicitly request another framework. The starter itself does not scaffold other frameworks.
+
+## Help Neon understand your feature
+
+A useful request includes:
+
+| Detail | Example |
 | --- | --- |
-| `/neon:neon-audit` | Check an *existing* project and recommend a theming depth (colors only, colors + typography, or full CDS). |
-| `/neon:neon-redesign` | Restyle existing UI with Finnomena's colors, or colors + typography/spacing/radius, via plain CSS variables — no CDS install. |
-| `/neon:neon-create` | Apply full theming on top of the Coinbase Design System — real CDS components, `ThemeProvider`, the works. Scaffolds a new Vite + React + TypeScript project, or themes an existing one, depending on what you ask for. |
-| `/neon:neon-review` | Review existing UI or screenshots and return prioritized findings with evidence, suggested fixes, and coverage limits. |
+| Target | “In the existing employee portal” |
+| User and task | “Managers need to review leave requests” |
+| Content and actions | “Show employee, dates, reason, and approve/reject” |
+| Data | “Use our existing API” or “Use clearly labeled mock data” |
+| Constraints | “Keep navigation and authentication unchanged” |
+| Language and layout | “Thai labels; functional layout; mobile and desktop” |
 
-Commands need a skill-capable host. In **Claude Code / Cowork**, once the
-plugin is installed (see below), these work as typed slash commands. In
-**Codex CLI**, skills are invoked by request rather than slash syntax — see
-the Codex install steps below for how they get discovered.
+You do not have to specify everything. The assistant should infer routine choices from the app and ask only when missing information materially affects the outcome. Attach available designs, content or screenshots when they explain the intended result.
 
-## Installation
+## What to expect from the result
 
-### Claude Code / Cowork
+Neon guides the assistant to:
 
-```
-/plugin marketplace add https://github.com/pawisssh/neon
-/plugin install neon
-```
+- Build requested content and working UI interactions, beyond an empty themed shell.
+- Use Finnomena tokens and appropriate semantic colors, with real CDS APIs for CDS work.
+- Preserve existing routes, providers, services, customized themes and dark-mode ownership.
+- Include relevant loading, empty, validation, error and success states.
+- Check build/typecheck, narrow and wide layouts, Thai/English text and primary interactions when the environment supports them.
+- Explain mock behavior, incomplete integrations and checks that could not be performed.
 
-### OpenAI Codex CLI
+Skills guide an AI assistant; they are not a runtime enforcement layer. Review the resulting app before relying on it. The current CDS color mapping is provisional, and some exported or inherited values still need design review. See the [design contract](design/FINNOMENA.md) for visual policy and mapping boundaries.
 
-Codex has no plugin marketplace — skills are installed per-folder. There
-are two ways to get these in:
+## Troubleshooting
 
-**Using the Codex Skill Installer (recommended)** — inside a Codex session:
+| Problem | What to do |
+| --- | --- |
+| Neon does not activate | Confirm the plugin is enabled, mention Finnomena in the request, or explicitly invoke the matching skill. |
+| The assistant cannot find theme or design files | Keep the full repository/package together and provide its absolute location. Individual skill folders are not self-contained distributions. |
+| The result looks like default Coinbase styling | Ask the assistant to verify that `createNeonTheme()` is connected to the existing provider and the affected UI uses Finnomena tokens. |
+| A theme file conflict stops installation | Ask the assistant to compare and merge the customized theme. Do not delete it merely to make installation proceed. |
+| The UI is styled but actions are placeholders | Specify the expected action and service. Ask for real interaction handling or clearly labeled demo behavior. |
+| The assistant cannot inspect the preview | Ask for the checks it completed and the exact local preview steps. Treat browser-dependent checks as unverified. |
+| You want feedback before changes | Use `neon-review` and explicitly request review only. |
 
-```
-$skill-installer https://github.com/pawisssh/neon
-```
+## For developers and maintainers
 
-Run one invocation per skill (the repo holds four skill folders, not one) —
-point it at each skill's own subfolder rather than the repo root, since a
-"skill" to Codex is one directory containing a `SKILL.md`, and the repo
-root has other files alongside the skills. If the installer's prompt
-doesn't accept a URL directly, describe the request instead, e.g. "install
-the skill at https://github.com/pawisssh/neon/tree/main/skills/neon-audit".
+Employees using an installed plugin do not need these commands for normal feature requests.
 
-**Manual install (fallback)** — clone the repo and symlink the skill
-folders into wherever your Codex version scans for skills
-(`.agents/skills/` in a project for repo-scoped, `~/.agents/skills/` for
-every project — some Codex releases have used `~/.codex/skills` instead;
-check `codex --help` or your installed version's docs if the installer
-above doesn't work):
+Validate repository resources and packaging:
 
-```
-git clone https://github.com/pawisssh/neon.git ~/finnomena/neon
-
-mkdir -p ~/.agents/skills
-ln -s ~/finnomena/neon/skills/neon-audit ~/.agents/skills/neon-audit
-ln -s ~/finnomena/neon/skills/neon-redesign ~/.agents/skills/neon-redesign
-ln -s ~/finnomena/neon/skills/neon-create ~/.agents/skills/neon-create
-ln -s ~/finnomena/neon/skills/neon-review ~/.agents/skills/neon-review
+```sh
+node --test evals/skills/*.test.mjs
+node scripts/check-repository.mjs
 ```
 
-Either way, start a new Codex session afterward — skills are discovered at
-startup.
+The [CI workflow](.github/workflows/validate.yml) runs these checks on pull requests and pushes to `main`. They verify packaging behavior, skill metadata and resource links in source and a fresh bundle; they do not certify rendered UI quality.
 
-**Unverified for this path:** every cross-reference between these skill
-docs and their sibling assets (reference docs, `theme/`, `design-md/`,
-`templates/`) uses `${CLAUDE_PLUGIN_ROOT}/...` — a Claude Code plugin-loader
-variable. This repo has not verified whether Codex CLI populates it for a
-manual symlink install above; if it doesn't, those paths won't resolve. If
-you hit this, point Claude at the full cloned repo path
-(`~/finnomena/neon`) explicitly instead of relying on the variable.
+To preview the starter, run from the Neon repository root and use a fresh destination:
 
-## Usage (for Finnomena employees)
-
-1. **Install the plugin once**, in Claude Code or Cowork:
-
-   ```
-   /plugin marketplace add https://github.com/pawisssh/neon
-   /plugin install neon
-   ```
-
-   Every skill's activation guard requires your message to literally
-   contain the word "Finnomena" or "neon" the *first* time in a
-   conversation — a bare "build me a login screen" won't trigger any of
-   these skills on its own. Mention Finnomena (or "neon") explicitly once
-   branding intent is established, and every neon skill carries that
-   decision forward for the rest of the conversation — see step 5 below
-   for how that plays out on a follow-up request.
-
-2. **Starting a brand-new project?** Ask Claude to scaffold one:
-
-   ```
-   Start a new Finnomena app with the standard layout
-   ```
-
-   The `neon-create` skill activates, scaffolds a Vite + React +
-   TypeScript project pre-wired with Finnomena's theme, picks a
-   responsive layout matching what you described, and builds the actual
-   feature you asked for — not just an empty themed shell. Claude verifies
-   its own work (build/typecheck, then rendering and interaction checks)
-   before reporting back; running `npm install && npm run dev` yourself is
-   a good final confirmation, not the only check that happened.
-
-3. **Adding a new screen to an existing app?** Say so, mentioning
-   Finnomena the first time:
-
-   ```
-   Add a Finnomena login screen to this app, with email/password fields
-   and a submit button
-   ```
-
-   `neon-audit` activates first, checks the project (does it already use
-   CDS? Tailwind? something else?), and either proceeds straight to the
-   obvious theming depth or asks which one you want, then hands off to
-   `neon-redesign` or `neon-create` to build the screen. Your existing
-   routes, components, and providers are reused — this doesn't rescaffold
-   the app.
-
-4. **Restyling an existing app?** Say what scope you want, mentioning
-   Finnomena the first time. A whole-app restyle:
-
-   ```
-   Restyle this app to Finnomena's brand — colors and typography
-   ```
-
-   ...or a partial, header-only restyle:
-
-   ```
-   Make just the header look like Finnomena — leave the rest of the app
-   alone
-   ```
-
-   Both go through `neon-audit` → `neon-redesign` (or `neon-create` if you
-   ask for real CDS components). A partial request stays scoped to what
-   you named — the rest of the app's styling is left untouched.
-
-   In every case above, `neon-audit` does a quick check of your project
-   and either proceeds straight to the obvious choice or asks which
-   theming depth you want:
-
-   - **Colors only**, or **colors + typography/spacing/radius** — plain CSS
-     variables (`neon-redesign`), no CDS install, works with any framework.
-   - **Full CDS** (`neon-create`) — installs `@coinbase/cds-web`, wires up
-     `MediaQueryProvider` → `ThemeProvider` → `PortalProvider` with
-     Finnomena's `neonTheme`, and builds with real CDS components.
-
-   Either way you get Finnomena's brand tokens for spacing, radius,
-   typography (IBM Plex Sans Thai), and color — no hardcoded hex/pixel
-   values. **Color is a provisional, first-pass mapping** (see
-   `theme/cds/color-overrides.ts`) — real Finnomena colors,
-   but the exact Finnomena-role → CDS-slug assignment hasn't had design
-   sign-off yet, so treat it as a strong draft, not a final answer. If you
-   later outgrow a lighter tier, upgrading doesn't mean starting over — see
-   each skill's own "Upgrading" section.
-
-   For Full CDS specifically, Claude also picks the right CDS component and
-   props via Coinbase's own `cds-code` / `cds-docs` skills if they're
-   available in your environment, otherwise reads real types from
-   `@coinbase/cds-web` directly.
-
-5. **Once branding intent is established, follow-ups don't need to repeat
-   it.** After any of the requests above, a later, plainly generic request
-   in the *same conversation* still gets Finnomena's theme — you don't
-   need to say "Finnomena" or "neon" again:
-
-   ```
-   Make the buttons clearer
-   ```
-
-   This works because the neon skills carry a confirmed branding decision
-   forward across the conversation rather than re-asking every time — it's
-   not that generic UI requests silently opt into Finnomena branding on
-   their own. A *fresh* conversation, or a request for a different,
-   unrelated project, has no established intent yet, so it's back to
-   mentioning Finnomena/neon explicitly once.
-
-6. **Review the result** like any AI-generated UI — check it against the
-   matching guide, [functional-layout/DESIGN.md](design-md/finnomena/functional-layout/DESIGN.md)
-   for workspace screens or [immersive-layout/DESIGN.md](design-md/finnomena/immersive-layout/DESIGN.md)
-   for landing pages, if something looks off-brand, and flag it if a
-   design needs a value that doesn't have a matching token yet.
-
-That's it — no manual setup, no copying theme files by hand for a typical
-mockup. Claude handles the plumbing described in "What's here" below.
-
-## Review an existing UI
-
-Ask: “Review this Finnomena dashboard on mobile and desktop. Report issues;
-don't change the code.” For a smaller scope: “Use neon-review on just this
-header screenshot.”
-
-`neon-review` reports inspected scope, prioritized findings with evidence,
-impact, suggested fixes and rechecks, and unavailable checks. Screenshots
-support visible-state review; keyboard behavior, other viewports, and
-unmeasured contrast remain unverified. A review does not submit live forms,
-approve records, install dependencies, or restyle the app.
-
-Use `neon-audit` to decide how to integrate a theme; use `neon-review` to
-assess UI that already exists. Reviews do not automatically start fixes.
-If you explicitly request fixes too, the agent can continue after presenting
-findings, honoring any approval gate you specified.
-
-## How to verify it's working
-
-After asking Claude to build UI in an existing project, check for these
-signs that theming actually activated:
-
-- **Claude announces it.** You should see something like "Using neon-audit
-  to check your project..." followed by either a brief confirmation or a
-  question about theming depth, then "Using neon-redesign..." or "Using
-  neon-create...". If you don't see any of that, the skills probably didn't
-  fire.
-- **No hardcoded hex colors or raw pixel values** anywhere, regardless of
-  which tier was used:
-  - **Full CDS** (`neon-create`): real CDS token keys like `color="fg"`,
-    `padding={2}`, `borderRadius="200"`; the generated code calls
-    `createNeonTheme()` (from `theme/createTheme.ts`) and passes the result
-    to `ThemeProvider` — never CDS's `defaultTheme` passed through
-    unmodified; provider order is exactly `MediaQueryProvider` →
-    `ThemeProvider` → `PortalProvider`.
-  - **CSS-only** (`neon-redesign`): `var(--color-fg)`, `var(--space-2)`,
-    `var(--borderRadius-200)`, etc. — a `theme.css` file should exist
-    somewhere in the project and be imported once.
-- **Font is IBM Plex Sans Thai**, not a default system font, in both cases.
-- **You can just ask** — "which skill did you use to style this?" Claude
-  will name `neon-redesign` or `neon-create` depending on which tier was
-  used.
-
-If you're unsure the plugin is even installed, run `/plugin` to open the
-plugin manager and confirm `neon` is listed and enabled.
-
-If Claude builds UI without the theme applied (default Coinbase styling,
-hardcoded colors), the most common cause is the prompt not reading as a
-UI-building request — be explicit the first time, e.g. "build this as a
-React component using our design system."
-
-For a brand-new project scaffolded by `neon-create`, check instead that: a
-`templates/vitejs-cds/` copy landed in your target directory (`package.json`,
-`src/app/`, `src/layout/`), `src/theme/` got populated (not empty — it's
-copied in from `neon-create`), and `npm run dev` actually boots without
-console/import errors.
-
-## What's here
-
-```
-neon/
-├── LICENSE
-├── marketplace.example.json           # template for a marketplace repo referencing this one
-├── .claude-plugin/
-│   ├── plugin.json                    # plugin manifest — lists all four skills below
-│   └── marketplace.json               # self-hosted marketplace (source: ".")
-├── design-md/                         # standalone Finnomena brand specs, Google Stitch DESIGN.md format
-│   ├── README.md                      # which of the two guides below to use, and why
-│   └── finnomena/
-│       ├── functional-layout/         # workspace/product-screen guide
-│       │   ├── DESIGN.md              # canonical token + component reference — no install required
-│       │   ├── design_tokens.json     # same tokens as DTCG JSON, for Figma/Style Dictionary/design.md CLI
-│       │   ├── tailwind.config.js     # derived Tailwind v3 theme.extend config
-│       │   └── README.md
-│       └── immersive-layout/          # landing-page guide
-│           └── DESIGN.md              # canonical token + component reference — no install required
-├── templates/vitejs-cds/              # starter source: application wiring + layouts only
-│   ├── package.json
-│   └── src/
-│       ├── app/                       # AppRoot (providers) + example App
-│       ├── layout/                    # 5 responsive page-layout patterns (see neon-create/SKILL.md)
-│       └── (src/theme/ has no tracked files here — scripts/assemble-starter.mjs
-│           supplies it from theme/cds/ at assembly time; see Maintainer notes)
-├── theme/                             # all Finnomena theme assets — CDS-tier + CSS-tier, one source of truth
-│   ├── tokens/                        # raw Figma Variables export (source of truth)
-│   ├── tokens.resolved.json           # generated: flattened + alias-resolved
-│   ├── tokens.report.json             # generated: what resolved / what's still blocked
-│   ├── cds/
-│   │   ├── theme.config.ts                # generated: neonTheme overrides (space/radius/typography)
-│   │   ├── color-overrides.ts             # hand-written: provisional Finnomena color mapping
-│   │   ├── createTheme.ts                 # createNeonTheme(): merges neonTheme + color-overrides onto CDS's defaultTheme
-│   │   ├── color-mapping.todo.md          # generated: reference dump used to build color-overrides.ts
-│   │   └── breakpoints.config.ts          # generated: 7-tier breakpoint/grid data
-│   ├── css/theme.css                  # hand-written: real CDS createThemeCssVars() output (CSS-variable tier)
-│   ├── examples/
-│   │   └── app-entry.tsx              # correct provider setup + font loading (existing-project branch)
-│   └── scripts/
-│       ├── sync-tokens.mjs                    # resolves tokens/*.json → tokens.resolved.json
-│       ├── generate-theme-config.mjs          # resolved tokens → theme/cds/theme.config.ts + color-mapping.todo.md
-│       └── generate-breakpoints-config.mjs    # resolved tokens → theme/cds/breakpoints.config.ts
-├── scripts/
-│   ├── install.mjs                    # deploys the theme: new project / existing project / CSS-only
-│   ├── assemble-starter.mjs           # maintainer CLI: starter source + canonical theme -> a runnable app, no install
-│   ├── package-plugin.mjs             # packages a complete, self-contained plugin artifact
-│   └── lib/
-│       ├── assets.mjs                 # canonical CDS_FILES / CSS_FILE ownership list
-│       ├── assemble-starter.mjs       # shared assembly function (used by install.mjs --new and the CLI above)
-│       └── project-config.mjs         # package-manager detection/command helpers
-├── skills/neon-audit/                 # entry point: checks an existing project, recommends a theming depth
-│   └── SKILL.md
-├── skills/neon-redesign/              # restyles existing UI — colors / colors+typography via plain CSS variables, no CDS
-│   └── SKILL.md
-├── skills/neon-create/                # full CDS theming — scaffolds a new project or themes an existing one
-│   └── SKILL.md                       # instructions Claude follows when scaffolding/theming UI
-└── skills/neon-review/                # read-only UI findings and coverage limits
-    ├── SKILL.md
-    └── references/review-checks.md
-```
-
-## Maintainer notes
-
-Token resolution status, theme regeneration steps, known limitations, the
-roadmap, and marketplace/publishing admin instructions live in this
-maintainer's internal `notes/` directory — deliberately excluded from the
-distributed repo (see `.gitignore`), so a clone of this repo won't have it.
-Not needed for everyday UI-building usage above; ask a maintainer directly
-if you need it.
-
-### Previewing the starter after editing canonical theme assets
-
-`templates/vitejs-cds/` has no tracked `src/theme/` files of its own — it's
-starter *source*, not a runnable app by itself. To see it as a real,
-buildable project, assemble it into a disposable directory:
-
-```bash
+```sh
 node scripts/assemble-starter.mjs /tmp/neon-preview
-cd /tmp/neon-preview && npm install && npm run dev
+cd /tmp/neon-preview
+npm install
+npm run build
+npm run dev
 ```
 
-This never touches a package manager itself — it's a pure filesystem copy
-combining the starter source with the 4 canonical files in `theme/cds/`.
-After editing anything in `theme/tokens/*.json` or hand-maintained files
-under `theme/cds/`, re-run the token pipeline (if token-driven) and
-re-assemble fresh into a new disposable directory — never hand-copy a
-customized assembled app back into `templates/vitejs-cds/`, and never edit
-files inside an assembled preview expecting them to persist.
+Open the local URL printed by Vite. Assembly supplies the canonical theme; the tracked starter source is not a standalone runnable app until assembled.
 
-`node scripts/install.mjs <target-dir> --new` does the same assembly, then
-also installs the assembled app's dependencies — that's the path a real
-consuming project uses; `assemble-starter.mjs` is the maintainer-facing,
-install-free equivalent for quick previews.
+To package the distributable resources into an empty destination:
 
-`theme/finnomena/scripts/install.mjs` still exists as a deprecated
-forwarding shim to `scripts/install.mjs` for one more release — update any
-remaining callers to the new path; it will be removed in a later,
-announced compatibility change.
-
-## Packaging and distribution
-
-To package a complete, self-contained plugin artifact:
-
-```bash
-node scripts/package-plugin.mjs <destination-dir>
+```sh
+node scripts/package-plugin.mjs /tmp/neon-distribution
 ```
 
-This creates a full distribution bundle containing the plugin manifest, skills, canonical theme assets, templates, design specs, and license at `<destination-dir>`. Development-only files (`node_modules`, `.git`, `dist`, intermediate token reports, and internal `notes/`) are excluded.
+Packaging does not publish a release. Full contribution, token update and release procedures live in [CONTRIBUTING.md](CONTRIBUTING.md); repository instructions for agents live in [AGENTS.md](AGENTS.md).
+
+## Repository map
+
+| Path | Purpose |
+| --- | --- |
+| [`skills/`](skills/) | Four skill entrypoints and their supporting references |
+| [`design/FINNOMENA.md`](design/FINNOMENA.md) | Shared functional and immersive design direction |
+| [`theme/`](theme/) | Exported tokens, CDS adapters and CSS theme |
+| [`templates/vitejs-cds/`](templates/vitejs-cds/) | React starter source, layouts and Finnomena logo assets |
+| [`scripts/`](scripts/) | Theme installation, starter assembly, packaging and resource checks |
+| [`evals/skills/`](evals/skills/) | Skill scenarios and packaging regression checks |
+| [`docs/`](docs/) | Maintainer documentation and historical plans |
+
+Optional immersive references live under `design/immersive-layout/` in the full checkout. The older `evals/design-md/` harness is not a validated gate for the current design contract; see its [evaluation notes](evals/design-md/README.md).
+
+## Contributing
+
+Found a confusing instruction or an off-brand result? Include the request you used, the affected skill, expected behavior, and screenshots or reproduction steps where available. See [CONTRIBUTING.md](CONTRIBUTING.md) for the repository workflow.
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+[MIT](LICENSE).

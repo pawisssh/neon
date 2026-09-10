@@ -6,8 +6,8 @@
 | --- | --- | --- |
 | `.claude-plugin/` | maintainer | Plugin manifest (`plugin.json`) and self-hosted marketplace metadata (`marketplace.json`). Tracked and visible to Git — this is how the plugin is discovered. |
 | `skills/` | maintainer | The four distributed skills (`neon-audit`, `neon-create`, `neon-redesign`, `neon-review`) and their reference docs. |
-| `design-md/` | maintainer | The two standalone Finnomena `DESIGN.md` guides (`finnomena/functional-layout/`, `finnomena/immersive-layout/`) plus [`design-md/README.md`](../../design-md/README.md) explaining which to use. See that README for the canonical-vs-optional-export distinction. |
-| `theme/` | maintainer | Canonical theme assets — the raw Figma token export (`tokens/`), generated/resolved token files, CDS-tier adapters (`cds/`), the CSS-variable tier (`css/theme.css`), and the generator scripts (`scripts/`) that produce the generated files from the raw tokens. One source of truth; `design-md/`'s guides and the starter both trace back to it. |
+| `design/` | maintainer | [Current product contract](../../design/FINNOMENA.md) plus optional immersive references. Only the product contract ships in the default bundle. |
+| `theme/` | maintainer | Canonical theme assets — the raw Figma token export (`tokens/`), generated/resolved token files, CDS-tier adapters (`cds/`), the CSS-variable tier (`css/theme.css`), and the generator scripts (`scripts/`) that produce the generated files from the raw tokens. One source of truth; `design/FINNOMENA.md` and the starter both trace back to it. |
 | `templates/vitejs-cds/` | maintainer | Starter source — application wiring and layout patterns only, no tracked theme files of its own (assembled from `theme/cds/` at build time). |
 | `scripts/` | maintainer | Stable, public commands: the installer (`install.mjs`), the maintainer assembly CLI (`assemble-starter.mjs` + `lib/`), and the plugin packager (`package-plugin.mjs`). |
 | `docs/` | maintainer | This directory — curated, tracked documentation about the repository itself (architecture, active plans). Not shipped in the distributed plugin. |
@@ -17,7 +17,7 @@
 
 ## Packaging boundary
 
-`node scripts/package-plugin.mjs <destination-dir>` is the authoritative definition of what ships. It copies an explicit allowlist — currently `.claude-plugin/`, `skills/`, `theme/`, `templates/vitejs-cds/`, `design-md/README.md`, `design-md/finnomena/`, `scripts/install.mjs`, `scripts/assemble-starter.mjs`, `scripts/lib/`, and `LICENSE` — into the destination. Everything else (`docs/`, `evals/`, `.local/`, `notes/`, dependencies, build output) is excluded by construction, not by convention: it's simply not in that list. If a path should ship, it has to be added to `PAYLOAD_ENTRIES` in that script; being tracked in Git is necessary but not sufficient.
+`node scripts/package-plugin.mjs <destination-dir>` is the authoritative definition of what ships. It copies an explicit allowlist — currently `.claude-plugin/`, `skills/`, `theme/`, `templates/vitejs-cds/`, `design/FINNOMENA.md`, `scripts/install.mjs`, `scripts/assemble-starter.mjs`, `scripts/lib/`, and `LICENSE` — into the destination. Everything else (`docs/`, `evals/`, `.local/`, `notes/`, dependencies, build output) is excluded by construction, not by convention: it's simply not in that list. If a path should ship, it has to be added to `PAYLOAD_ENTRIES` in that script; being tracked in Git is necessary but not sufficient.
 
 ## Local material
 

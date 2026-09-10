@@ -1,9 +1,12 @@
 ---
 name: neon-audit
-description: ONLY use this skill if the user's message literally contains the word "Finnomena" or "neon" — do not infer from related terms like "CDS", "Coinbase Design System", "on-brand", or generic theming/UI requests alone. Entry point for theming an EXISTING project with Finnomena's brand — this runs a quick check of the project and recommends a theming depth (colors only, colors+typography, or full CDS) before handing off to the skill that implements it. Do NOT use this to scaffold a brand-new project — use neon-create for that.
+description: Use when integrating Finnomena or neon branding into an existing project and the appropriate theming depth is unclear. Applies to established Finnomena context and explicit invocation. For new React apps use neon-create; for UI quality review use neon-review.
 ---
 
 # Finnomena Theming — Entry Point
+
+Resolve the Neon root from this loaded skill's real directory, two levels up (follow symlinks), not the consuming app's working directory. `${CLAUDE_PLUGIN_ROOT}` in references denotes that root when the host does not supply it. Read [the shared design contract](../../design/FINNOMENA.md) for visual decisions within the requested scope.
+
 
 For a review of existing UI quality (branding, responsiveness, accessibility,
 or interaction states), use **neon-review**. This skill selects an integration

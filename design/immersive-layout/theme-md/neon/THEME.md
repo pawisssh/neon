@@ -12,6 +12,8 @@ Use this file together with a DESIGN.md and the user's page brief. Read both fil
 
 **DESIGN.md controls the experience. THEME.md controls brand styling.** Preserve the reference's composition, layout intent, section rhythm, and specified motion while replacing its brand colors, fonts, and themed component styling with Finnomena's.
 
+> Legacy campaign overlay: use only when explicitly selected for a campaign. The current Neon product default is [design/FINNOMENA.md](../../../FINNOMENA.md): navy/white with indigo interaction highlights. Its color policy supersedes this document's mandatory yellow/blue-grey opening and yellow CTA defaults for ordinary feature building.
+
 ## 1. Purpose and usage
 
 Attach this file and the selected DESIGN.md, then provide the page brief in your message. Read the ownership contract before applying any source styling.

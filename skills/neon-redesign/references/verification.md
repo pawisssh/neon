@@ -59,12 +59,9 @@ for the full migration procedure this feeds into):
 - **Rendered styles**, concretely: confirm the new Finnomena tokens are
   actually applied (computed background/text/border colors match the
   mapped role, not just "a change happened somewhere") and that the
-  overall visual identity reads as branded per the matching guide's Brand &
-  Style section —
-  `${CLAUDE_PLUGIN_ROOT}/design-md/finnomena/functional-layout/DESIGN.md`
-  for workspace screens,
-  `${CLAUDE_PLUGIN_ROOT}/design-md/finnomena/immersive-layout/DESIGN.md`
-  for landing pages.
+  overall visual identity follows the Color roles and Composition guidance
+  in `${CLAUDE_PLUGIN_ROOT}/design/FINNOMENA.md`: restrained functional
+  screens or expressive, potentially colorful immersive pages.
 - **Unchanged behavior**, concretely: existing handlers, form validation,
   navigation, data calls, loading states, and accessibility semantics
   (focus order, ARIA roles/labels, contrast) must be unchanged from

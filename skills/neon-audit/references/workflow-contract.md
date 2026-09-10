@@ -12,6 +12,12 @@ scope) — see
 `${CLAUDE_PLUGIN_ROOT}/skills/neon-audit/references/project-inspection.md`;
 this doc stays the shape and the rules, that one stays the method.
 
+## Resource resolution and visual decisions
+
+Resolve `${CLAUDE_PLUGIN_ROOT}` from the loaded skill's real directory when unavailable; sibling assets must come from the same complete Neon checkout/package. Branding can be established by explicit request, prior conversation, explicit Neon invocation, or project instructions naming Finnomena. An unrelated generic CDS request does not establish branding.
+
+Read `design/FINNOMENA.md` before visual decisions. Preserve the main task, primary action, chosen composition and relevant states across handoffs; no separate design file is required. Colors-only work does not reopen composition, typography or layout.
+
 ## NeonContext
 
 The shared handoff record. Keep it in working conversation context — it is
@@ -124,8 +130,7 @@ Concretely:
 
 - `brandConfirmed` becomes `true` the moment Finnomena/neon branding
   intent is established — either the employee's request states it
-  explicitly (mentions "Finnomena" or "neon", per each skill's own
-  activation guard), or they've already confirmed it earlier in the
+  explicitly (mentions "Finnomena" or "neon", or explicitly invokes a Neon skill), or they've already confirmed it earlier in the
   *current* conversation, including in a different neon skill.
 - Once `true`, every neon skill treats it as settled for the rest of the
   conversation. Handing off from `neon-audit` to `neon-create` or
