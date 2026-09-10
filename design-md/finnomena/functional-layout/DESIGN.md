@@ -3,48 +3,33 @@ name: Finnomena Neon - Functional layout
 colors:
   text-primary: "#000000d9"
   text-secondary: "#000000a6"
-  text-placeholder: "#000000a6"
   text-on-color: "#ffffff"
-  text-on-color-disabled: "#ffffff73"
-  text-on-brand: "#000000d9"
-  text-helper: "#000000a6"
   text-positive: "#009646"
   text-negative: "#d60808"
-  text-inverse: "#ffffff"
   text-disabled: "#00000073"
   field: "#01172b08"
   field-hover: "#01172b0d"
   border-subtle: "#0000000d"
-  border-on-color: "#0000000d"
   border-strong: "#01172b"
   support-success: "#00ad50"
   support-warning: "#f26414"
   support-error: "#f73232"
   support-info: "#01172b"
-  support-caution-major: "#01172b"
-  support-caution-minor: "#01172b"
-  support-undefined: "#01172b"
   interactive: "#5251ed"
   overlay: "#00000033"
   notification-success-background: "#e6fdf0"
   notification-warning-background: "#fef7f3"
   notification-error-background: "#fff5f5"
   notification-info-background: "#f2f3f4"
-  notification-caution-major-background: "#ebecee"
-  notification-caution-minor-background: "#f7f8f9"
   link-primary: "#1817e7"
   button-primary: "#01172b"
   button-primary-hover: "#1a2e40"
-  button-primary-active: "#344555"
   button-secondary: "#01172b0d"
   button-secondary-hover: "#01172b14"
-  button-secondary-active: "#01172b1a"
   button-tertiary: "#01172b00"
   button-tertiary-hover: "#01172b14"
-  button-tertiary-active: "#01172b1a"
   button-highlight: "#f2f93c"
   button-highlight-hover: "#f4fa59"
-  button-highlight-active: "#f5fb6d"
   button-danger: "#d60808"
   button-danger-hover: "#ba0707"
   button-danger-active: "#9d0606"
@@ -61,7 +46,6 @@ colors:
   background-primary: "#ffffff"
   background-secondary: "#f2f2f2"
   background-tertiary: "#ffffff"
-  background-inverse: "#000000"
   background-brand: "#f2f93c"
   multi-asset-cryptocurrency: "#8f0606"
   multi-asset-crowdfunding: "#d60808"
@@ -75,53 +59,21 @@ colors:
   multi-asset-cash: "#007435"
 typography:
   largeTitle:
-    fontFamily: IBM Plex Sans Thai
     fontSize: 34px
-    fontWeight: 400
-    lineHeight: 41px
-    letterSpacing: 0.4px
   title1:
-    fontFamily: IBM Plex Sans Thai
     fontSize: 28px
-    fontWeight: 400
-    lineHeight: 34px
-    letterSpacing: 0.38px
   title2:
-    fontFamily: IBM Plex Sans Thai
     fontSize: 22px
-    fontWeight: 400
-    lineHeight: 28px
-    letterSpacing: -0.26px
   title3:
-    fontFamily: IBM Plex Sans Thai
     fontSize: 20px
-    fontWeight: 400
-    lineHeight: 25px
-    letterSpacing: -0.45px
   headline:
-    fontFamily: IBM Plex Sans Thai
     fontSize: 17px
-    fontWeight: 500
-    lineHeight: 22px
-    letterSpacing: -0.43px
   body:
-    fontFamily: IBM Plex Sans Thai
     fontSize: 17px
-    fontWeight: 400
-    lineHeight: 22px
-    letterSpacing: -0.43px
   subheadline:
-    fontFamily: IBM Plex Sans Thai
     fontSize: 15px
-    fontWeight: 400
-    lineHeight: 20px
-    letterSpacing: -0.23px
   footnote:
-    fontFamily: IBM Plex Sans Thai
     fontSize: 13px
-    fontWeight: 400
-    lineHeight: 18px
-    letterSpacing: -0.08px
 rounded:
   none: 0px
   xs: 4px
