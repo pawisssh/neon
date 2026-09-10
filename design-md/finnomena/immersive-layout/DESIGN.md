@@ -20,6 +20,22 @@ colors:
   button-highlight: "#f2f93c"
   button-highlight-hover: "#f4fa59"
   button-highlight-active: "#f5fb6d"
+palette:
+  yellow:
+    "25": "#fcfece"
+    "50": "#f9fc9e"
+    "75": "#f5fb6d"
+    "100": "#f2f93c"
+  navy:
+    "25": "#c0c5ca"
+    "50": "#808b95"
+    "75": "#415160"
+    "100": "#01172b"
+  light-grey:
+    "25": "#e9eff2"
+    "50": "#d3dfe6"
+    "75": "#bccfd9"
+    "100": "#a6bfcc"
 tiers:
   finno-club: "{colors.white}"
   finno-exclusive: "{colors.yellow-100}"
@@ -77,7 +93,7 @@ components:
 
 # Finnomena Neon — Immersive Landing-Page Guide
 
-Use this guide for `ImmersiveLayout` only: campaign landing pages, tier pages, and focused acquisition flows. It is intentionally minimal. Use the general Finnomena guide for product workspaces, forms, tables, data-heavy views, or persistent navigation.
+Use this guide for `ImmersiveLayout` only: campaign landing pages, tier pages, and focused acquisition flows. It is intentionally minimal. Product workspaces, forms, tables, data-heavy views, and persistent navigation are out of scope.
 
 ## Layout and Header
 
@@ -93,7 +109,46 @@ Compose with intentional asymmetry: large editorial typography, broad color fiel
 
 ## Color and Tier Colorways
 
-Use only the frontmatter colors. Their primitive values come from `theme/tokens/colors.json`; the tier names correspond to the color aliases exported by `theme/tokens/theme.json`.
+Use only the colors defined in this file. Do not add another hue family or load a separate token file.
+
+### Core palette
+
+| Color | Hex | Landing-page role |
+| --- | --- | --- |
+| White | `#FFFFFF` | Main canvas, FinnoClub colorway, and text on navy |
+| Navy 100 | `#01172B` | Primary text and CTA fill; FinnoUltra colorway |
+| Yellow 100 | `#F2F93C` | Short emphasis, highlight CTA, and FinnoExclusive colorway |
+| Light Grey 100 | `#A6BFCC` | Calm full-bleed field and FinnoPrivate colorway |
+
+### Palette intensity
+
+The YAML `palette` provides the permitted 25/50/75/100 levels for landing-page accents, backgrounds, and illustrations. Use the same level consistently within one visual object or section; do not introduce gradients or unlisted colors.
+
+| Level | Use |
+| --- | --- |
+| 25 | Quiet background tint, recessed illustration area, or low-emphasis decorative layer |
+| 50 | Supporting full-bleed background, secondary illustration field, or large visual plane |
+| 75 | Secondary accent block, crop mask, or illustration foreground behind readable text |
+| 100 | Dominant tier field, high-emphasis illustration block, or the approved primary/highlight control color |
+
+| Hue | 25 | 50 | 75 | 100 |
+| --- | --- | --- | --- | --- |
+| Yellow | `#FCFECE` | `#F9FC9E` | `#F5FB6D` | `#F2F93C` |
+| Navy | `#C0C5CA` | `#808B95` | `#415160` | `#01172B` |
+| Light Grey | `#E9EFF2` | `#D3DFE6` | `#BCCFD9` | `#A6BFCC` |
+
+### Essential UI colors
+
+| Token | Hex | Use |
+| --- | --- | --- |
+| Primary text | `#000000D9` | Main copy on white, yellow, and light grey |
+| Secondary text | `#000000A6` | Supporting copy and metadata |
+| Subtle border | `#0000000D` | Header and quiet section separators |
+| Strong border | `#01172B` | Emphasized boundaries |
+| Focus | `#6968EF` | Visible 2px keyboard-focus outline only |
+| Secondary background | `#F2F2F2` | Quiet neutral section grouping |
+| Primary CTA hover / active | `#1A2E40` / `#344555` | Interactive states for navy buttons |
+| Highlight CTA hover / active | `#F4FA59` / `#F5FB6D` | Interactive states for yellow buttons |
 
 For a page dedicated to a service tier, select its required dominant colorway:
 
