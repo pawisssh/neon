@@ -154,12 +154,14 @@ components:
     backgroundColor: "{colors.button-secondary}"
     textColor: "{colors.text-primary}"
     typography: "{typography.body}"
+    minHeight: 36px
     rounded: "{rounded.md}"
   input-field:
     backgroundColor: "{colors.background-primary}"
     textColor: "{colors.text-primary}"
     typography: "{typography.body}"
     rounded: "{rounded.md}"
+    minHeight: 56px
     padding: 16px
   suggestion-card:
     backgroundColor: "{colors.background-secondary}"
