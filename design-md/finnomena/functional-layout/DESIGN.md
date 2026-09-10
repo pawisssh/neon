@@ -156,16 +156,18 @@ This is a naming and usage pattern, not a literal value table: pull exact hex fo
 
 Use **IBM Plex Sans Thai** for Thai and Latin text, with `sans-serif` as the loading fallback. Load weights 400, 500, and 700 when available; preserve Thai marks and wrapping without clipping.
 
-| Role | Token | Size / line height |
-| --- | --- | --- |
-| Page title | `largeTitle` or `title1` | 34 / 41px or 28 / 34px |
-| Section title | `title2` | 22 / 28px |
-| Emphasized label | `headline` | 17 / 22px, weight 500 |
-| Body and controls | `body` | 17 / 22px |
-| Secondary copy | `subheadline` | 15 / 20px |
-| Metadata | `footnote` | 13 / 18px |
+| Role | Token | Size | Use for |
+| --- | --- | --- | --- |
+| Hero / major page title | `largeTitle` | 34px | The single largest text on a screen — a hero number (see Visual Hierarchy), or a page title in a spacious, low-density layout. At most one per screen. |
+| Page title | `title1` | 28px | The standard page title — e.g. "Orders", "Portfolio" — in a normal-density workspace screen. |
+| Section title | `title2` | 22px | A named section within a page — a report section, a grouped list heading, a panel header. |
+| Subsection or card title | `title3` | 20px | A heading one level below a section title — a card header, a table group label, a modal/sheet title. Use when `title2` would compete with the page's own section titles. |
+| Emphasized label | `headline` | 17px | Text that needs more visual weight than body copy without becoming a heading — a selected-row name, a key metric's label, a button's text. |
+| Body and controls | `body` | 17px | Default reading text, form field values, table cell content — the working size for most UI. |
+| Secondary copy | `subheadline` | 15px | Supporting text beside or below primary content — a description line, a helper caption that isn't metadata. |
+| Metadata | `footnote` | 13px | Timestamps, reference numbers, fine print, and other low-priority detail. |
 
-Use the frontmatter weights and tracking; larger display tokens are optional for spacious heroes. Keep body copy left-aligned, allow longer reading text more line height, and right-align comparable numeric values with consistent precision and units.
+Every role above resolves to the frontmatter's `typography.<role>.fontSize` — there is no separate line-height or weight token; give each block a comfortable line-height (roughly 1.2–1.3× its size) and default to regular weight, reserving medium/bold for `headline` and other roles marked "Emphasized." Keep body copy left-aligned, allow longer reading text more line height, and right-align comparable numeric values with consistent precision and units.
 
 ## Spacing, Shapes & Depth
 
@@ -185,7 +187,7 @@ Use 8px radii for controls and cards; reserve full pills for tags, toggles, and 
 
 Every page and self-contained component commits to one focal point and no more than one dominant action; nothing else competes with them.
 
-**Hero object.** Lead with a single focal element sized to be the first thing the eye lands on: the page's core number, chart, or subject, rendered at the largest type or visual scale in view (`display1`–`largeTitle` for numerals, a full-width chart, or a dominant illustration). Place it near the top of the content area, isolated from supporting detail by whitespace, with context (date, status, ticker, account) set in `footnote`/`caption1` immediately below or beside it — never at competing size. A buy amount, a net-worth figure, an order total: one number or image per view is the anchor; everything else is supporting detail rendered smaller and quieter.
+**Hero object.** Lead with a single focal element sized to be the first thing the eye lands on: the page's core number, chart, or subject, rendered at the largest type or visual scale in view (`largeTitle` for numerals, a full-width chart, or a dominant illustration). Place it near the top of the content area, isolated from supporting detail by whitespace, with context (date, status, ticker, account) set in `footnote` immediately below or beside it — never at competing size. A buy amount, a net-worth figure, an order total: one number or image per view is the anchor; everything else is supporting detail rendered smaller and quieter.
 
 **One primary button.** Give each page — and each self-contained component within it (a card, sheet, or modal with its own task) — no more than one `button-primary`. Every other action on that surface drops to `button-secondary`, `button-tertiary`, or a plain `link-primary`, even when it is common or frequently used (quick-amount chips, icon-only utilities, "View all" rows). When a page has a persistent primary action (a sticky footer button, a hero CTA), inline or nested components must not introduce a second filled-navy button in the same view — demote their action to secondary/tertiary or a link so the page-level primary stays the one dominant control. Purely informational or status screens may carry no primary button at all. Reserve `button-highlight` (yellow) for the rare moment that should out-rank even the primary, never as a routine CTA color.
 
