@@ -106,7 +106,7 @@ components:
     backgroundColor: "{colors.button-secondary}"
     textColor: "{colors.text-primary}"
     typography: "{typography.body}"
-    minHeight: 36px
+    minHeight: 48px
     rounded: "{rounded.md}"
   input-field:
     backgroundColor: "{colors.background-primary}"
@@ -134,9 +134,9 @@ Finnomena Neon is a black-on-white system: white surfaces, hairline boundaries, 
 | --- | --- | --- |
 | Canvas and surfaces | `background-primary`, `background-secondary` | White page, header, footer; light gray grouped content |
 | Text | `text-primary`, `text-secondary`, `text-disabled` | Main content, supporting copy, unavailable controls |
-| Boundaries | `border-subtle`, `border-interactive`, `border-strong` | Separators, control edges, selected or emphasized edges |
+| Boundaries | `border-subtle`, `border-strong` | Separators and emphasized edges; control edges use the Black 10A hairline step (see Extended Palette) |
 | Actions | `button-primary`, `button-secondary`, `button-tertiary` | Main, supporting, and quiet actions; use their hover/active variants |
-| Links and focus | `link-primary`, `link-primary-hover`, `focus` | Indigo links and visible keyboard focus |
+| Links and focus | `link-primary`, `interactive` | Indigo links and interactive emphasis; link hover is Indigo 115 and the focus ring Indigo 65 (see Extended Palette) |
 | Feedback | `support-success`, `support-warning`, `support-error` | State icons and matching notification backgrounds; pair with text |
 | Financial change | `text-positive`, `text-negative` | Gains and losses, with signs or labels |
 
@@ -150,7 +150,18 @@ Use the `multi-asset-*` tokens only for their named asset categories. Keep categ
 
 Beyond the semantic roles above, each core brand hue — Yellow, Navy, Grey, Green, Blue, Purple, Red, Orange, Indigo — extends into a tint/shade/opacity scale for charts, decorative accents, and illustration fields the semantic tokens don't cover. `100` is a hue's pure/base tone (several semantic tokens already sit at this step, e.g. Navy 100 backs `button-primary`, Yellow 100 backs `background-brand`). Steps below 100 — 75, 50, 25, 0 — tint the hue toward white; steps above — 125, 150, 175 — shade it toward black. Grey has no shade tier past 100, since 100 is already pure black; shade neutrals with Navy instead. Each hue (other than Grey) also carries opacity variants at 25/50/75% of its 100 tone, for overlays, scrims, and fades — never as a substitute for a solid tint/shade fill.
 
+The steps named above are the representative ones; the underlying scale is finer, running in 5-unit increments from 0 to 200, with matching opacity variants at the same increments (`10A` is the 100 tone at 10% alpha). Reach for an in-between step only when a named one genuinely doesn't fit.
+
 This is a naming and usage pattern, not a literal value table: pull exact hex for a given hue/step from the design system's color foundations when implementing, rather than approximating. Keep one hue and one step consistent within a single chart series, illustration, or accent block. Multi-asset categories keep their dedicated `multi-asset-*` tokens rather than an ad hoc palette pick.
+
+A few recurring roles are expressed as a palette step instead of carrying their own token, since each is derivable from a hue already in the semantic set:
+
+| Role | Step | Anchored to |
+| --- | --- | --- |
+| Keyboard focus ring | Indigo 65 | One step lighter than `interactive` (Indigo 75) |
+| Link hover | Indigo 115 | One shade step past `link-primary` (Indigo 100) |
+| Selected-row wash | Indigo 10A | `link-primary`'s hue at 10% alpha |
+| Control and field hairline | Black 10A | One step stronger than `border-subtle` (Black 5A) |
 
 ## Typography
 
@@ -242,7 +253,7 @@ Use the viewport tiers below unless the user explicitly requests different proje
 | XXXL | 1440–1919px | 360px (Detailed, Simple); 320px (Content) |
 | Max | 1920px and above | 360px (Detailed); 320px (other sidebar layouts) |
 
-Detailed's fixed content column and Content's fixed inspector column use 320px at SM/MD, 360px at LG–XXL, 400px at XXXL, and 560px at Max, when shown alongside another pane. End margins and pane gutters are 16px through XXL and 24px from XXXL up. A sole working pane fills the available width.
+Detailed's fixed content column and Content's fixed inspector column use 320px at SM/MD, 360px at LG–XXL, 400px at XXXL, and 560px at Max, when shown alongside another pane. End margins and pane gutters are 16px through XXL and 24px from XXXL up. A sole working pane fills the available width. No screen scrolls horizontally at page level at any tier — a wide table or board scrolls inside its own labeled region instead. Use `min-height: 100dvh` for full-height shells, never `100vh`.
 
 Adapt panes to fit:
 
@@ -281,11 +292,11 @@ Primary: `button-primary` fill, `text-on-color`, `body` typography, 8px radius, 
 
 ### Form Fields
 
-Use a visible label, white fill, `border-interactive` edge, 8px radius, and 16px padding. Strengthen the border with `border-strong` when needed for visibility. Placeholders supplement labels. Keep helper/error text adjacent, identify errors in words, and retain entered values after validation.
+Use a visible label, white fill, a Black 10A hairline edge, 8px radius, and 16px padding. Strengthen the border with `border-strong` when needed for visibility. Placeholders supplement labels. Keep helper/error text adjacent, identify errors in words, and retain entered values after validation.
 
 ### Cards, Lists & Tables
 
-Use white or `background-secondary` surfaces, 8px radii where bounded, 24px padding, and subtle row separators. Keep primary identifiers left-aligned and comparable amounts right-aligned. Make selection visible with `highlight` and an additional edge or indicator. On small screens retain essential fields and expose secondary details on selection; wide tables may scroll in a labeled region. Avoid automatic three-card sections, redundant labels, empty panels, and decorative status indicators. Equal grids and repeated patterns are appropriate when they help compare information.
+Use white or `background-secondary` surfaces, 8px radii where bounded, 24px padding, and subtle row separators. Keep primary identifiers left-aligned and comparable amounts right-aligned. Make selection visible with an Indigo 10A wash plus an additional edge or indicator. On small screens retain essential fields and expose secondary details on selection; wide tables may scroll in a labeled region. Avoid automatic three-card sections, redundant labels, empty panels, and decorative status indicators. Equal grids and repeated patterns are appropriate when they help compare information.
 
 ### Tabs & Filters
 
@@ -297,12 +308,42 @@ Use real brand assets and relevant flat illustrations or product visuals when th
 
 ## Interaction & Accessibility
 
-- Support default, hover, pressed, focus, selected, disabled, and loading states where relevant. Use a visible 2px `focus` outline with offset; never rely on hover alone.
+- Support default, hover, pressed, focus, selected, disabled, and loading states where relevant. Use a visible 2px Indigo 65 focus outline with offset; never rely on hover alone.
 - Keep controls keyboard-operable, icon buttons named, form labels associated, and reading/focus order logical. Use approximately 44px minimum touch targets.
-- Default to still content with clear interaction feedback. Use motion to explain state changes or preserve orientation; avoid effects that delay reading or operating the screen. Respect reduced-motion preferences.
+- Default to still content with clear interaction feedback; use motion only to explain a state change or preserve orientation. See Motion below for durations and limits.
 - Check text and essential control contrast on the rendered surface; subtle separators are not sufficient as the only control boundary. Pair status colors with words or symbols.
 - Loading: preserve layout with skeletons or a labeled progress indicator. Empty: explain the absence and offer a relevant next action. Error: state what failed and offer recovery. Success: confirm the result without disrupting the task.
-- Use concrete Thai or English matching the request, with consistent currency, dates, units, and precision. Do not invent testimonials, customer endorsements, performance claims, or financial results. Clearly identify sample data.
+
+### Motion
+
+Motion in a workspace explains change; it never decorates. Keep it short enough that it cannot delay a task.
+
+- Animate `transform` and `opacity` only — never `width`, `height`, `top`, or `left`. Composited properties keep interaction responsive under dense tables and charts.
+- State changes (hover, press, selection, expand/collapse) run 120–200ms on an ease-out curve. Entrances and pane transitions cap at 250ms.
+- Nothing on a workspace screen loops perpetually: no pulsing dots, drifting icons, or shimmer outside a genuine loading state.
+- Stagger a list or grid only when arrival order carries meaning — 30–50ms per item, roughly eight items maximum; beyond that, render at once.
+- Under `prefers-reduced-motion`, drop to an instant state change: keep the outcome, remove the transition. Never gate information behind an animation.
+
+## Content & Sample Data
+
+Sample content is where a generated screen most often stops looking like a real product. Write it as though pulled from production, then label it as illustrative.
+
+- **Numbers read as measured, not authored.** Use organic values at realistic precision — `47,283.19 ฿`, `+3.42%`, NAV `12.6598` — never round placeholders like `100,000.00`, `50%`, or `99.99%`. Vary magnitudes between rows; real portfolios are not evenly spaced. Keep currency, units, and decimal places consistent down a column.
+- **Names are plausible and local.** Use realistic Thai or English names and real-format fund, order, and account identifiers (`ASP-DIGIBLOC`, `KKP ***2416`, `TH-2569-0041`), with dates in the screen's locale. Never `John Doe`, `Sarah Chan`, `Acme`, `Fund A`, `Lorem ipsum`, or `Example Co.`
+- **Copy names the thing.** No marketing filler — `Elevate`, `Seamless`, `Unleash`, `Next-Gen`, `Revolutionize` — and no instructional chrome such as "Scroll to explore" or "Click here". A label says what the control does; empty and error text says what happened and what to do next.
+- **Claims stay unfabricated.** Never invent testimonials, endorsements, returns, performance figures, ratings, or regulatory statements. Mark illustrative data plainly once per surface (`ข้อมูลตัวอย่าง` / "Sample data"), not on every row.
+- **Imagery resolves.** Brand marks use the approved logo URLs above. For any other placeholder image use a deterministic source such as `https://picsum.photos/seed/<stable-seed>/800/600`; never paste an Unsplash page link, hotlink a CDN URL, or invent a local file path. Use initials or a generated SVG avatar for people. Never present a placeholder as a real product screenshot.
+
+## Anti-Patterns
+
+Treat each of these as a defect to fix before delivery, not a matter of taste.
+
+- **Surface:** shadows or outer glows for depth — depth comes from white/secondary surfaces and hairlines; gradient text; neon or purple "AI" gradients; custom cursors; decorative status dots that encode nothing.
+- **Color:** yellow `button-highlight` as a routine CTA; `multi-asset-*` colors used decoratively; color as the only carrier of meaning; legacy `status-*` tokens for new semantic feedback.
+- **Hierarchy:** more than one `button-primary` per page or self-contained component; two elements competing to be the focal point; a heading set larger than the screen's hero; a three-card row added to fill space rather than to compare.
+- **Layout:** `height: 100vh`; horizontal page overflow at any tier; text overlapping imagery; `z-index` beyond the header, overlay, and modal layers; an inspector with no detail content.
+- **Interaction:** hover-only affordances; a circular spinner where a layout-preserving skeleton fits; motion that delays reading; a disabled control with no explanation of what would enable it.
+- **Content:** emoji in UI text; round placeholder numbers; generic names; AI marketing clichés; invented claims; broken or hotlinked image URLs.
 
 ## Screen Recipe & Review
 
@@ -318,3 +359,5 @@ Before delivery, verify:
 - Content and claims are supported or clearly labeled as examples; every visual serves a purpose.
 - Motion explains feedback or change, respects reduced motion, and does not obstruct use.
 - Navigation, mobile details, keyboard access, and loading/empty/error states are usable; Thai text is not clipped.
+- Checked at 375px, 768px, 1024px, 1440px, and 1920px: sidebar behavior matches its tier, no page-level horizontal scroll, and no clipped or overlapping content at any of them.
+- Sample data, names, numbers, and imagery pass Content & Sample Data; nothing in Anti-Patterns survives.
