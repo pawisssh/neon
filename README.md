@@ -244,7 +244,7 @@ Packaging does not publish a release. Full contribution, token update and releas
 | [`evals/skills/`](evals/skills/) | Skill scenarios and packaging regression checks |
 | [`docs/`](docs/) | Maintainer documentation and historical plans |
 
-Optional immersive references live under `design/immersive-layout/` in the full checkout. The older `evals/design-md/` harness is not a validated gate for the current design contract; see its [evaluation notes](evals/design-md/README.md).
+The older `evals/design-md/` harness is not a validated gate for the current design contract; see its [evaluation notes](evals/design-md/README.md).
 
 ## Contributing
 
