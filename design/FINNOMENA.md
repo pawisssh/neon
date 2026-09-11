@@ -9,7 +9,7 @@ This is the shared visual direction for Neon feature building, based on the main
 - **theme/tokens/:** exported foundation values. **theme/cds/color-overrides.ts:** provisional mapping to CDS roles; **theme/cds/theme.config.ts:** generated spacing, radius and typography. **theme/css/theme.css:** CSS adapter.
 - **Installed @coinbase/cds-web types and official docs:** actual components, props and theme extension APIs.
 
-For functional layouts, Uber-inspired means restrained, task-led composition and strong hierarchy. Immersive layouts may be colorful and expressive. It is a design direction, not a measurable 99% match or a dependency requirement. For React/CDS feature work, implement with CDS. CSS-only work preserves its framework and styling tier; review-only work does not install components. Do not install Base Web, copy Uber assets, or replace Finnomena fonts with Uber Move.
+For functional layouts, the style means restrained, task-led composition and strong hierarchy. Immersive layouts may be colorful and expressive. It is a design direction, not a measurable 99% match or a dependency requirement. For React/CDS feature work, implement with CDS. CSS-only work preserves its framework and styling tier; review-only work does not install components. Do not install a third-party design system, copy third-party assets, or replace Finnomena fonts with a third-party typeface.
 
 ## Color roles
 

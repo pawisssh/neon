@@ -6,7 +6,7 @@ Neon is a set of four AI skills, Finnomena theme assets, and a React starter. Th
 
 You can write your requests in Thai or English. You do not need to know component names or design token values to get started.
 
-- **Functional screens:** Uber-inspired simplicity, navy/white foundations, and indigo interaction highlights. Other colors communicate accents, status, support and illustration.
+- **Functional screens:** Restrained, task-led simplicity, navy/white foundations, and indigo interaction highlights. Other colors communicate accents, status, support and illustration.
 - **Immersive pages:** colorful Finnomena surfaces, expressive imagery and palette-based gradients are welcome when they support the story.
 
 [Get started](#get-started) · [Example requests](#example-requests) · [Choose a skill](#choose-a-skill) · [Troubleshooting](#troubleshooting) · [Contributing](#contributing)
