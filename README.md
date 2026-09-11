@@ -32,6 +32,17 @@ Run these commands inside Claude Code:
 
 Open `/plugin` and confirm that `neon` is installed and enabled. If the current session does not pick it up, start a new session. For installation scopes and plugin management, see the [Claude Code installation guide](https://code.claude.com/docs/en/discover-plugins).
 
+**Codex**
+
+Run these commands:
+
+```sh
+codex plugin marketplace add pawisssh/neon
+codex plugin add neon@finnomena-plugins
+```
+
+Start a new thread and confirm the four `neon-*` skills are available.
+
 **Other skill-capable assistants**
 
 Keep a complete checkout of this repository available:

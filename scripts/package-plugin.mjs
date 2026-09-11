@@ -8,6 +8,7 @@ const defaultSourceRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..")
 
 const PAYLOAD_ENTRIES = [
   ".claude-plugin",
+  ".codex-plugin",
   "skills",
   "theme",
   "templates/vitejs-cds",

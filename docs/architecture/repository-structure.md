@@ -4,7 +4,8 @@
 
 | Path | Owner | What it is |
 | --- | --- | --- |
-| `.claude-plugin/` | maintainer | Plugin manifest (`plugin.json`) and self-hosted marketplace metadata (`marketplace.json`). Tracked and visible to Git — this is how the plugin is discovered. |
+| `.claude-plugin/` | maintainer | Plugin manifest (`plugin.json`) and self-hosted marketplace metadata (`marketplace.json`). Tracked and visible to Git — this is how the Claude Code plugin is discovered. |
+| `.codex-plugin/` | maintainer | Codex plugin manifest (`plugin.json`), read by `codex plugin add`. Points at the same `skills/` directory as the Claude Code manifest; the marketplace metadata in `.claude-plugin/marketplace.json` is shared across hosts. |
 | `skills/` | maintainer | The four distributed skills (`neon-audit`, `neon-create`, `neon-redesign`, `neon-review`) and their reference docs. |
 
 | `theme/` | maintainer | Canonical theme assets — the raw Figma token export (`tokens/`), generated/resolved token files, CDS-tier adapters (`cds/`), the CSS-variable tier (`css/theme.css`), and the generator scripts (`scripts/`) that produce the generated files from the raw tokens. One source of truth; `skills/INSTRUCTION.md` and the starter both trace back to it. |
@@ -17,7 +18,7 @@
 
 ## Packaging boundary
 
-`node scripts/package-plugin.mjs <destination-dir>` is the authoritative definition of what ships. It copies an explicit allowlist — currently `.claude-plugin/`, `skills/`, `theme/`, `templates/vitejs-cds/`, `scripts/install.mjs`, `scripts/assemble-starter.mjs`, `scripts/lib/`, and `LICENSE` — into the destination. Everything else (`docs/`, `evals/`, `.local/`, `notes/`, dependencies, build output) is excluded by construction, not by convention: it's simply not in that list. If a path should ship, it has to be added to `PAYLOAD_ENTRIES` in that script; being tracked in Git is necessary but not sufficient.
+`node scripts/package-plugin.mjs <destination-dir>` is the authoritative definition of what ships. It copies an explicit allowlist — currently `.claude-plugin/`, `.codex-plugin/`, `skills/`, `theme/`, `templates/vitejs-cds/`, `scripts/install.mjs`, `scripts/assemble-starter.mjs`, `scripts/lib/`, and `LICENSE` — into the destination. Everything else (`docs/`, `evals/`, `.local/`, `notes/`, dependencies, build output) is excluded by construction, not by convention: it's simply not in that list. If a path should ship, it has to be added to `PAYLOAD_ENTRIES` in that script; being tracked in Git is necessary but not sufficient.
 
 ## Local material
 

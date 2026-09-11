@@ -14,6 +14,16 @@ async function markdownFiles(directory) {
     : entry.name.endsWith('.md') ? [join(directory, entry.name)] : []));
   return nested.flat();
 }
+async function checkCodexManifest(root) {
+  const manifestPath = join(root, '.codex-plugin/plugin.json');
+  const manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
+  for (const field of ['name', 'version', 'description', 'author', 'skills']) {
+    if (!manifest[field]) throw new Error(`Missing "${field}" in ${manifestPath}`);
+  }
+  await access(join(root, manifest.skills)).catch(() => {
+    throw new Error(`Missing codex plugin skills directory: ${manifest.skills}`);
+  });
+}
 async function check(root, { includeReadme = false } = {}) {
   const manifest = JSON.parse(await readFile(join(root, '.claude-plugin/plugin.json'), 'utf8'));
   for (const skill of manifest.skills) {
@@ -24,6 +34,7 @@ async function check(root, { includeReadme = false } = {}) {
       throw new Error(`Invalid skill metadata: ${file}`);
     }
   }
+  await checkCodexManifest(root);
   const files = [...await markdownFiles(join(root, 'skills'))];
   if (includeReadme) files.push(join(root, 'README.md'));
   for (const file of files) {
