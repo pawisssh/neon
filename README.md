@@ -41,7 +41,9 @@ codex plugin marketplace add pawisssh/neon
 codex plugin add neon@finnomena-plugins
 ```
 
-Start a new thread and confirm the four `neon-*` skills are available.
+Start a new thread and confirm the four `neon-*` skills are available. Invoke one directly with `@neon-create`, `@neon-audit`, `@neon-redesign`, or `@neon-review`, or just describe your request naturally (mention Finnomena) and Codex will pick the matching skill.
+
+To remove it later: `codex plugin remove neon`.
 
 **Other skill-capable assistants**
 
