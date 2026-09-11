@@ -247,6 +247,8 @@ Packaging does not publish a release. Full contribution, token update and releas
 
 | Path | Purpose |
 | --- | --- |
+| [`.claude-plugin/`](.claude-plugin/) | Claude Code plugin manifest and self-hosted marketplace metadata |
+| [`.codex-plugin/`](.codex-plugin/) | Codex plugin manifest, read by `codex plugin add` |
 | [`skills/`](skills/) | Four skill entrypoints and their supporting references |
 | [`skills/INSTRUCTION.md`](skills/INSTRUCTION.md) | Shared functional and immersive design direction |
 | [`theme/`](theme/) | Exported tokens, CDS adapters and CSS theme |
