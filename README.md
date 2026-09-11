@@ -185,7 +185,7 @@ Neon guides the assistant to:
 - Check build/typecheck, narrow and wide layouts, Thai/English text and primary interactions when the environment supports them.
 - Explain mock behavior, incomplete integrations and checks that could not be performed.
 
-Skills guide an AI assistant; they are not a runtime enforcement layer. Review the resulting app before relying on it. The current CDS color mapping is provisional, and some exported or inherited values still need design review. See the [design contract](design/FINNOMENA.md) for visual policy and mapping boundaries.
+Skills guide an AI assistant; they are not a runtime enforcement layer. Review the resulting app before relying on it. The current CDS color mapping is provisional, and some exported or inherited values still need design review. See the [design contract](skills/INSTRUCTION.md) for visual policy and mapping boundaries.
 
 ## Troubleshooting
 
@@ -237,14 +237,14 @@ Packaging does not publish a release. Full contribution, token update and releas
 | Path | Purpose |
 | --- | --- |
 | [`skills/`](skills/) | Four skill entrypoints and their supporting references |
-| [`design/FINNOMENA.md`](design/FINNOMENA.md) | Shared functional and immersive design direction |
+| [`skills/INSTRUCTION.md`](skills/INSTRUCTION.md) | Shared functional and immersive design direction |
 | [`theme/`](theme/) | Exported tokens, CDS adapters and CSS theme |
 | [`templates/vitejs-cds/`](templates/vitejs-cds/) | React starter source, layouts and Finnomena logo assets |
 | [`scripts/`](scripts/) | Theme installation, starter assembly, packaging and resource checks |
 | [`evals/skills/`](evals/skills/) | Skill scenarios and packaging regression checks |
 | [`docs/`](docs/) | Maintainer documentation and historical plans |
 
-The older `evals/design-md/` harness is not a validated gate for the current design contract; see its [evaluation notes](evals/design-md/README.md).
+
 
 ## Contributing
 

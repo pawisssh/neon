@@ -24,7 +24,7 @@ async function check(root, { includeReadme = false } = {}) {
       throw new Error(`Invalid skill metadata: ${file}`);
     }
   }
-  const files = [...await markdownFiles(join(root, 'skills')), join(root, 'design/FINNOMENA.md')];
+  const files = [...await markdownFiles(join(root, 'skills'))];
   if (includeReadme) files.push(join(root, 'README.md'));
   for (const file of files) {
     const content = await readFile(file, 'utf8');

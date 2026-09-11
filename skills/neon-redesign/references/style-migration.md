@@ -24,7 +24,7 @@ Use `NeonContext.tier` from the contract, not a separate vocabulary:
 - **`tier: 'visual-system'`** ("Colors + typography/spacing/radius") —
   also update font, spacing, and radius tokens that are part of the
   brand's visual system per
-  `${CLAUDE_PLUGIN_ROOT}/design/FINNOMENA.md`
+  `${CLAUDE_PLUGIN_ROOT}/skills/INSTRUCTION.md`
   . Composition remains `preserve` unless explicitly requested as `adapt`;
   tier alone never grants layout redesign.
 - `tier: 'cds'` doesn't apply here — that's `neon-create`'s job.

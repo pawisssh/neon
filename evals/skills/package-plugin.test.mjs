@@ -8,7 +8,7 @@ import { packagePlugin } from '../../scripts/package-plugin.mjs';
 test('distribution contains the shared design contract and conditional CDS guide', async () => {
   const destination = await mkdtemp(join(tmpdir(), 'neon-package-test-'));
   await packagePlugin({ destination });
-  await access(join(destination, 'design/FINNOMENA.md'));
+  await access(join(destination, 'skills/INSTRUCTION.md'));
   await access(join(destination, 'skills/neon-create/references/cds-integration.md'));
   await assert.rejects(access(join(destination, 'evals')));
 });

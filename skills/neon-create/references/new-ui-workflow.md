@@ -6,7 +6,7 @@ Read for complex feature states or integration into an existing app. New-project
 
 Find the relevant screen/component, service contract and route. Reuse existing shell, providers, state and authentication. Inspect only missing evidence. A new-screen request does not authorize scaffolding over the app or replacing its layout system. Follow explicit composition scope for existing UI.
 
-Use real CDS components where available; inspect installed exports/types rather than guessing component names or props. Choose [task-based composition](../../../design/FINNOMENA.md#task-based-choices). Existing wrapper components can preserve local conventions and behavior.
+Use real CDS components where available; inspect installed exports/types rather than guessing component names or props. Choose [task-based composition](../../INSTRUCTION.md#task-based-choices). Existing wrapper components can preserve local conventions and behavior.
 
 ## States and services
 

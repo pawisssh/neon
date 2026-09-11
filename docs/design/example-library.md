@@ -25,6 +25,6 @@ Below it, link the runnable source, screenshots with viewport/theme/state, ratio
 
 ## Use examples in skills
 
-Link only the example relevant to the task, after its review status and resource packaging are settled. Use it as a composition/reference aid, not a mandatory template for every page. Keep canonical token values in `theme/` and visual policy in `design/FINNOMENA.md`. When an example and current policy disagree, identify the stale property and update/review it instead of silently creating a second authority.
+Link only the example relevant to the task, after its review status and resource packaging are settled. Use it as a composition/reference aid, not a mandatory template for every page. Keep canonical token values in `theme/` and visual policy in `skills/INSTRUCTION.md`. When an example and current policy disagree, identify the stale property and update/review it instead of silently creating a second authority.
 
 No approved examples are introduced by the flow refactor. Current prose examples are illustrative; locally generated evaluation apps are behavioral evidence only.

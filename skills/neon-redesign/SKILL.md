@@ -20,7 +20,7 @@ When target, scope and theme variables are known, begin with the affected styles
 ## Workflow
 
 1. Establish scope from the request and existing context. `colors` changes only colors; `visual-system` also covers brand typography, spacing and radius. Existing composition defaults to `preserve`; set `adapt` only for an explicit layout/hierarchy request. Conflicting instructions require clarification. Read the [shared contract](../neon-audit/references/workflow-contract.md) only if these decisions remain unresolved.
-2. Inventory the affected styles and shared consumers. Record existing behavior and a before view. Resolve Neon resources two levels above this skill's real directory; use the [design contract](../../design/FINNOMENA.md) for the relevant visual roles.
+2. Inventory the affected styles and shared consumers. Record existing behavior and a before view. Resolve Neon resources two levels above this skill's real directory; use the [design contract](../INSTRUCTION.md) for the relevant visual roles.
 3. Map by meaning: primary action, selection, status and chart category are different jobs even if they share a hex value. Reuse matching tokens; preserve domain color meaning. Do not use a global replacement for a local request.
 4. Update scoped tokens, then remaining component styles. For `adapt`, reorganize presentation within the named scope while retaining routes, handlers, service contracts, data meaning and access to essential actions. Do not adopt a new framework or component library to rearrange a page.
 5. Verify with the [shared checklist](references/verification.md), including before/after appearance, preserved behavior and unrelated consumers for partial changes.

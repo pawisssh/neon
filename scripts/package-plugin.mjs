@@ -11,7 +11,7 @@ const PAYLOAD_ENTRIES = [
   "skills",
   "theme",
   "templates/vitejs-cds",
-  "design/FINNOMENA.md",
+
   "scripts/install.mjs",
   "scripts/assemble-starter.mjs",
   "scripts/lib",
