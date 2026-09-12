@@ -83,6 +83,17 @@ export const detailedLayoutPanes: Record<BreakpointName, DetailedPaneSpec> = {
  * cap at max. These values happened to already match what was previously
  * extrapolated from Detailed Layout's sequence; that coincidence is now
  * confirmed rather than assumed.
+ *
+ * Two spot checks worth calling out: at node 732:5105 ("SM 499px"),
+ * Figma's own `hidden` attributes show Sidebar View and Inspector View
+ * both hidden with Content View full-width and containing a real
+ * (non-hidden) Bottom Navigation frame — confirming the sidebar-to-
+ * bottom-navigation handoff this pattern relies on (via ../Sidebar.tsx's
+ * width===0 check and ../BottomNav.tsx's tier==="sm" check) actually
+ * happens at Figma's own sm boundary, not just in breakpoints.config.ts's
+ * numbers. At node 732:5127 ("XXL 1272px"): Sidebar View 320, Content
+ * View 592 (fill), Inspector View 360 (fixed) — 320 + 592 + 360 = 1272,
+ * confirming the fill math exactly.
  */
 export const contentLayoutPanes: Record<BreakpointName, ContentPaneSpec> = {
   sm: { inspector: "hidden", content: {} },
