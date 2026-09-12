@@ -26,7 +26,7 @@ Choose based on the task, not the default `App.tsx`:
 | `MultiColumnLayout` | Explicit board/kanban task |
 | `ImmersiveLayout` | Focused, full-bleed content or landing page |
 
-These are starter exports, not guaranteed imports in other apps. Inspect `src/layout/layoutPanes.ts` for corroborated versus extrapolated geometry. Supply navigation for actual destinations; ecosystem links are opt-in. Use the shipped `Logo` and SVG marks appropriate to the surface, not a recreated text wordmark.
+These are starter exports, not guaranteed imports in other apps. Detailed Layout is frame-confirmed across SM through MAX: Inspector-only at SM; 64px Sidebar rail plus Inspector at MD; all three panes from LG; fixed Content widths of 360px at LG–XXL, 400px at XXXL, and 560px at MAX; and an Inspector capped at 980px and centered at MAX. It has no automatic mobile bottom navigation. If a product flow moves from Content into Inspector on SM or MD, provide a clear return or pane-switch action inside that narrow workflow. Inspect `src/layout/layoutPanes.ts` before using another layout because some of their responsive geometry remains extrapolated. Supply navigation for actual destinations; ecosystem links are opt-in. Use the shipped `Logo` and SVG marks appropriate to the surface, not a recreated text wordmark.
 
 ## Finish the feature
 
