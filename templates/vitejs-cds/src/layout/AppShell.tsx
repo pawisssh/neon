@@ -2,23 +2,22 @@
  * Detailed Layout — responsive 3-pane app shell (Sidebar / Content /
  * Inspector), driven by ../theme/breakpoints.config.ts (sidebar width per
  * tier) and ./layoutPanes.ts's `detailedLayoutPanes` (Content/Inspector
- * widths per tier — see that file's header for provenance and caveats
- * before relying on exact pixel values). This is the default layout a
- * fresh scaffold boots into — see ./ContentLayout.tsx, ./SimpleLayout.tsx,
+ * widths per tier — confirmed against the min/max Figma frames for every
+ * tier). This is the default layout a fresh scaffold boots into — see
+ * ./ContentLayout.tsx, ./SimpleLayout.tsx,
  * ./MultiColumnLayout.tsx, and ./ImmersiveLayout.tsx for the other 4 named
  * patterns from the same Figma component set.
  *
- * Bottom Navigation (see ./BottomNav.tsx) renders at the `sm`/phone tier,
- * replacing the Sidebar (hidden at that width) with the same `navigation`
- * list (see ./navItems.ts) passed to this component — empty by default, so
- * neither renders anything until the app supplies its own nav items.
+ * Detailed Layout intentionally does not add Bottom Navigation. At `sm`,
+ * the Figma default is Inspector-only; at `md`, it is the Sidebar rail plus
+ * Inspector. Product flows that move from a list into this layout must put
+ * a clear back/switch action inside the narrow Inspector experience.
  */
 import type { ReactNode } from "react";
 import { useBreakpointTier } from "./useBreakpointTier";
 import { detailedLayoutPanes } from "./layoutPanes";
 import { breakpoints } from "../theme/breakpoints.config";
 import { Sidebar } from "./Sidebar";
-import { BottomNav } from "./BottomNav";
 import { ContentView } from "./ContentView";
 import { InspectorView } from "./InspectorView";
 import type { NavItem } from "./navItems";
@@ -45,7 +44,6 @@ export function AppShell({
       </Sidebar>
       {pane.content !== "hidden" && <ContentView width={pane.content}>{content}</ContentView>}
       <InspectorView pane={pane.inspector}>{inspector}</InspectorView>
-      <BottomNav navigation={navigation} />
     </div>
   );
 }

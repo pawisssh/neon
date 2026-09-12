@@ -4,9 +4,9 @@
  * from appShellPanes.ts (which held only the Detailed Layout spec) when
  * the other 4 patterns were added.
  *
- * Sourced from Figma get_metadata reads at the 1440px (xxxl) frame for
- * each pattern — NOT from theme/tokens/breakpoint.json's own per-variant
- * numbers, which model a different, single-active-pane concept (only one
+ * Sourced from direct Figma frame reads — NOT from
+ * theme/tokens/breakpoint.json's own per-variant numbers, which model a
+ * different, single-active-pane concept (only one
  * of Content/Inspector is ever nonzero per variant) and don't reliably
  * predict actual pane VISIBILITY in Figma (confirmed: e.g. Simple Layout's
  * token data has Inspector as the nonzero pane, but the real frame shows
@@ -24,11 +24,10 @@
  * app shell across patterns; flag to the design owner if this should
  * actually vary per pattern.
  *
- * Only the 1440px (xxxl) frame was read per pattern — other breakpoints
- * are extrapolated using the same sidebar hidden/rail/full progression and
- * "hide non-essential panes on narrow viewports" pattern already
- * established and verified for Detailed Layout. Re-verify against fresh
- * screenshots at other breakpoints before treating as pixel-final.
+ * Detailed Layout and Content Layout are confirmed against the real Figma
+ * frames at every supplied boundary width. Simple, Immersive, and
+ * Multi-column Layout are still confirmed only at xxxl; their narrower
+ * behavior remains extrapolated and must not be described as pixel-final.
  */
 import type { BreakpointName } from "../theme/breakpoints.config";
 
@@ -50,9 +49,12 @@ export interface ContentPaneSpec {
 }
 
 /**
- * Detailed Layout (node 732:842/732:843) — Sidebar + Content + Inspector,
- * all 3 simultaneous, inspector-weighted (inspector gets the larger share
- * at desktop widths: 680px vs. content's 400px at xxxl).
+ * Detailed Layout (Default) — confirmed directly at 320/499, 500/987,
+ * 988/1079, 1080/1271, 1272/1439, 1440, and 1920/2560/3840. SM is
+ * Inspector-only. MD adds the 64px Sidebar rail. LG through MAX show all
+ * three panes. Content is fixed at 360px for LG-XXL, 400px at XXXL, and
+ * 560px at MAX; Inspector fills the remainder and caps at 980px centered
+ * from MAX upward. Pane widths stay constant within each tier.
  */
 export const detailedLayoutPanes: Record<BreakpointName, DetailedPaneSpec> = {
   sm: { content: "hidden", inspector: {} },
@@ -68,15 +70,30 @@ export const detailedLayoutPanes: Record<BreakpointName, DetailedPaneSpec> = {
  * Content Layout (node 732:4929) — Sidebar + Content + Inspector, all 3
  * simultaneous, content-weighted (inverse of Detailed: Content is the
  * "fill" pane, Inspector is the fixed-width one — opposite of Detailed
- * Layout's roles). Confirmed at xxxl: Sidebar 320 (see header caveat
- * above), Inspector 400 (fixed), Content 720 (= 1440 viewport − 320
- * sidebar − 400 inspector, confirmed exact). This exactly matches
- * Detailed Layout's own confirmed xxxl content width (400) used in the
- * opposite role — so rather than inventing new per-tier numbers for the
- * other 6 breakpoints, this reuses Detailed Layout's already-verified
- * fixed-width sequence for Inspector here, since the one confirmed data
- * point shows Content Layout is Detailed Layout's structural mirror, not
- * an independently-designed scale.
+ * Layout's roles).
+ *
+ * Confirmed directly against Figma `get_metadata` reads at both the min-
+ * and max-width frame of every tier (sm 320/499, md 500/987, lg 988/1079,
+ * xl 1080/1271, xxl 1272/1439, xxxl 1440, max 1920/2560/3840): sm and md
+ * hide Inspector and let Content fill; lg through xxxl show a fixed-width
+ * Inspector (360, 360, 360, 400) with Content filling the remainder; max
+ * fixes Inspector at 560 and caps Content at 980 centered (confirmed
+ * exact at all three max-tier widths). Pane widths are constant across a
+ * tier's min/max viewport — no within-tier stretching except Content's
+ * cap at max. These values happened to already match what was previously
+ * extrapolated from Detailed Layout's sequence; that coincidence is now
+ * confirmed rather than assumed.
+ *
+ * Two spot checks worth calling out: at node 732:5105 ("SM 499px"),
+ * Figma's own `hidden` attributes show Sidebar View and Inspector View
+ * both hidden with Content View full-width and containing a real
+ * (non-hidden) Bottom Navigation frame — confirming the sidebar-to-
+ * bottom-navigation handoff this pattern relies on (via ../Sidebar.tsx's
+ * width===0 check and ../BottomNav.tsx's tier==="sm" check) actually
+ * happens at Figma's own sm boundary, not just in breakpoints.config.ts's
+ * numbers. At node 732:5127 ("XXL 1272px"): Sidebar View 320, Content
+ * View 592 (fill), Inspector View 360 (fixed) — 320 + 592 + 360 = 1272,
+ * confirming the fill math exactly.
  */
 export const contentLayoutPanes: Record<BreakpointName, ContentPaneSpec> = {
   sm: { inspector: "hidden", content: {} },

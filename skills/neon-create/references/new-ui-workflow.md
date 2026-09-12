@@ -18,6 +18,8 @@ Mock data is often necessary before a real backend exists — that alone does no
 
 Make the task reachable in narrow and wide layouts. A detail panel can move behind a selection with a clear return path; hiding it must not remove essential actions. Use actual destinations for navigation, and preserve the app's reading and keyboard order. Do not add external ecosystem links unless requested.
 
+For the starter's Detailed Layout default, preserve its frame-confirmed visibility contract: SM shows Inspector only, MD shows the Sidebar rail plus Inspector, and LG upward shows Sidebar, Content, and Inspector. Do not add a mobile bottom bar merely because the Sidebar is hidden at SM. In a list-to-detail product flow, put the return or pane-switch action in the narrow Inspector UI and verify it with keyboard and touch input.
+
 ## Verification
 
 Use the [shared checklist](../../neon-redesign/references/verification.md#shared-checklist) and [creation additions](../../neon-redesign/references/verification.md#creation-additions). For explicitly adapted existing composition, apply the composition additions too. A copied template or a source-only inspection is not completion.
