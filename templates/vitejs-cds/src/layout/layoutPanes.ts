@@ -29,6 +29,12 @@
  * "hide non-essential panes on narrow viewports" pattern already
  * established and verified for Detailed Layout. Re-verify against fresh
  * screenshots at other breakpoints before treating as pixel-final.
+ *
+ * Update: Content Layout's extrapolation has since been confirmed against
+ * the real Figma frame at both the min- and max-width of every tier (see
+ * its own comment below) — every value matched. Simple, Detailed,
+ * Immersive, and Multi-column Layout are still only confirmed at xxxl and
+ * remain extrapolated elsewhere.
  */
 import type { BreakpointName } from "../theme/breakpoints.config";
 
@@ -68,15 +74,19 @@ export const detailedLayoutPanes: Record<BreakpointName, DetailedPaneSpec> = {
  * Content Layout (node 732:4929) — Sidebar + Content + Inspector, all 3
  * simultaneous, content-weighted (inverse of Detailed: Content is the
  * "fill" pane, Inspector is the fixed-width one — opposite of Detailed
- * Layout's roles). Confirmed at xxxl: Sidebar 320 (see header caveat
- * above), Inspector 400 (fixed), Content 720 (= 1440 viewport − 320
- * sidebar − 400 inspector, confirmed exact). This exactly matches
- * Detailed Layout's own confirmed xxxl content width (400) used in the
- * opposite role — so rather than inventing new per-tier numbers for the
- * other 6 breakpoints, this reuses Detailed Layout's already-verified
- * fixed-width sequence for Inspector here, since the one confirmed data
- * point shows Content Layout is Detailed Layout's structural mirror, not
- * an independently-designed scale.
+ * Layout's roles).
+ *
+ * Confirmed directly against Figma `get_metadata` reads at both the min-
+ * and max-width frame of every tier (sm 320/499, md 500/987, lg 988/1079,
+ * xl 1080/1271, xxl 1272/1439, xxxl 1440, max 1920/2560/3840): sm and md
+ * hide Inspector and let Content fill; lg through xxxl show a fixed-width
+ * Inspector (360, 360, 360, 400) with Content filling the remainder; max
+ * fixes Inspector at 560 and caps Content at 980 centered (confirmed
+ * exact at all three max-tier widths). Pane widths are constant across a
+ * tier's min/max viewport — no within-tier stretching except Content's
+ * cap at max. These values happened to already match what was previously
+ * extrapolated from Detailed Layout's sequence; that coincidence is now
+ * confirmed rather than assumed.
  */
 export const contentLayoutPanes: Record<BreakpointName, ContentPaneSpec> = {
   sm: { inspector: "hidden", content: {} },
