@@ -1,6 +1,6 @@
 ---
 name: neon-create
-description: Use when building Finnomena or neon features, screens, components or new React apps with Coinbase Design System, or integrating its theme into React. Applies to established Finnomena intent. Use neon-redesign for CSS-only styling and neon-review for review-only requests.
+description: Use when building Finnomena or neon features, screens, components or new React apps with Coinbase Design System, or integrating its theme into React. Applies to established Finnomena intent. Use neon-redesign for CSS-only styling and neon-review for review-only requests. Honor explicit Neon deactivation; direct user invocation reactivates it.
 ---
 
 # Build Finnomena features with CDS
@@ -12,6 +12,10 @@ Deliver the requested content and interactions with real `@coinbase/cds-web` com
 ## When to use
 
 Use for React/CDS implementation. Preserve an explicitly requested non-React framework and use its normal feature workflow plus Neon's CSS styling path. A request to review does not authorize implementation.
+
+## Mode
+
+Honor the [Neon activation rules](../neon/SKILL.md#activation-and-persistence) before starting. Explicit deactivation blocks automatic use despite established brand intent; direct user invocation reactivates guidance unless the same request explicitly turns it off. Mode-only commands acknowledge the change without running this workflow.
 
 ## Fast path
 

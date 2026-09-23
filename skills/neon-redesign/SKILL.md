@@ -1,6 +1,6 @@
 ---
 name: neon-redesign
-description: Use when restyling existing Finnomena or neon UI through CSS tokens without adopting CDS, including non-React apps, partial changes and explicitly requested layout or hierarchy redesign. Applies to established Finnomena intent. Use neon-create for CDS adoption.
+description: Use when restyling existing Finnomena or neon UI through CSS tokens without adopting CDS, including non-React apps, partial changes and explicitly requested layout or hierarchy redesign. Applies to established Finnomena intent. Use neon-create for CDS adoption. Honor explicit Neon deactivation; direct user invocation reactivates it.
 ---
 
 # Restyle Finnomena UI
@@ -12,6 +12,10 @@ Apply Finnomena visual roles to existing UI while preserving its framework and p
 ## When to use
 
 Use for CSS styling or presentation redesign. Full CDS adoption belongs to [neon-create](../neon-create/SKILL.md). Review-only requests belong to [neon-review](../neon-review/SKILL.md).
+
+## Mode
+
+Honor the [Neon activation rules](../neon/SKILL.md#activation-and-persistence) before starting. Explicit deactivation blocks automatic use despite established brand intent; direct user invocation reactivates guidance unless the same request explicitly turns it off. Mode-only commands acknowledge the change without running this workflow.
 
 ## Fast path
 

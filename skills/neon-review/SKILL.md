@@ -1,6 +1,6 @@
 ---
 name: neon-review
-description: Use when reviewing Finnomena or neon UI for task usability, branding, responsiveness or accessibility, including screenshots and source-only evidence. Applies to explicit invocation and established Finnomena context. Use neon-audit for uncertain theme adoption choices.
+description: Use when reviewing Finnomena or neon UI for task usability, branding, responsiveness or accessibility, including screenshots and source-only evidence. Applies to explicit invocation and established Finnomena context. Use neon-audit for uncertain theme adoption choices. Honor explicit Neon deactivation; direct user invocation reactivates it.
 ---
 
 # Review Finnomena UI
@@ -12,6 +12,10 @@ Find actionable UI problems supported by evidence. Prioritize blocked user tasks
 ## When to use
 
 Use for existing UI in any framework. Review-only is read-only; it does not install a theme, edit the app or start an implementation handoff.
+
+## Mode
+
+Honor the [Neon activation rules](../neon/SKILL.md#activation-and-persistence) before starting. Explicit deactivation blocks automatic use despite established brand intent; direct user invocation reactivates guidance unless the same request explicitly turns it off. Mode-only commands acknowledge the change without running this workflow.
 
 ## Fast path
 

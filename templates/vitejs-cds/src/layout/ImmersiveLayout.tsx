@@ -20,6 +20,7 @@
  *   Not yet confirmed whether that cap holds at 2560/3840 or grows further.
  */
 import type { ReactNode } from "react";
+import "./layout.css";
 import { Box } from "@coinbase/cds-web/layout";
 import { InspectorView } from "./InspectorView";
 import { BottomNav } from "./BottomNav";
@@ -40,7 +41,7 @@ export function ImmersiveLayout({
   const tier = useBreakpointTier();
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", height: "100vh", width: "100%" }}>
+    <div className="neon-layout" data-bottom-nav={navigation.length > 0} style={{ flexDirection: "column" }}>
       <Box
         as="header"
         style={{ height: HEADER_HEIGHT, flexShrink: 0 }}

@@ -37,8 +37,8 @@ bucket:
 - **Semantic status colors** (success/warning/error, often already named
   `success`/`danger`/`warn` in the target's config or chart library) have
   real Finnomena equivalents — Positive `#009646`, Negative `#d60808`,
-  Warning `#f26414` (see DESIGN.md's Colors section for the full pastel
-  container pairs). Map these directly: a chart's "success" series color
+  Warning `#f26414` (see the [canonical CSS adapter](../../../theme/css/theme.css) for
+  mode-specific foreground and wash pairs). Map these directly: a chart's "success" series color
   becomes Finnomena Positive, not a guess.
 - **Arbitrary data-series colors** (the 5 different hues distinguishing
   categories A–E in a bar chart, with no semantic meaning individually)
@@ -124,7 +124,8 @@ paste a hex or `rgb()` value into a variable this project consumes as
 `hsl(var(--primary))` — the variable must hold exactly what the wrapper
 expects. Before writing anything, read the wrapper function in
 `tailwind.config.js` (or wherever the var is consumed) to know the target
-format, then convert Finnomena's DESIGN.md value into it:
+format, then convert the matching value from the
+[canonical CSS adapter](../../../theme/css/theme.css) into it:
 
 - **Example:** Finnomena's Navy Ink primary is `#01172b`. If the target's
   `tailwind.config.js` has `primary: 'hsl(var(--primary))'`, decompose
@@ -142,6 +143,10 @@ format, then convert Finnomena's DESIGN.md value into it:
   the config's `primary: 'hsl(var(--primary))'` line stays untouched
   since it's already pointing at the right variable name.
 
+## Mode-specific values
+
+The literal values below illustrate light-mode conversions, not a complete theme for both schemes. Take actual declarations and applicable dark variants from the [canonical CSS adapter](../../../theme/css/theme.css), using the [design contract](../../INSTRUCTION.md#color-roles) for semantic roles. Preserve the app's existing mode selectors. Do not reuse a light-mode value for a dark surface without checking the actual pair. Hover values must come from established app behavior or a verified canonical role, not an invented ramp.
+
 ## Worked examples
 
 These are calibration fixtures, not an automated test suite — read them
@@ -158,9 +163,12 @@ Tailwind's stock palette, used directly. `tier: 'colors'`.
 - **Inventory:** one shared component, one hardcoded color pair
   (`bg-blue-600`/`hover:bg-blue-700`), no existing brand token.
 - **Map:** this is the primary call-to-action button role → Finnomena
-  Navy Ink (`#01172b`, hover `#1a2e40`).
+  Navy Ink (light-mode `#01172b`). Preserve a verified existing hover
+  treatment, or inspect the canonical roles and contrast before selecting one.
 - **Update shared tokens:** add to `tailwind.config.js`:
-  `theme.extend.colors: { primary: '#01172b', 'primary-hover': '#1a2e40' }`.
+  `theme.extend.colors: { primary: 'var(--button-primary)', 'primary-hover': 'var(--button-primary-hover)' }`.
+  Define both variables in the affected scope and existing mode selectors,
+  using canonical values and the verified hover treatment above.
 - **Update remaining:** `Button.tsx` becomes
   `className="bg-primary hover:bg-primary-hover text-white rounded-md px-4 py-2"`.
   `rounded-md`/`px-4 py-2` are untouched — `tier: 'colors'` means spacing

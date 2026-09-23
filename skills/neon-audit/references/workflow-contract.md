@@ -6,6 +6,10 @@ Shared routing and handoff rules for implementation skills. Reuse a settled cont
 
 Resolve the Neon root two directories above the loaded skill's real directory (follow symlinks). In older references, `${CLAUDE_PLUGIN_ROOT}` denotes that root when the host does not supply it. Resolve resources from the same complete package, not from the employee app's working directory. Missing required assets mean an incomplete installation; identify the missing path before setup.
 
+## Conversation mode
+
+The [Neon controller](../../neon/SKILL.md#activation-and-persistence) owns activation and deactivation. Keep mode in conversation context, not in the app or this handoff type. Explicit off blocks automatic workflow selection even when brand intent was previously confirmed; only explicit activation or direct user invocation clears it. An off instruction in the same request wins. Deactivation does not remove existing app branding or undo changes. Mode-only requests stop after acknowledgment.
+
 ## Scope precedence
 
 Use the employee's explicit request, then established conversation/project instructions, then inspected app evidence. Generic CDS usage alone does not establish Finnomena branding. Carry confirmed intent and scope forward; ask only about a missing target or a material unresolved choice.

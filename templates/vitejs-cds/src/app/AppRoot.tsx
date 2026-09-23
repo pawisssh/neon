@@ -14,9 +14,7 @@
  * ThemeProvider requires a full ThemeConfig, not a partial one, and
  * @coinbase/cds-web has no first-party merge helper).
  *
- * Known gap, not yet resolved: `activeColorScheme` is hardcoded to "light"
- * — wire this to real light/dark state before shipping if the app needs
- * dark mode.
+ * colorScheme defaults to light; pass the app's existing mode state when needed.
  */
 import type { ReactNode } from "react";
 import { MediaQueryProvider, ThemeProvider } from "@coinbase/cds-web/system";

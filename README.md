@@ -2,7 +2,7 @@
 
 **Build features that feel like Finnomena — describe what you need, and let your AI coding assistant handle the UI.**
 
-Neon is a set of four AI skills, Finnomena theme assets, and a React starter. The main journeys are create, redesign and review. Audit is an optional assessment when the target or integration approach is unclear. For React feature building, it uses real [Coinbase Design System](https://github.com/coinbase/cds) components through `@coinbase/cds-web`.
+Neon is a set of five AI skills, Finnomena theme assets, and a React starter. The main journeys are create, redesign and review. Audit is an optional assessment when the target or integration approach is unclear. For React feature building, it uses real [Coinbase Design System](https://github.com/coinbase/cds) components through `@coinbase/cds-web`.
 
 You can write your requests in Thai or English. You do not need to know component names or design token values to get started.
 
@@ -41,7 +41,7 @@ codex plugin marketplace add pawisssh/neon
 codex plugin add neon@finnomena-plugins
 ```
 
-Start a new thread and confirm the four `neon-*` skills are available. Invoke one directly with `@neon-create`, `@neon-audit`, `@neon-redesign`, or `@neon-review`, or just describe your request naturally (mention Finnomena) and Codex will pick the matching skill.
+Start a new thread and confirm `neon` and the four `neon-*` skills are available. Say `neon` to activate conversational guidance, or invoke a workflow directly with `@neon-create`, `@neon-audit`, `@neon-redesign`, or `@neon-review`, or just describe your request naturally (mention Finnomena) and Codex will pick the matching skill.
 
 To remove it later: `codex plugin remove neon`.
 
@@ -53,7 +53,7 @@ Keep a complete checkout of this repository available:
 git clone https://github.com/pawisssh/neon.git
 ```
 
-Register the four folders under `skills/` using your assistant's supported skill-loading mechanism. Keep the checkout intact: these skills also need sibling `theme/`, `templates/`, `design/` and `scripts/` resources. Copying a `SKILL.md` alone is insufficient.
+Register the five skill folders under `skills/` using your assistant's supported skill-loading mechanism. Keep the checkout intact: these skills also need sibling `theme/`, `templates/` and `scripts/` resources. Copying a `SKILL.md` alone is insufficient.
 
 If your assistant supports reading a skill directly, give it the absolute path to the relevant `SKILL.md` and your app's target directory. Automatic discovery varies by host; the repository checks do not verify host installation.
 
@@ -70,9 +70,13 @@ Use Thai labels and make it work on mobile and desktop.
 
 Neon guides the assistant to prepare the theme, build the requested content and interactions, and check the result. You should receive a feature you can try, with a summary of what was verified and what remains unfinished or mocked.
 
-### 4. Refine the result
+### 4. Control Neon and refine the result
 
-Once Finnomena branding is established for the app in the conversation, you can follow up naturally:
+Say `neon` (or `activate neon`) to activate guidance for this conversation. A Finnomena UI request also activates it naturally. Activation alone only receives an acknowledgment; it does not start setup or change the app.
+
+Say `neon off`, `stop neon`, or `deactivate neon` to stop automatic guidance without undoing app changes or removing its branding. After turning it off, say `neon` or explicitly invoke a Neon skill to reactivate it; an ordinary Finnomena mention does not override the off state. These are conversation instructions, not plugin installation controls. Unrelated tasks remain unaffected, and mode is not saved across new conversations.
+
+While Neon mode is active and Finnomena branding is established for the app, you can follow up naturally:
 
 ```text
 Make the request list more compact and add an empty state when no results match.
@@ -133,10 +137,11 @@ You can also provide a screenshot. A screenshot review covers the visible state;
 
 ## Choose a skill
 
-Start with the task: create a feature, redesign existing UI, or review the result. Natural-language requests can select the relevant skill through your assistant. To be explicit in Claude Code, use the commands below. You do not need to run all four in sequence.
+Start with the task: create a feature, redesign existing UI, or review the result. Natural-language requests can select the relevant skill through your assistant. To be explicit in Claude Code, use the commands below. The controller selects a workflow; you do not need to run the skills in sequence.
 
 | Skill / command | When to use it | What it does |
 | --- | --- | --- |
+| [`/neon:neon`](skills/neon/SKILL.md) | Activate/deactivate conversational guidance and select a workflow | Retains mode for relevant follow-ups; use `neon` / `neon off` |
 | [`/neon:neon-create`](skills/neon-create/SKILL.md) | Build a feature, screen, component or new React app | Uses real CDS components and Finnomena tokens; reuses existing setup or prepares a new app |
 | [`/neon:neon-audit`](skills/neon-audit/SKILL.md) | An existing app needs Finnomena branding, but the approach is unclear | Inspects the app without editing it, selects or clarifies the theming depth, then hands off |
 | [`/neon:neon-redesign`](skills/neon-redesign/SKILL.md) | Change existing UI styling or explicitly requested composition without adopting CDS | Applies scoped CSS changes, supports requested layout/hierarchy adaptation, and preserves product behavior |
@@ -251,7 +256,7 @@ Packaging does not publish a release. Full contribution, token update and releas
 | --- | --- |
 | [`.claude-plugin/`](.claude-plugin/) | Claude Code plugin manifest and self-hosted marketplace metadata |
 | [`.codex-plugin/`](.codex-plugin/) | Codex plugin manifest, read by `codex plugin add` |
-| [`skills/`](skills/) | Four skill entrypoints and their supporting references |
+| [`skills/`](skills/) | Five skill entrypoints and their supporting references |
 | [`skills/INSTRUCTION.md`](skills/INSTRUCTION.md) | Shared functional and immersive design direction |
 | [`theme/`](theme/) | Exported tokens, CDS adapters and CSS theme |
 | [`templates/vitejs-cds/`](templates/vitejs-cds/) | React starter source, layouts and Finnomena logo assets |

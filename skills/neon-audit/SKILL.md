@@ -1,6 +1,6 @@
 ---
 name: neon-audit
-description: Use when a Finnomena or neon project's target or theme integration approach is unclear, or when explicitly asked to assess adoption options. Known feature, restyle and review requests can go directly to their implementation or review skill.
+description: Use when a Finnomena or neon project's target or theme integration approach is unclear, or when explicitly asked to assess adoption options. Known feature, restyle and review requests can go directly to their implementation or review skill. Honor explicit Neon deactivation; direct user invocation reactivates it.
 ---
 
 # Choose a Finnomena integration path
@@ -12,6 +12,10 @@ Resolve an unclear target or theming decision through a short, read-only inspect
 ## When to use
 
 Use for unresolved integration choices or explicit assessment requests. Brand intent must come from the request, established context or project instructions; CDS alone is not enough.
+
+## Mode
+
+Honor the [Neon activation rules](../neon/SKILL.md#activation-and-persistence) before starting. Explicit deactivation blocks automatic use despite established brand intent; direct user invocation reactivates guidance unless the same request explicitly turns it off. Mode-only commands acknowledge the change without running this workflow.
 
 ## Fast path
 
