@@ -1,5 +1,6 @@
 /** AppShell: desktop panes retain their geometry; below lg, content opens details as a separate view. */
 import type { ReactNode } from "react";
+import { Box } from "@coinbase/cds-web/layout";
 import { useBreakpointTier } from "./useBreakpointTier";
 import { detailedLayoutPanes } from "./layoutPanes";
 import { breakpoints } from "../theme/breakpoints.config";
@@ -22,7 +23,7 @@ export function AppShell({
   const pane = detailedLayoutPanes[tier];
 
   return (
-    <div className="neon-layout" data-bottom-nav={navigation.length > 0}>
+    <Box background="bg" color="fg" font="body" className="neon-layout" data-bottom-nav={navigation.length > 0}>
       <Sidebar width={sidebarWidth} navigation={navigation}>{sidebar}</Sidebar>
       <ResponsivePanes
         {...paneNavigation} content={content} inspector={inspector}
@@ -31,6 +32,6 @@ export function AppShell({
         capAt={pane.inspector.capAt}
       />
       <BottomNav navigation={navigation} />
-    </div>
+    </Box>
   );
 }

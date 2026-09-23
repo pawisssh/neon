@@ -11,6 +11,7 @@
  * treating as pixel-final.
  */
 import type { ReactNode } from "react";
+import { Box } from "@coinbase/cds-web/layout";
 import "./layout.css";
 import { useBreakpointTier } from "./useBreakpointTier";
 import { breakpoints } from "../theme/breakpoints.config";
@@ -32,13 +33,13 @@ export function SimpleLayout({
   const sidebarWidth = breakpoints.find((b) => b.name === tier)!.sidebarWidth;
 
   return (
-    <div className="neon-layout" data-bottom-nav={navigation.length > 0}>
+    <Box background="bg" color="fg" font="body" className="neon-layout" data-bottom-nav={navigation.length > 0}>
       <Sidebar width={sidebarWidth} navigation={navigation}>
         {sidebar}
       </Sidebar>
       {/* InspectorView is the generic "fill" pane component (Toolbar + scrollable body) — reused here for the sole content pane, since Simple Layout has no fixed-width pane at all. */}
       <InspectorView pane={{}}>{content}</InspectorView>
       <BottomNav navigation={navigation} />
-    </div>
+    </Box>
   );
 }

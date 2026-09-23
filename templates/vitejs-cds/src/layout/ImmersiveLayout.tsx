@@ -11,7 +11,7 @@
  * things are NOT constant, contradicting what this file used to claim
  * from reading only the xxxl frame:
  *
- * - Bottom Navigation is visible at sm (full width, 64px tall) — hidden at
+ * - Bottom Navigation is visible at sm (full width; the starter uses 56px plus safe area) — hidden at
  *   every other tier. Same sm-only handoff SimpleLayout/ContentLayout's
  *   consumers already use; this pattern needs it too since Sidebar is
  *   hidden here at every tier, not just sm.
@@ -41,7 +41,7 @@ export function ImmersiveLayout({
   const tier = useBreakpointTier();
 
   return (
-    <div className="neon-layout" data-bottom-nav={navigation.length > 0} style={{ flexDirection: "column" }}>
+    <Box background="bg" color="fg" font="body" className="neon-layout" data-bottom-nav={navigation.length > 0} style={{ flexDirection: "column" }}>
       <Box
         as="header"
         style={{ height: HEADER_HEIGHT, flexShrink: 0 }}
@@ -58,6 +58,6 @@ export function ImmersiveLayout({
         </div>
       </div>
       <BottomNav navigation={navigation} />
-    </div>
+    </Box>
   );
 }

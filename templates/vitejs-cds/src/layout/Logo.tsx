@@ -16,8 +16,8 @@ const assets = {
 
 /** Canonical Finnomena wordmark and compact mark. */
 export function Logo({ variant = "full", tone }: LogoProps) {
-  const { colorScheme } = useTheme();
-  const surfaceTone = tone ?? colorScheme;
+  const { activeColorScheme } = useTheme();
+  const surfaceTone = tone ?? activeColorScheme;
   const isFull = variant === "full";
 
   return (

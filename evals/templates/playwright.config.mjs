@@ -9,6 +9,8 @@ export default defineConfig({
   outputDir: join(artifacts, 'test-results'),
   reporter: [['list'], ['html', { outputFolder: join(artifacts, 'report'), open: 'never' }]],
   workers: 2,
+  fullyParallel: true,
+  maxFailures: 5,
   retries: 0,
   use: { baseURL: 'http://127.0.0.1:4178', browserName: 'chromium', trace: 'retain-on-failure' },
   webServer: {

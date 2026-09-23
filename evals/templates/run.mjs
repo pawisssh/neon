@@ -33,7 +33,7 @@ try {
   main = main.replace(/^import "@coinbase\/[^\n]+\n/gm, '');
   await writeFile(mainPath, main);
   await run('npm', ['run', 'build'], app);
-  await run(process.execPath, [join(here, 'node_modules/@playwright/test/cli.js'), 'test'], here, { NEON_TEST_APP: app });
+  await run(process.execPath, [join(here, 'node_modules/@playwright/test/cli.js'), 'test', ...process.argv.slice(2)], here, { NEON_TEST_APP: app });
 } finally {
   await rm(work, { recursive: true, force: true });
 }

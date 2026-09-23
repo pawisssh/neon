@@ -35,3 +35,4 @@ jobs:
           name: template-browser-results
           path: .local/evals/templates/
           if-no-files-found: ignore
+          include-hidden-files: true

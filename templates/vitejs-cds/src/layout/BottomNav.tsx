@@ -8,8 +8,8 @@ import type { NavItem } from "./navItems";
 
 export function BottomNav({ navigation = [] }: { navigation?: NavItem[] }) {
   const tier = useBreakpointTier();
-  const { colorScheme } = useTheme();
-  const foreground = colorScheme === "dark" ? "fg" : "fgInverse";
+  const { activeColorScheme } = useTheme();
+  const foreground = activeColorScheme === "dark" ? "fg" : "fgInverse";
   if (tier !== "sm" || navigation.length === 0) return null;
 
   return (

@@ -9,8 +9,8 @@
  * subpath, PortalProvider under "./overlays".
  *
  * `createNeonTheme()` merges neonTheme's overrides onto CDS's own
- * `defaultTheme` and returns a real, complete ThemeConfig — no unsafe cast
- * needed (see ../theme/createTheme.ts for why that merge is necessary:
+ * `defaultTheme` and returns a complete ThemeConfig (see
+ * ../theme/createTheme.ts for why that merge is necessary:
  * ThemeProvider requires a full ThemeConfig, not a partial one, and
  * @coinbase/cds-web has no first-party merge helper).
  *

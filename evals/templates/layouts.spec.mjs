@@ -69,7 +69,9 @@ for (const layout of ['app', 'content']) {
     await page.setViewportSize({ width: 987, height: 900 });
     await expect(content).toBeVisible();
     await expect(details).toBeHidden();
-    await expect(page.getByRole('button', { name: 'ดูรายละเอียด', exact: true })).toBeFocused();
+    // The original mobile opener was unmounted on desktop. Return to the
+    // content region rather than a stale element or an unrelated new button.
+    await expect(content).toBeFocused();
   });
 }
 
@@ -145,3 +147,19 @@ test('integration reference supplies styles, icons, theme switching and logo ove
   expect(await page.evaluate(() => [...document.fonts].some(f => f.family.includes('CoinbaseIcons') && f.status === 'loaded'))).toBe(true);
   await page.screenshot({ path: test.info().outputPath('integration-dark.png') });
 });
+
+for (const layout of ['app', 'content', 'simple', 'board', 'immersive']) {
+  for (const width of [375, 1440]) {
+    test(`${layout} ${width}px: dark surface and logo`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 812 });
+      await page.goto(`/?layout=${layout}&mode=dark`);
+      await expect(page.locator('.neon-layout')).toHaveCSS('background-color', 'rgb(0, 0, 0)');
+      const logo = page.getByRole('img', { name: 'Finnomena', exact: true });
+      if (width === 1440 || layout === 'immersive') {
+        await expect(logo).toBeVisible();
+        expect(await logo.getAttribute('src')).toContain('dark');
+      }
+      await page.screenshot({ path: test.info().outputPath(`${layout}-${width}-dark.png`) });
+    });
+  }
+}
